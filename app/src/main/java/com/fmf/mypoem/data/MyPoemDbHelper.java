@@ -22,7 +22,7 @@ public class MyPoemDbHelper extends SQLiteOpenHelper {
             .append(MyPoem.Poem.COLUMN_NAME_SUBTITLE).append(TYPE_TEXT).append(COMMA_SEP)
             .append(MyPoem.Poem.COLUMN_NAME_AUTHOR).append(TYPE_TEXT).append(COMMA_SEP)
             .append(MyPoem.Poem.COLUMN_NAME_CREATE_DATE).append(TYPE_INTEGER).append(COMMA_SEP)
-            .append(MyPoem.Poem.COLUMN_NAME_MODIFICATION_TIME).append(TYPE_INTEGER).append(COMMA_SEP)
+            .append(MyPoem.Poem.COLUMN_NAME_UPDATE_TIME).append(TYPE_INTEGER).append(COMMA_SEP)
             .append(MyPoem.Poem.COLUMN_NAME_CONTENT).append(TYPE_TEXT).append(COMMA_SEP)
             .append(MyPoem.Poem.COLUMN_NAME_STATUS).append(TYPE_TEXT).append(COMMA_SEP)
             .append(MyPoem.Poem.COLUMN_NAME_TYPE).append(TYPE_TEXT).append(COMMA_SEP)

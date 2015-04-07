@@ -12,6 +12,10 @@ public final class MyPoem {
     public static final class Poem implements BaseColumns {
         private Poem(){ }
 
+        public static final String STATUS_DRAFT = "draft";
+        public static final String STATUS_FINISHED = "finished";
+
+
         public static final String TABLE_NAME = "poem";
 //        public static final String COLUMN_NAME_POEM_ID = "poemid";
 
@@ -43,7 +47,7 @@ public final class MyPoem {
          * Column name for the creation timestamp
          * <P>Type: INTEGER (long from System.curentTimeMillis())</P>
          */
-        public static final String COLUMN_NAME_MODIFICATION_TIME = "modified";
+        public static final String COLUMN_NAME_UPDATE_TIME = "updated";
 
         /**
          * Column name for the content of the poem

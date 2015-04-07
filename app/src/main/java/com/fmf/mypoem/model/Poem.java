@@ -5,21 +5,21 @@ package com.fmf.mypoem.model;
  */
 public class Poem {
 
-    private int id;
+    private long id;
     private String title;
     private String subtitle;
     private String author;
     private long created; //TimeMillis
-    private long modified; //TimeMillis
+    private long updated; //TimeMillis
     private String content;
     private String status;
     private String type;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -55,12 +55,12 @@ public class Poem {
         this.created = created;
     }
 
-    public long getModified() {
-        return modified;
+    public long getUpdated() {
+        return updated;
     }
 
-    public void setModified(long modified) {
-        this.modified = modified;
+    public void setUpdated(long updated) {
+        this.updated = updated;
     }
 
     public String getContent() {
