@@ -2,6 +2,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.fmf.mypoem.activity.MyPoemActivity">
+
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" app:showAsAction="never" />
+
+    <item android:id="@+id/action_compose" android:title="@string/action_compose"
+        android:orderInCategory="50" app:showAsAction="ifRoom" />
+
 </menu>

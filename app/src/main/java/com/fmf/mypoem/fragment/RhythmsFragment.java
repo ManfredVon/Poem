@@ -1,6 +1,7 @@
 package com.fmf.mypoem.fragment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v4.app.ListFragment;
 import android.os.Bundle;
 import android.view.View;
@@ -48,5 +49,22 @@ public class RhythmsFragment extends ListFragment {
         super.onListItemClick(l, v, position, id);
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
+        PoemLog.i("RhythmsFragment--onActivityCreated");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        PoemLog.i("RhythmsFragment--onStart");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        PoemLog.i("RhythmsFragment--onResume");
+    }
 }

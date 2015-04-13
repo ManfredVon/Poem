@@ -1,6 +1,7 @@
 package com.fmf.mypoem.fragment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -13,6 +14,7 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 import com.fmf.mypoem.R;
+import com.fmf.mypoem.activity.DetailActivity;
 import com.fmf.mypoem.data.MyPoem;
 import com.fmf.mypoem.data.MyPoemDao;
 import com.fmf.mypoem.util.PoemLog;
@@ -37,9 +39,7 @@ public class DraftsFragment extends ListFragment implements LoaderManager.Loader
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        // Give some text to display if there is no data.  In a real
-        // application this would come from a resource.
-        setEmptyText("没有草稿");
+        setEmptyText(getString(R.string.empty_text_fragment_drafts));
 
         // We have a menu item to show in action bar.
 //        setHasOptionsMenu(true);
@@ -69,8 +69,9 @@ public class DraftsFragment extends ListFragment implements LoaderManager.Loader
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        super.onListItemClick(l, v, position, id);
-        Toast.makeText(getActivity(), "onListItemClick:pos="+position+", id="+id, Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getActivity(), DetailActivity.class);
+        intent.putExtra(MyPoem.Poem._ID, id);
+        startActivity(intent);
     }
 
 

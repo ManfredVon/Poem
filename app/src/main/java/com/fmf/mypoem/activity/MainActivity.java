@@ -1,14 +1,15 @@
 package com.fmf.mypoem.activity;
 
 import android.app.Activity;
-import android.app.TabActivity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.fmf.mypoem.R;
+import com.fmf.mypoem.util.PoemLog;
 
 public class MainActivity extends Activity {
 
@@ -16,8 +17,39 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        PoemLog.i("MainActivity--onCreate");
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+//        PoemLog.i("MainActivity--onStart");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        PoemLog.i("MainActivity--onResume");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+//        PoemLog.i("MainActivity--onPause");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        PoemLog.i("MainActivity--onDestroy");
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        PoemLog.i("MainActivity--onConfigurationChanged");
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

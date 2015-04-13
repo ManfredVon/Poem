@@ -1,6 +1,7 @@
 package com.fmf.mypoem.fragment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -13,6 +14,7 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 import com.fmf.mypoem.R;
+import com.fmf.mypoem.activity.DetailActivity;
 import com.fmf.mypoem.data.MyPoem;
 import com.fmf.mypoem.data.MyPoemDao;
 import com.fmf.mypoem.util.PoemLog;
@@ -37,7 +39,9 @@ public class PoemsFragment extends ListFragment implements LoaderManager.LoaderC
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        setEmptyText("没有诗词");
+        PoemLog.i("getUserVisibleHint: "+getUserVisibleHint());
+
+        setEmptyText(getString(R.string.empty_text_fragment_poems));
 
         // We have a menu item to show in action bar.
 //        setHasOptionsMenu(true);
@@ -66,8 +70,9 @@ public class PoemsFragment extends ListFragment implements LoaderManager.LoaderC
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        super.onListItemClick(l, v, position, id);
-        Toast.makeText(getActivity(), "onListItemClick:pos=" + position + ", id=" + id, Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getActivity(), DetailActivity.class);
+        intent.putExtra(MyPoem.Poem._ID, id);
+        startActivity(intent);
     }
 
 

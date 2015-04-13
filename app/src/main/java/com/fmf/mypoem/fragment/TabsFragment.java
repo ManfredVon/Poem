@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TabHost;
 
 import com.fmf.mypoem.R;
+import com.fmf.mypoem.util.PoemLog;
 
 public class TabsFragment extends Fragment {
     private PagerAdapter adapter;
@@ -48,7 +49,7 @@ public class TabsFragment extends Fragment {
         adapter = new TabPagerAdapter(getChildFragmentManager());
         viewPager = (ViewPager) rootView.findViewById(R.id.pager);
         viewPager.setAdapter(adapter);
-        viewPager.setOffscreenPageLimit(tabTags.length); //
+//        viewPager.setOffscreenPageLimit(tabTags.length); // 默认预加载一页，即一开始就有两页被创建
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -57,6 +58,7 @@ public class TabsFragment extends Fragment {
 
             @Override
             public void onPageSelected(int position) {
+                PoemLog.i("onPageSelected");
                 if (viewPager != null) {
                     tabHost.setCurrentTab(position);
                 }
@@ -82,6 +84,7 @@ public class TabsFragment extends Fragment {
         tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
             @Override
             public void onTabChanged(String tabId) {
+                PoemLog.i("onTabChanged");
                 if (viewPager != null) {
                     viewPager.setCurrentItem(tabHost.getCurrentTab());
                 }

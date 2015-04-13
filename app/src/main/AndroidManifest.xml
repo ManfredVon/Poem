@@ -9,6 +9,7 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".activity.MainActivity"
+            android:configChanges="orientation|screenSize|keyboard|keyboardHidden|screenLayout|locale|touchscreen|navigation|fontScale|uiMode|smallestScreenSize|mcc|mnc"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,6 +20,7 @@
         <activity
             android:name=".activity.MyPoemActivity"
             android:label="@string/title_activity_my_poem"
+            android:configChanges="orientation|screenSize|keyboard|keyboardHidden|screenLayout"
             android:parentActivityName=".activity.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

@@ -38,6 +38,8 @@ public class ComposeActivity extends Activity implements DatePickerFragment.OnDa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compose);
 
+//        getActionBar().setDisplayHomeAsUpEnabled(true);
+
         initViews();
     }
 
