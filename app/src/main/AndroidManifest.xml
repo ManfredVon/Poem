@@ -16,7 +16,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activity.MyPoemActivity"
             android:label="@string/title_activity_my_poem"
@@ -25,7 +24,22 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.fmf.mypoem.activity.MainActivity" />
         </activity>
-
+        <activity
+            android:name=".activity.ComposeActivity"
+            android:label="@string/title_activity_compose"
+            android:parentActivityName=".activity.MyPoemActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.fmf.mypoem.activity.MyPoemActivity" />
+        </activity>
+        <activity
+            android:name=".activity.DetailActivity"
+            android:label="@string/title_activity_detail"
+            android:parentActivityName=".activity.MyPoemActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.fmf.mypoem.activity.MyPoemActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -13,10 +13,22 @@
 
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="MyPomeActivity"
+        android:text="@string/title_activity_my_poem"
         android:id="@+id/btn_mypoem"
+        android:onClick="onClick"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/title_activity_compose"
+        android:id="@+id/btn_compose"
+        android:onClick="onClick"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/title_activity_poems"
+        android:id="@+id/btn_poems"
         android:onClick="onClick"/>
 
 

@@ -39,13 +39,13 @@ public final class MyPoem {
 
         /**
          * Column name for the creation timestamp
-         * <P>Type: INTEGER (long from System.curentTimeMillis())</P>
+         * <P>Type: DATE</P>
          */
         public static final String COLUMN_NAME_CREATE_DATE = "created";
 
         /**
          * Column name for the creation timestamp
-         * <P>Type: INTEGER (long from System.curentTimeMillis())</P>
+         * <P>Type: DATETIME</P>
          */
         public static final String COLUMN_NAME_UPDATE_TIME = "updated";
 

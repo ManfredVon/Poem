@@ -13,19 +13,20 @@ public class MyPoemDbHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "MyPoem.db";
 
     private static final String TYPE_TEXT = " TEXT";
-    private static final String TYPE_INTEGER = " TEXT";
-    private static final String COMMA_SEP = ",";
+    private static final String TYPE_DATE = " DATE";
+    private static final String TYPE_DATETIME = " DATETIME";
+    private static final String COMMA_SEP = ", ";
     private static final String SQL_CREATE_POEM = new StringBuffer()
             .append("CREATE TABLE ").append(MyPoem.Poem.TABLE_NAME).append(" (")
             .append(MyPoem.Poem._ID).append(" INTEGER PRIMARY KEY,")
             .append(MyPoem.Poem.COLUMN_NAME_TITLE).append(TYPE_TEXT).append(COMMA_SEP)
             .append(MyPoem.Poem.COLUMN_NAME_SUBTITLE).append(TYPE_TEXT).append(COMMA_SEP)
             .append(MyPoem.Poem.COLUMN_NAME_AUTHOR).append(TYPE_TEXT).append(COMMA_SEP)
-            .append(MyPoem.Poem.COLUMN_NAME_CREATE_DATE).append(TYPE_INTEGER).append(COMMA_SEP)
-            .append(MyPoem.Poem.COLUMN_NAME_UPDATE_TIME).append(TYPE_INTEGER).append(COMMA_SEP)
+            .append(MyPoem.Poem.COLUMN_NAME_CREATE_DATE).append(TYPE_DATE).append(COMMA_SEP)
+            .append(MyPoem.Poem.COLUMN_NAME_UPDATE_TIME).append(TYPE_DATETIME).append(COMMA_SEP)
             .append(MyPoem.Poem.COLUMN_NAME_CONTENT).append(TYPE_TEXT).append(COMMA_SEP)
             .append(MyPoem.Poem.COLUMN_NAME_STATUS).append(TYPE_TEXT).append(COMMA_SEP)
-            .append(MyPoem.Poem.COLUMN_NAME_TYPE).append(TYPE_TEXT).append(COMMA_SEP)
+            .append(MyPoem.Poem.COLUMN_NAME_TYPE).append(TYPE_TEXT)
             .append(" )").toString();
 
     private static final String SQL_DELETE_POEM =

@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.fmf.mypoem.fragment.dummy.DummyRhythms;
+import com.fmf.mypoem.util.PoemLog;
 
 public class RhythmsFragment extends ListFragment {
 
@@ -17,6 +18,7 @@ public class RhythmsFragment extends ListFragment {
      * fragment (e.g. upon screen orientation changes).
      */
     public RhythmsFragment() {
+        PoemLog.i("RhythmsFragment");
     }
 
     @Override

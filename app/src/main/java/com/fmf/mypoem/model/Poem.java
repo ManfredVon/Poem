@@ -9,8 +9,8 @@ public class Poem {
     private String title;
     private String subtitle;
     private String author;
-    private long created; //TimeMillis
-    private long updated; //TimeMillis
+    private String created; // Create date
+    private String updated; // update datetime
     private String content;
     private String status;
     private String type;
@@ -47,19 +47,19 @@ public class Poem {
         this.author = author;
     }
 
-    public long getCreated() {
+    public String getCreated() {
         return created;
     }
 
-    public void setCreated(long created) {
+    public void setCreated(String created) {
         this.created = created;
     }
 
-    public long getUpdated() {
+    public String getUpdated() {
         return updated;
     }
 
-    public void setUpdated(long updated) {
+    public void setUpdated(String updated) {
         this.updated = updated;
     }
 

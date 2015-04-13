@@ -1,0 +1,93 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            tools:context="com.fmf.mypoem.activity.ComposeActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:orientation="vertical">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/et_title"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:gravity="center_horizontal"
+            android:hint="@string/hint_et_title"
+            android:textIsSelectable="true"><requestFocus/></EditText>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/et_subtitle"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:gravity="center_horizontal"
+            android:hint="@string/hint_et_subtitle"
+            android:textIsSelectable="true"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:minLines="4"
+            android:id="@+id/et_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:gravity="center_horizontal|bottom"
+            android:hint="@string/hint_et_content"
+            android:textIsSelectable="true"
+            />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/et_author"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:gravity="right"
+            android:hint="@string/hint_et_author"
+            android:textIsSelectable="true"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:id="@+id/et_created"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:gravity="right"
+            android:textIsSelectable="true"
+            android:hint="@string/hint_et_created"/>
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="@string/text_btn_craft"
+                android:id="@+id/btn_craft"
+                android:layout_gravity="center_horizontal"
+                android:onClick="onClick"/>
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="@string/text_btn_compose"
+                android:id="@+id/btn_compose"
+                android:layout_gravity="center_horizontal"
+                android:onClick="onClick"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        tools:text="八月十五望月有感"
+        android:id="@+id/tv_title"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_title"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        tools:text="@string/lorem"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:id="@+id/tv_content"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/tv_title"
+        android:layout_marginLeft="10dp"
+        android:layout_alignBottom="@id/tv_title"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        tools:text="中秋夜游"
+        android:id="@+id/tv_subtitle"/>
+</RelativeLayout>
