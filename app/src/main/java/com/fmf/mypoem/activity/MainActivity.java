@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,12 +14,28 @@ import com.fmf.mypoem.util.PoemLog;
 
 public class MainActivity extends Activity {
 
+    private static final int SPLASH_DISPLAY_LENGTH = 2000; // 毫秒
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+//        setContentView(R.layout.activity_main);
 
         PoemLog.i("MainActivity--onCreate");
+
+        splash(SPLASH_DISPLAY_LENGTH);
+
+    }
+
+    private void splash(int splashDisplayLength) {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(MainActivity.this, PoemActivity.class);
+                MainActivity.this.startActivity(intent);
+                MainActivity.this.finish();
+            }
+        }, splashDisplayLength);
     }
 
     @Override
@@ -78,7 +95,7 @@ public class MainActivity extends Activity {
         switch (view.getId()) {
 
             case R.id.btn_mypoem:
-                cls = MyPoemActivity.class;
+                cls = PoemActivity.class;
                 break;
 
             case R.id.btn_compose:
@@ -87,6 +104,6 @@ public class MainActivity extends Activity {
 
             default:
         }
-        startActivity(new Intent(MainActivity.this, cls));
+        startActivity(new Intent(this, cls));
     }
 }

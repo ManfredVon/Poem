@@ -10,7 +10,8 @@
         <activity
             android:name=".activity.MainActivity"
             android:configChanges="orientation|screenSize|keyboard|keyboardHidden|screenLayout|locale|touchscreen|navigation|fontScale|uiMode|smallestScreenSize|mcc|mnc"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:theme="@style/Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -18,9 +19,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.MyPoemActivity"
-            android:label="@string/title_activity_my_poem"
+            android:name=".activity.PoemActivity"
             android:configChanges="orientation|screenSize|keyboard|keyboardHidden|screenLayout"
+            android:label="@string/title_activity_my_poem"
             android:parentActivityName=".activity.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -29,18 +30,18 @@
         <activity
             android:name=".activity.ComposeActivity"
             android:label="@string/title_activity_compose"
-            android:parentActivityName=".activity.MyPoemActivity" >
+            android:parentActivityName=".activity.PoemActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.fmf.mypoem.activity.MyPoemActivity" />
+                android:value=".activity.PoemActivity" />
         </activity>
         <activity
             android:name=".activity.DetailActivity"
             android:label="@string/title_activity_detail"
-            android:parentActivityName=".activity.MyPoemActivity" >
+            android:parentActivityName=".activity.PoemActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.fmf.mypoem.activity.MyPoemActivity" />
+                android:value=".activity.PoemActivity" />
         </activity>
     </application>
 

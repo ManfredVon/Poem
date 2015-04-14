@@ -22,6 +22,12 @@
         android:text="@string/title_activity_my_poem"
         android:id="@+id/btn_mypoem"
         android:onClick="onClick"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/title_activity_poem"
+        android:id="@+id/btn_poem"
+        android:onClick="onClick"/>
 
     <Button
         android:layout_width="match_parent"

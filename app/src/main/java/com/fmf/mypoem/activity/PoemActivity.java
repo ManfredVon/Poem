@@ -8,47 +8,46 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.fmf.mypoem.R;
-import com.fmf.mypoem.data.MyPoem;
 import com.fmf.mypoem.util.PoemLog;
 
-public class MyPoemActivity extends FragmentActivity {
+public class PoemActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_poem);
+        setContentView(R.layout.activity_poem);
 
-        PoemLog.i("MyPoemActivity--onCreate");
+        PoemLog.i("PoemActivity--onCreate");
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-//        PoemLog.i("MyPoemActivity--onStart");
+        PoemLog.i("PoemActivity--onStart");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-//        PoemLog.i("MyPoemActivity--onResume");
+        PoemLog.i("PoemActivity--onResume");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-//        PoemLog.i("MyPoemActivity--onPause");
+        PoemLog.i("PoemActivity--onPause");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        PoemLog.i("MyPoemActivity--onDestroy");
+        PoemLog.i("PoemActivity--onDestroy");
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        PoemLog.i("MyPoemActivity--onConfigurationChanged");
+        PoemLog.i("PoemActivity--onConfigurationChanged");
     }
 
     @Override
@@ -66,14 +65,30 @@ public class MyPoemActivity extends FragmentActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            Intent intent = new Intent(this, DetailActivity.class);
-            intent.putExtra(MyPoem.Poem._ID, 1l);
-            startActivity(intent);
+//        if (id == R.id.action_settings) {
+//            Intent intent = new Intent(this, DetailActivity.class);
+//            intent.putExtra(MyPoem.Poem._ID, 1l);
+//            startActivity(intent);
+//
+//            return true;
+//        }
 
-            return true;
+        switch (id) {
+            case R.id.action_compose:
+                gotoCompose();
+                return true;
+            case R.id.action_settings:
+
+                return true;
+
+            default:
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void gotoCompose() {
+        Intent intent = new Intent(this, ComposeActivity.class);
+        startActivity(intent);
     }
 }
