@@ -2,7 +2,7 @@
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
+            android:background="@drawable/splash"
             tools:context="com.fmf.mypoem.activity.ComposeActivity">
 
     <LinearLayout
@@ -20,49 +20,61 @@
             android:id="@+id/et_title"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:gravity="center_horizontal"
+            android:nextFocusDown="@+id/et_subtitle"
             android:hint="@string/hint_et_title"
-            android:textIsSelectable="true"><requestFocus/></EditText>
+            tools:text="锦瑟">
+
+            <requestFocus/>
+        </EditText>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/et_subtitle"
+            android:id="@id/et_subtitle"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:gravity="center_horizontal"
+            android:nextFocusDown="@+id/et_content"
+            android:nextFocusUp="@id/et_title"
             android:hint="@string/hint_et_subtitle"
-            android:textIsSelectable="true"/>
+            tools:text=""/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textMultiLine"
             android:minLines="4"
-            android:id="@+id/et_content"
+            android:lineSpacingMultiplier="1.5"
+            android:id="@id/et_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:gravity="center_horizontal|bottom"
+            android:nextFocusDown="@+id/et_author"
+            android:nextFocusUp="@id/et_subtitle"
             android:hint="@string/hint_et_content"
-            android:textIsSelectable="true"
+            tools:text="@string/lorem"
             />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/et_author"
+            android:id="@id/et_author"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:gravity="right"
+            android:nextFocusDown="@+id/et_created"
+            android:nextFocusUp="@id/et_content"
             android:hint="@string/hint_et_author"
-            android:textIsSelectable="true"/>
+            tools:text="李商隐"
+            />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="date"
-            android:id="@+id/et_created"
+            android:id="@id/et_created"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:gravity="right"
-            android:textIsSelectable="true"
-            android:hint="@string/hint_et_created"/>
-
+            android:nextFocusUp="@id/et_author"
+            android:hint="@string/hint_et_created"
+            tools:text="xxxx年xx月xx日"/>
 
         <LinearLayout
             android:orientation="horizontal"

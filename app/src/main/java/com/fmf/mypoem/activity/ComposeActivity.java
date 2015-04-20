@@ -5,11 +5,13 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -23,7 +25,7 @@ import com.fmf.mypoem.util.DateUtil;
 import java.util.Calendar;
 import java.util.Date;
 
-public class ComposeActivity extends Activity implements DatePickerFragment.OnDateSetListner {
+public class ComposeActivity extends ActionBarActivity implements DatePickerFragment.OnDateSetListner {
     private EditText etTitle;
     private EditText etSubtitle;
     private EditText etContent;
@@ -36,6 +38,7 @@ public class ComposeActivity extends Activity implements DatePickerFragment.OnDa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setContentView(R.layout.activity_compose);
 
 //        getActionBar().setDisplayHomeAsUpEnabled(true);

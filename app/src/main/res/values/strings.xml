@@ -1,16 +1,17 @@
 <resources>
-    <string name="app_name">MyPoem</string>
 
     <string name="hello_world">Hello world!</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="app_name">我的诗词</string>
 
     <string name="action_settings">设置</string>
     <string name="action_compose">创作</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_my_poem">MyPoemActivity</string>
-    <string name="title_activity_compose">ComposeActivity</string>
-    <string name="title_activity_detail">DetailActivity</string>
+
+    <string name="title_activity_poem">我的诗词</string>
+    <string name="title_activity_compose">创作</string>
+    <string name="title_activity_detail">诗词详情</string>
 
     <string name="hint_et_title">主题</string>
     <string name="hint_et_subtitle">副题</string>
@@ -18,19 +19,30 @@
     <string name="hint_et_content">正文内容</string>
     <string name="hint_et_created">创作日期</string>
 
-    <string name="text_btn_craft">保持草稿</string>
+    <string name="text_btn_craft">保存草稿</string>
     <string name="text_btn_compose">完成创作</string>
 
     <string name="empty_text_fragment_drafts">没有草稿</string>
     <string name="empty_text_fragment_poems">没有诗词</string>
 
-    <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
-    <string name="title_activity_poem">PoemActivity</string>
+    <string name="lorem">
+        锦瑟无端五十弦，\n
+        一弦一柱思华年。\n
+        庄生晓梦迷蝴蝶，\n
+        望帝春心托杜鹃。\n
+        沧海月明珠有泪，\n
+        蓝田日暖玉生烟。\n
+        此情可待成追忆？\n
+        只是当时已惘然。
+    </string>
+    <string name="action_search">搜索</string>
+    <string name="hint_search">题目|内容</string>
+    <string name="action_share">分享</string>
 
+    <string-array name="tab_title">
+        <item>草稿</item>
+        <item>诗词</item>
+        <item>格律</item>
+    </string-array>
 
 </resources>

@@ -19,8 +19,8 @@ public class TabsFragment extends Fragment {
     private ViewPager viewPager;
     private TabHost tabHost;
     private static final String[] tabTags = {"drafts", "poems", "rhythms"};
-    private static final CharSequence[] tabLabels = {"草稿", "我的诗词", "格律"};
-    private static final Class<Fragment>[] fragmentClasses = new Class[]{DraftsFragment.class, PoemsFragment.class, RhythmsFragment.class
+    private static CharSequence[] tabLabels;
+    private static final Class<Fragment>[] tabFragments = new Class[]{DraftsFragment.class, PoemsFragment.class, RhythmsFragment.class
     };
 
 
@@ -37,6 +37,8 @@ public class TabsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_tabs, container, false);
+
+        tabLabels = getResources().getStringArray(R.array.tab_title);
 
         initTabs(rootView);
 
@@ -99,14 +101,14 @@ public class TabsFragment extends Fragment {
 
         @Override
         public Fragment getItem(int i) {
-            Class<?> cls = fragmentClasses[i];
+            Class<?> cls = tabFragments[i];
 //            return Fragment.instantiate(getActivity(), cls.getName(), bundle);
             return Fragment.instantiate(getActivity(), cls.getName());
         }
 
         @Override
         public int getCount() {
-            return fragmentClasses.length;
+            return tabFragments.length;
         }
 
         @Override

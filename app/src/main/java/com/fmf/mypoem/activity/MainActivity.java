@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,7 +13,7 @@ import android.view.View;
 import com.fmf.mypoem.R;
 import com.fmf.mypoem.util.PoemLog;
 
-public class MainActivity extends Activity {
+public class MainActivity extends ActionBarActivity {
 
     private static final int SPLASH_DISPLAY_LENGTH = 2000; // 毫秒
 
@@ -94,7 +95,7 @@ public class MainActivity extends Activity {
         Class<?> cls = null;
         switch (view.getId()) {
 
-            case R.id.btn_mypoem:
+            case R.id.btn_poem:
                 cls = PoemActivity.class;
                 break;
 

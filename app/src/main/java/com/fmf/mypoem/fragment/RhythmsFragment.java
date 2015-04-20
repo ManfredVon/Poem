@@ -1,18 +1,28 @@
 package com.fmf.mypoem.fragment;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.support.v4.app.ListFragment;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.app.ListFragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.fmf.mypoem.fragment.dummy.DummyRhythms;
+import com.fmf.mypoem.R;
 import com.fmf.mypoem.util.PoemLog;
 
-public class RhythmsFragment extends ListFragment {
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
+public class RhythmsFragment extends ListFragment {
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private static final String[] items = {"Item 1", "Item 2", "Item 3"};
+    private List<String> list = new ArrayList<>();
+    private ArrayAdapter adapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -26,12 +36,56 @@ public class RhythmsFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        list.addAll(Arrays.asList(items));
 
-        // TODO: Change Adapter to display your content
-        setListAdapter(new ArrayAdapter<DummyRhythms.DummyItem>(getActivity(),
-                android.R.layout.simple_list_item_1, android.R.id.text1, DummyRhythms.ITEMS));
+        adapter = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_list_item_1, android.R.id.text1, list);
+        setListAdapter(adapter);
+
+
     }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.fragment_rhythms, null);
+        initViews(root);
+        return root;
+    }
+
+    private void initViews(View root) {
+        swipeRefreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.swipe);
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refresh();
+            }
+        });
+    }
+
+    private void refresh() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //        list.clear();
+                final int len = 5;
+                List list = new ArrayList(len);
+                for (int i = 0; i < len; i++) {
+                    list.add(0, "Item new");
+                }
+
+                adapter.addAll(list);
+                list.clear();
+                list = null;
+
+                swipeRefreshLayout.setRefreshing(false);
+
+            }
+        }, 5000);
+    }
 
     @Override
     public void onAttach(Activity activity) {

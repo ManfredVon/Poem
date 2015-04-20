@@ -1,11 +1,13 @@
 package com.fmf.mypoem.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.support.v7.widget.ShareActionProvider;
 import android.widget.TextView;
 
 import com.fmf.mypoem.R;
@@ -13,7 +15,7 @@ import com.fmf.mypoem.data.MyPoem;
 import com.fmf.mypoem.data.MyPoemDao;
 import com.fmf.mypoem.model.Poem;
 
-public class DetailActivity extends Activity {
+public class DetailActivity extends ActionBarActivity {
     private TextView tvTitle;
     private TextView tvSubtitle;
     private TextView tvContent;
@@ -23,6 +25,7 @@ public class DetailActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_detail);
 
         initViews();
@@ -83,9 +86,20 @@ public class DetailActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_detail, menu);
+
+        // Set up ShareActionProvider's default share intent
+        MenuItem shareItem = menu.findItem(R.id.action_share);
+        ShareActionProvider shareProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
+        shareProvider.setShareIntent(getShareIntent());
+
         return true;
+    }
+
+    private Intent getShareIntent() {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/*");
+        return intent;
     }
     
     @Override

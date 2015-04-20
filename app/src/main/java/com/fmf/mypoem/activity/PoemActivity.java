@@ -1,23 +1,46 @@
 package com.fmf.mypoem.activity;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBarActivity;
+import android.view.WindowManager;
+import android.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.fmf.mypoem.R;
 import com.fmf.mypoem.util.PoemLog;
 
-public class PoemActivity extends FragmentActivity {
+public class PoemActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setContentView(R.layout.activity_poem);
 
+//        getActionBar().setDisplayShowTitleEnabled(false);
         PoemLog.i("PoemActivity--onCreate");
+
+        handleIntent(getIntent());
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        PoemLog.i("PoemActivity--onNewIntent");
+        handleIntent(intent);
+    }
+
+    private void handleIntent(Intent intent) {
+        // 搜索
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            PoemLog.i("query: " + query);
+        }
     }
 
     @Override
@@ -52,8 +75,14 @@ public class PoemActivity extends FragmentActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_my_poem, menu);
+        getMenuInflater().inflate(R.menu.menu_poem, menu);
+
+        // 关联searchable.xml配置和SearchView
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setIconifiedByDefault(false);
+
         return true;
     }
 
@@ -78,13 +107,13 @@ public class PoemActivity extends FragmentActivity {
                 gotoCompose();
                 return true;
             case R.id.action_settings:
-
+                Intent intent = new Intent(this, DemoActivity.class);
+                startActivity(intent);
                 return true;
 
             default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     private void gotoCompose() {
