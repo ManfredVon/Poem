@@ -1,18 +1,43 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <!-- customize the color palette -->
-        <!--<item name="colorPrimary">@color/material_blue_500</item>-->
-        <!--<item name="colorPrimaryDark">@color/material_blue_700</item>-->
-        <!--<item name="colorAccent">@color/material_green_A200</item>-->
-    </style>
-
     <style name="Splash" parent="AppTheme">
         <item name="android:windowBackground">@drawable/splash</item>
         <item name="android:windowNoTitle">true</item>
         <!--<item name="android:windowFullscreen">true</item>-->
     </style>
+
+    <style name="AppTheme" parent="BaseTheme"/>
+
+    <style name="AppTheme.NoActionBar" parent="BaseTheme">
+        <item name="windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <!-- Base application theme. -->
+    <style name="BaseTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- customize the color palette -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent</item>
+
+        <!--<item name="android:textColorPrimary">@android:color/white</item>-->
+
+        <item name="searchViewStyle">@style/MySearchViewStyle</item>
+
+    </style>
+
+    <style name="MySearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <!--<item name="queryBackground"></item>-->
+        <!--<item name="submitBackground"></item>-->
+        <!--<item name="closeIcon"></item>-->
+        <!--<item name="searchIcon">@drawable/ic_action_search</item>-->
+        <!--<item name="android:textColorHint">@android:color/white</item>-->
+        <!--<item name="android:searchHintIcon">@drawable/ic_action_search</item>-->
+        <!--<item name="goIcon"></item>-->
+        <!--<item name="voiceIcon"></item>-->
+        <!--<item name="commitIcon"></item>-->
+        <!--<item name="suggestionRowLayout"></item>-->
+    </style>
+
 
 </resources>

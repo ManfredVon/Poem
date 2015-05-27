@@ -2,7 +2,6 @@
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/splash"
             tools:context="com.fmf.mypoem.activity.ComposeActivity">
 
     <LinearLayout
@@ -82,7 +81,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal">
 
-            <Button
+            <ImageButton
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
@@ -91,7 +90,7 @@
                 android:layout_gravity="center_horizontal"
                 android:onClick="onClick"/>
 
-            <Button
+            <ImageButton
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"

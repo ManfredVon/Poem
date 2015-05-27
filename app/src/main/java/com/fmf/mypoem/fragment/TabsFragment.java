@@ -11,13 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TabHost;
 
+import com.astuetz.PagerSlidingTabStrip;
 import com.fmf.mypoem.R;
 import com.fmf.mypoem.util.PoemLog;
 
 public class TabsFragment extends Fragment {
     private PagerAdapter adapter;
     private ViewPager viewPager;
-    private TabHost tabHost;
+    private PagerSlidingTabStrip tabStrip;
     private static final String[] tabTags = {"drafts", "poems", "rhythms"};
     private static CharSequence[] tabLabels;
     private static final Class<Fragment>[] tabFragments = new Class[]{DraftsFragment.class, PoemsFragment.class, RhythmsFragment.class
@@ -40,19 +41,20 @@ public class TabsFragment extends Fragment {
 
         tabLabels = getResources().getStringArray(R.array.tab_title);
 
-        initTabs(rootView);
-
-        initPager(rootView);
+        initPagerAndTabs(rootView);
 
         return rootView;
     }
 
-    private void initPager(View rootView) {
+    private void initPagerAndTabs(View rootView) {
         adapter = new TabPagerAdapter(getChildFragmentManager());
         viewPager = (ViewPager) rootView.findViewById(R.id.pager);
         viewPager.setAdapter(adapter);
 //        viewPager.setOffscreenPageLimit(tabTags.length); // 默认预加载一页，即一开始就有两页被创建
-        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+        tabStrip = (PagerSlidingTabStrip) rootView.findViewById(R.id.tabs);
+        tabStrip.setViewPager(viewPager);
+        tabStrip.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -61,9 +63,9 @@ public class TabsFragment extends Fragment {
             @Override
             public void onPageSelected(int position) {
                 PoemLog.i("onPageSelected");
-                if (viewPager != null) {
-                    tabHost.setCurrentTab(position);
-                }
+//                if (viewPager != null) {
+//                    tabHost.setCurrentTab(position);
+//                }
             }
 
             @Override
@@ -71,27 +73,7 @@ public class TabsFragment extends Fragment {
 
             }
         });
-    }
 
-    private void initTabs(View rootView) {
-        tabHost = (TabHost) rootView.findViewById(android.R.id.tabhost);
-        tabHost.setup();
-
-        for (int i = 0; i < tabTags.length; i++) {
-            TabHost.TabSpec tabSpec = tabHost.newTabSpec(tabTags[i]).setIndicator(tabLabels[i])
-                    .setContent(android.R.id.tabcontent);
-            tabHost.addTab(tabSpec);
-        }
-
-        tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
-            @Override
-            public void onTabChanged(String tabId) {
-                PoemLog.i("onTabChanged");
-                if (viewPager != null) {
-                    viewPager.setCurrentItem(tabHost.getCurrentTab());
-                }
-            }
-        });
     }
 
     public class TabPagerAdapter extends FragmentPagerAdapter {
@@ -115,6 +97,7 @@ public class TabsFragment extends Fragment {
         public CharSequence getPageTitle(int position) {
             return tabLabels[position];
         }
+
     }
 
 }

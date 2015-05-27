@@ -6,8 +6,8 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.view.WindowManager;
-import android.widget.SearchView;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -15,6 +15,8 @@ import com.fmf.mypoem.R;
 import com.fmf.mypoem.util.PoemLog;
 
 public class PoemActivity extends ActionBarActivity {
+    
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +27,41 @@ public class PoemActivity extends ActionBarActivity {
 //        getActionBar().setDisplayShowTitleEnabled(false);
         PoemLog.i("PoemActivity--onCreate");
 
+        initToolbar();
+
         handleIntent(getIntent());
+    }
+    
+    private void initToolbar() {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        toolbar.setTitle("Title"); // before setSupportActionBar
+//        toolbar.setSubtitle("subtitle");
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+        }
+
+//        这些通过ActionBar来设置也是一样的，注意要在setSupportActionBar(toolbar);之后，不然就报错了
+//        getSupportActionBar().setTitle("标题");
+//        getSupportActionBar().setSubtitle("副标题");
+//        getSupportActionBar().setLogo(R.drawable.ic_launcher);
+
+//        菜单的监听可以在toolbar里设置，也可以像ActionBar那样，通过Activity的onOptionsItemSelected回调方法来处理
+//        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+//            @Override
+//            public boolean onMenuItemClick(MenuItem item) {
+//                switch (item.getItemId()) {
+//                    case R.id.action_settings:
+//                        Toast.makeText(MainActivity.this, "action_settings", Toast.LENGTH_SHORT).show();
+//                        break;
+//                    case R.id.action_share:
+//                        Toast.makeText(MainActivity.this, "action_share", Toast.LENGTH_SHORT).show();
+//                        break;
+//                    default:
+//                        break;
+//                }
+//                return true;
+//            }
+//        });
     }
 
     @Override
@@ -82,6 +118,7 @@ public class PoemActivity extends ActionBarActivity {
         SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setIconifiedByDefault(false);
+
 
         return true;
     }

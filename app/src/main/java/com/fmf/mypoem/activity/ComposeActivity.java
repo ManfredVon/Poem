@@ -116,20 +116,27 @@ public class ComposeActivity extends ActionBarActivity implements DatePickerFrag
     }
 
     private void draft() {
-        Poem poem = getPoem(MyPoem.Poem.STATUS_DRAFT);
-        new PoemAsynTask().execute(poem);
+        savePoem(MyPoem.Poem.STATUS_DRAFT);
     }
 
     private void compose() {
-        Poem poem = getPoem(MyPoem.Poem.STATUS_FINISHED);
-        new PoemAsynTask().execute(poem);
+        savePoem(MyPoem.Poem.STATUS_FINISHED);
     }
 
 
-    private Poem getPoem(String status) {
-        String title = etTitle.getText().toString().trim();
-        String subtitle = etSubtitle.getText().toString().trim();
+    private void savePoem(String status) {
         String content = etContent.getText().toString().trim();
+        if (TextUtils.isEmpty(content)){
+            Toast.makeText(this, getString(R.string.tip_no_content), Toast.LENGTH_SHORT).show();
+            return ;
+        }
+
+        String title = etTitle.getText().toString().trim();
+        if (TextUtils.isEmpty(title)){
+            title = getString(R.string.tip_default_title);
+        }
+
+        String subtitle = etSubtitle.getText().toString().trim();
         String author = etAuthor.getText().toString().trim();
         String created = etCreated.getText().toString().trim();
         String updated = DateUtil.formatDatetimeToSqlite(new Date());
@@ -143,7 +150,7 @@ public class ComposeActivity extends ActionBarActivity implements DatePickerFrag
         poem.setUpdated(updated);
         poem.setStatus(status);
 
-        return poem;
+        new PoemAsynTask().execute(poem);
     }
 
     private void toast(String text) {
