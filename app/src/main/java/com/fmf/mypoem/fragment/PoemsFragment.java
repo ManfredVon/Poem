@@ -16,7 +16,7 @@ import android.widget.Toast;
 import com.fmf.mypoem.R;
 import com.fmf.mypoem.activity.DetailActivity;
 import com.fmf.mypoem.data.MyPoem;
-import com.fmf.mypoem.data.MyPoemDao;
+import com.fmf.mypoem.data.PoemDao;
 import com.fmf.mypoem.util.PoemLog;
 
 public class PoemsFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -82,7 +82,7 @@ public class PoemsFragment extends ListFragment implements LoaderManager.LoaderC
             @Override
             public Cursor loadInBackground() {
                 PoemLog.i("PoemsFragment-loadInBackground");
-                return new MyPoemDao(getActivity()).listPoems();
+                return new PoemDao(getActivity()).queryPoem();
             }
 
             @Override
@@ -95,7 +95,7 @@ public class PoemsFragment extends ListFragment implements LoaderManager.LoaderC
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        Toast.makeText(getActivity(), "onLoadFinished", Toast.LENGTH_SHORT).show();
+        PoemLog.i("PoemsFragment-onLoadFinished");
         adapter.swapCursor(data);
     }
 

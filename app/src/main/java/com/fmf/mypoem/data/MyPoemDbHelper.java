@@ -9,10 +9,11 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class MyPoemDbHelper extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
     public static final String DATABASE_NAME = "MyPoem.db";
 
     private static final String TYPE_TEXT = " TEXT";
+    private static final String TYPE_INT = " INT";
     private static final String TYPE_DATE = " DATE";
     private static final String TYPE_DATETIME = " DATETIME";
     private static final String COMMA_SEP = ", ";
@@ -32,6 +33,21 @@ public class MyPoemDbHelper extends SQLiteOpenHelper {
     private static final String SQL_DELETE_POEM =
             "DROP TABLE IF EXISTS " + MyPoem.Poem.TABLE_NAME;
 
+    private static final String SQL_CREATE_RHYTHM = new StringBuffer()
+            .append("CREATE ").append(MyPoem.Rhythm.TABLE_NAME).append(" (")
+            .append(MyPoem.Poem._ID).append(" INTEGER PRIMARY KEY,")
+            .append(MyPoem.Rhythm.COLUMN_NAME_NAME).append(TYPE_TEXT).append(COMMA_SEP)
+            .append(MyPoem.Rhythm.COLUMN_NAME_INTRO).append(TYPE_TEXT).append(COMMA_SEP)
+            .append(MyPoem.Rhythm.COLUMN_NAME_COUNT).append(TYPE_INT).append(COMMA_SEP)
+            .append(MyPoem.Rhythm.COLUMN_NAME_METRE).append(TYPE_DATE).append(COMMA_SEP)
+            .append(MyPoem.Rhythm.COLUMN_NAME_SAMPLE).append(TYPE_DATETIME).append(COMMA_SEP)
+            .append(MyPoem.Rhythm.COLUMN_NAME_COMMENT).append(TYPE_TEXT).append(COMMA_SEP)
+            .append(MyPoem.Rhythm.COLUMN_NAME_TYPE).append(TYPE_TEXT).append(COMMA_SEP)
+            .append(" )").toString();
+
+    private static final String SQL_DELETE_RHYTHM =
+            "DROP TABLE IF EXISTS " + MyPoem.Rhythm.TABLE_NAME;
+
     public MyPoemDbHelper (Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -43,6 +59,7 @@ public class MyPoemDbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_POEM);
+        db.execSQL(SQL_CREATE_RHYTHM);
 //        db.execSQL(SQL_CREATE_POEM); // another table
     }
 

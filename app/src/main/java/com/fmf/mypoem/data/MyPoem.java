@@ -7,65 +7,65 @@ import android.provider.BaseColumns;
  */
 public final class MyPoem {
 
-    private MyPoem(){}
+    private MyPoem() {
+    }
 
     public static final class Poem implements BaseColumns {
-        private Poem(){ }
+        private Poem() {
+        }
 
         public static final String STATUS_DRAFT = "draft";
         public static final String STATUS_FINISHED = "finished";
+        public static final String TYPE_SHI = "shi";
+        public static final String TYPE_CI = "ci";
 
 
         public static final String TABLE_NAME = "poem";
 //        public static final String COLUMN_NAME_POEM_ID = "poemid";
 
-        /**
-         * Column name for the title of the pome
-         * <P>Type: TEXT</P>
-         */
         public static final String COLUMN_NAME_TITLE = "title";
 
-        /**
-         * Column name for the subtitle of the poem
-         * <P>Type: TEXT</P>
-         */
         public static final String COLUMN_NAME_SUBTITLE = "subtitle";
 
-        /**
-         * Column name for the author of the poem
-         * <P>Type: TEXT</P>
-         */
         public static final String COLUMN_NAME_AUTHOR = "author";
 
-        /**
-         * Column name for the creation timestamp
-         * <P>Type: DATE</P>
-         */
         public static final String COLUMN_NAME_CREATE_DATE = "created";
 
-        /**
-         * Column name for the creation timestamp
-         * <P>Type: DATETIME</P>
-         */
         public static final String COLUMN_NAME_UPDATE_TIME = "updated";
 
-        /**
-         * Column name for the content of the poem
-         * <P>Type: TEXT</P>
-         */
         public static final String COLUMN_NAME_CONTENT = "content";
 
-        /**
-         * Column name for the subtitle of the poem
-         * <P>Type: TEXT</P>
-         */
         public static final String COLUMN_NAME_STATUS = "status";
 
-        /**
-         * Column name for the type of the poem
-         * <P>Type: TEXT</P>
-         */
         public static final String COLUMN_NAME_TYPE = "type";
+
+//        public static final String COLUMN_NAME_ = "";
+
+    }
+
+    public static final class Rhythm implements BaseColumns {
+        private Rhythm() {
+        }
+
+        public static final String TYPE_SHI = "shi";
+        public static final String TYPE_CI = "ci";
+
+        public static final String TABLE_NAME = "rhythm";
+
+        public static final String COLUMN_NAME_NAME = "name";
+
+        public static final String COLUMN_NAME_INTRO = "intro";
+
+        public static final String COLUMN_NAME_COUNT = "count";
+
+        public static final String COLUMN_NAME_METRE = "metre";
+
+        public static final String COLUMN_NAME_SAMPLE = "sample";
+
+        public static final String COLUMN_NAME_COMMENT = "comment";
+
+        public static final String COLUMN_NAME_TYPE = "type";
+
 //        public static final String COLUMN_NAME_ = "";
 
     }
