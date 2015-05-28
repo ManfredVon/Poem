@@ -7,32 +7,30 @@
     android:padding="10dp">
 
     <TextView
-        android:id="@+id/tv_title"
+        android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        tools:text="@string/tools_text_poem_title"/>
+        tools:text="@string/tools_text_rhythm_name"/>
 
     <TextView
-        android:id="@+id/tv_subtitle"
+        android:id="@+id/tv_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/tv_title"
         android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@id/tv_title"
-        android:ellipsize="end"
-        android:singleLine="true"
+        android:layout_alignBottom="@id/tv_name"
+        android:layout_toRightOf="@id/tv_name"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        tools:text="@string/tools_text_poem_subtitle"/>
+        tools:text="@string/tools_text_rhythm_count"/>
 
     <TextView
-        android:id="@+id/tv_content"
+        android:id="@+id/tv_intro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_title"
+        android:layout_below="@id/tv_name"
         android:ellipsize="end"
         android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        tools:text="@string/lorem"/>
+        tools:text="@string/tools_text_rhythm_intro"/>
 
 </RelativeLayout>

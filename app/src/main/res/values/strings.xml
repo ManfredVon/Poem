@@ -7,6 +7,8 @@
 
     <string name="action_settings">设置</string>
     <string name="action_compose">创作</string>
+    <string name="action_search">搜索</string>
+    <string name="action_share">分享</string>
 
 
     <string name="title_activity_poem">我的诗词</string>
@@ -18,6 +20,7 @@
     <string name="hint_et_author">作者</string>
     <string name="hint_et_content">正文内容</string>
     <string name="hint_et_created">创作日期</string>
+    <string name="hint_search">题目|内容</string>
 
     <string name="text_btn_craft">保存草稿</string>
     <string name="text_btn_compose">完成创作</string>
@@ -38,14 +41,20 @@
         此情可待成追忆？\n
         只是当时已惘然。
     </string>
-    <string name="action_search">搜索</string>
-    <string name="hint_search">题目|内容</string>
-    <string name="action_share">分享</string>
+
+    <string name="tools_text_poem_title">锦瑟</string>
+    <string name="tools_text_poem_subtitle">无副题</string>
+    <string name="tools_text_poem_content">@string/lorem</string>
+
+    <string name="tools_text_rhythm_name">五律</string>
+    <string name="tools_text_rhythm_count">40字</string>
+    <string name="tools_text_rhythm_intro">平韵，平起平收，首句押韵</string>
 
     <string-array name="tab_title">
         <item>草稿</item>
         <item>诗词</item>
         <item>格律</item>
     </string-array>
+
 
 </resources>

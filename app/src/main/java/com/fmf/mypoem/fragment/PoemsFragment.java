@@ -1,17 +1,11 @@
 package com.fmf.mypoem.fragment;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
-import android.os.Bundle;
-import android.support.v4.app.ListFragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.AsyncTaskLoader;
-import android.support.v4.content.Loader;
 import android.view.View;
+import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
-import android.widget.Toast;
 
 import com.fmf.mypoem.R;
 import com.fmf.mypoem.activity.DetailActivity;
@@ -19,104 +13,35 @@ import com.fmf.mypoem.data.MyPoem;
 import com.fmf.mypoem.data.PoemDao;
 import com.fmf.mypoem.util.PoemLog;
 
-public class PoemsFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
-    private static final int LOADER_ID = 0;
+public class PoemsFragment extends BasePoemFragment {
     private static final String[] FORM = {MyPoem.Poem.COLUMN_NAME_TITLE, MyPoem.Poem.COLUMN_NAME_SUBTITLE, MyPoem.Poem.COLUMN_NAME_CONTENT};
     private static final int[] TO = {R.id.tv_title, R.id.tv_subtitle, R.id.tv_content};
-    private SimpleCursorAdapter adapter;
 
     public PoemsFragment() {
+        super();
         PoemLog.i("PoemsFragment");
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
+    protected CharSequence onCreateEmptyText() {
+        return getString(R.string.empty_text_fragment_poems);
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    protected Cursor onCreateCursor() {
+        return new PoemDao(getActivity()).queryPoem();
+    }
 
-        PoemLog.i("getUserVisibleHint: "+getUserVisibleHint());
-
-        setEmptyText(getString(R.string.empty_text_fragment_poems));
-
-        // We have a menu item to show in action bar.
-//        setHasOptionsMenu(true);
-
-        // Create an empty adapter we will use to display the loaded data.
-        adapter = new SimpleCursorAdapter(getActivity(),
+    @Override
+    protected CursorAdapter onCreateCursorAdapter() {
+        return new SimpleCursorAdapter(getActivity(),
                 R.layout.poem_list_item, null, FORM, TO, 0);
-        setListAdapter(adapter);
-
-        // Prepare the loader.  Either re-connect with an existing one,
-        // or start a new one.
-        Bundle args = null;
-        getLoaderManager().initLoader(LOADER_ID, args, this);
     }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         Intent intent = new Intent(getActivity(), DetailActivity.class);
         intent.putExtra(MyPoem.Poem._ID, id);
         startActivity(intent);
-    }
-
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        Loader<Cursor> loader = new AsyncTaskLoader<Cursor>(getActivity()) {
-            @Override
-            public Cursor loadInBackground() {
-                PoemLog.i("PoemsFragment-loadInBackground");
-                return new PoemDao(getActivity()).queryPoem();
-            }
-
-            @Override
-            protected void onStartLoading() {
-                forceLoad();
-            }
-        };
-        return loader;
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        PoemLog.i("PoemsFragment-onLoadFinished");
-        adapter.swapCursor(data);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        closeCursor();
-        adapter.swapCursor(null);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        closeCursor();
-    }
-
-    private void closeCursor() {
-        if (adapter != null) {
-            Cursor cursor = adapter.getCursor();
-            if (cursor != null) {
-                cursor.close();
-            }
-        }
     }
 }

@@ -9,7 +9,6 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TabHost;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.fmf.mypoem.R;
@@ -21,7 +20,7 @@ public class TabsFragment extends Fragment {
     private PagerSlidingTabStrip tabStrip;
     private static final String[] tabTags = {"drafts", "poems", "rhythms"};
     private static CharSequence[] tabLabels;
-    private static final Class<Fragment>[] tabFragments = new Class[]{DraftsFragment.class, PoemsFragment.class, RhythmsFragment.class
+    private static final Class<Fragment>[] tabFragments = new Class[]{DraftsFragment.class, PoemsFragment.class, TestFragment.class
     };
 
 

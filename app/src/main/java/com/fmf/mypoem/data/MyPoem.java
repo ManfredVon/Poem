@@ -49,10 +49,13 @@ public final class MyPoem {
 
         public static final String TYPE_SHI = "shi";
         public static final String TYPE_CI = "ci";
+        public static final String ALIAS_SEPARATOR = "、";
 
         public static final String TABLE_NAME = "rhythm";
 
         public static final String COLUMN_NAME_NAME = "name";
+
+        public static final String COLUMN_NAME_ALIAS = "alias";
 
         public static final String COLUMN_NAME_INTRO = "intro";
 

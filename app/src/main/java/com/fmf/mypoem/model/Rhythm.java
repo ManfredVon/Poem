@@ -5,12 +5,21 @@ package com.fmf.mypoem.model;
  */
 public class Rhythm extends Model{
     private String name;
+    private String alias;
     private String intro;
     private int count;
     private String metre;
     private String sample;
     private String comment;
     private String type;
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
 
     public String getComment() {
         return comment;

@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.fmf.mypoem.R;
 import com.fmf.mypoem.data.MyPoem;
 import com.fmf.mypoem.data.MyPoemDao;
+import com.fmf.mypoem.data.PoemDao;
 import com.fmf.mypoem.model.Poem;
 
 public class DetailActivity extends ActionBarActivity {
@@ -57,7 +58,7 @@ public class DetailActivity extends ActionBarActivity {
                     @Override
                     protected Poem doInBackground(Long... params) {
                         long id = params[0];
-                        return new MyPoemDao(DetailActivity.this).get(id);
+                        return new PoemDao(DetailActivity.this).get(id);
                     }
 
                     @Override

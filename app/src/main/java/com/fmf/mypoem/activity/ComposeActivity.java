@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.fmf.mypoem.R;
 import com.fmf.mypoem.data.MyPoem;
 import com.fmf.mypoem.data.MyPoemDao;
+import com.fmf.mypoem.data.PoemDao;
 import com.fmf.mypoem.fragment.DatePickerFragment;
 import com.fmf.mypoem.model.Poem;
 import com.fmf.mypoem.util.DateUtil;
@@ -199,8 +200,8 @@ public class ComposeActivity extends ActionBarActivity implements DatePickerFrag
                 return result;
             }
 
-            MyPoemDao dao = new MyPoemDao(ComposeActivity.this);
-            dao.create(poem);
+            PoemDao dao = new PoemDao(ComposeActivity.this);
+            dao.save(poem);
 
             if (MyPoem.Poem.STATUS_DRAFT.equals(poem.getStatus())) {
                 result = "成功保存草稿";

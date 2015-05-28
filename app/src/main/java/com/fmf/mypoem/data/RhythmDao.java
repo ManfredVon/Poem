@@ -17,6 +17,7 @@ public class RhythmDao extends MyPoemDao<Rhythm> {
     private static final String[] PROJECTION = {
             MyPoem.Rhythm._ID,
             MyPoem.Rhythm.COLUMN_NAME_NAME,
+            MyPoem.Rhythm.COLUMN_NAME_ALIAS,
             MyPoem.Rhythm.COLUMN_NAME_INTRO,
             MyPoem.Rhythm.COLUMN_NAME_COUNT,
             MyPoem.Rhythm.COLUMN_NAME_METRE,
@@ -56,6 +57,7 @@ public class RhythmDao extends MyPoemDao<Rhythm> {
         Rhythm rhythm = new Rhythm();
         rhythm.setId(cursor.getLong(cursor.getColumnIndex(MyPoem.Poem._ID)));
         rhythm.setName(cursor.getString(cursor.getColumnIndex(MyPoem.Rhythm.COLUMN_NAME_NAME)));
+        rhythm.setAlias(cursor.getString(cursor.getColumnIndex(MyPoem.Rhythm.COLUMN_NAME_ALIAS)));
         rhythm.setIntro(cursor.getString(cursor.getColumnIndex(MyPoem.Rhythm.COLUMN_NAME_INTRO)));
         rhythm.setCount(cursor.getInt(cursor.getColumnIndex(MyPoem.Rhythm.COLUMN_NAME_COUNT)));
         rhythm.setMetre(cursor.getString(cursor.getColumnIndex(MyPoem.Rhythm.COLUMN_NAME_METRE)));
@@ -72,6 +74,10 @@ public class RhythmDao extends MyPoemDao<Rhythm> {
         final String name = rhythm.getName();
         if (allowNull || !TextUtils.isEmpty(name))
             values.put(MyPoem.Rhythm.COLUMN_NAME_NAME, name);
+
+        final String alias = rhythm.getAlias();
+        if (allowNull || !TextUtils.isEmpty(alias))
+            values.put(MyPoem.Rhythm.COLUMN_NAME_NAME, alias);
 
         final String intro = rhythm.getIntro();
         if (allowNull || !TextUtils.isEmpty(intro))
