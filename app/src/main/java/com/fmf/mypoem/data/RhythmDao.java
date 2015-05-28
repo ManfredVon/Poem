@@ -23,7 +23,6 @@ public class RhythmDao extends MyPoemDao<Rhythm> {
             MyPoem.Rhythm.COLUMN_NAME_METRE,
             MyPoem.Rhythm.COLUMN_NAME_SAMPLE,
             MyPoem.Rhythm.COLUMN_NAME_COMMENT,
-            MyPoem.Poem.COLUMN_NAME_STATUS,
             MyPoem.Rhythm.COLUMN_NAME_TYPE
     };
 
@@ -135,6 +134,13 @@ public class RhythmDao extends MyPoemDao<Rhythm> {
 
     public Cursor queryCi() {
         return queryByType(MyPoem.Rhythm.TYPE_CI);
+    }
+
+    public Cursor queryAll() {
+        final String selection = null;
+        final String[] selectionArgs = null;
+
+        return query(selection, selectionArgs);
     }
 
 }

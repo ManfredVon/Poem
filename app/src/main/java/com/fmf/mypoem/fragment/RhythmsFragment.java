@@ -6,11 +6,13 @@ import android.view.View;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.Toast;
 
 import com.fmf.mypoem.R;
 import com.fmf.mypoem.activity.DetailActivity;
 import com.fmf.mypoem.data.MyPoem;
 import com.fmf.mypoem.data.PoemDao;
+import com.fmf.mypoem.data.RhythmDao;
 import com.fmf.mypoem.util.PoemLog;
 
 public class RhythmsFragment extends BasePoemFragment {
@@ -24,24 +26,26 @@ public class RhythmsFragment extends BasePoemFragment {
 
     @Override
     protected CharSequence onCreateEmptyText() {
-        return getString(R.string.empty_text_fragment_poems);
+        return getString(R.string.empty_text_fragment_rhythm);
     }
 
     @Override
     protected Cursor onCreateCursor() {
-        return new PoemDao(getActivity()).queryPoem();
+        return new RhythmDao(getActivity()).queryAll();
     }
 
     @Override
     protected CursorAdapter onCreateCursorAdapter() {
         return new SimpleCursorAdapter(getActivity(),
-                R.layout.poem_list_item, null, FORM, TO, 0);
+                R.layout.rhythm_list_item, null, FORM, TO, 0);
     }
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        Intent intent = new Intent(getActivity(), DetailActivity.class);
-        intent.putExtra(MyPoem.Poem._ID, id);
-        startActivity(intent);
+//        Intent intent = new Intent(getActivity(), DetailActivity.class);
+//        intent.putExtra(MyPoem.Rhythm._ID, id);
+//        startActivity(intent);
+
+        Toast.makeText(getActivity(), id+"", Toast.LENGTH_SHORT).show();
     }
 }

@@ -20,7 +20,7 @@ public class TabsFragment extends Fragment {
     private PagerSlidingTabStrip tabStrip;
     private static final String[] tabTags = {"drafts", "poems", "rhythms"};
     private static CharSequence[] tabLabels;
-    private static final Class<Fragment>[] tabFragments = new Class[]{DraftsFragment.class, PoemsFragment.class, TestFragment.class
+    private static final Class<Fragment>[] tabFragments = new Class[]{DraftsFragment.class, PoemsFragment.class, RhythmsFragment.class
     };
 
 
