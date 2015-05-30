@@ -3,6 +3,8 @@ package com.fmf.mypoem.data;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 import android.text.TextUtils;
 
 import com.fmf.mypoem.model.Poem;
@@ -141,6 +143,32 @@ public class RhythmDao extends MyPoemDao<Rhythm> {
         final String[] selectionArgs = null;
 
         return query(selection, selectionArgs);
+    }
+
+    public void save(List<Rhythm> rhythms){
+        final String sql = "INSERT INTO rhythm (name, alias, intro, count, metre, sample, comment, type) values(?,?,?,?,?,?,?,?)";
+
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        try {
+            SQLiteStatement stat = db.compileStatement(sql);
+            db.beginTransaction();
+            for (Rhythm rhythm : rhythms) {
+                stat.bindString(1, rhythm.getName());
+                stat.bindString(2, rhythm.getAlias());
+                stat.bindString(3, rhythm.getIntro());
+                stat.bindLong(4, rhythm.getCount());
+                stat.bindString(5, rhythm.getMetre());
+                stat.bindString(6, rhythm.getSample());
+                stat.bindString(7, rhythm.getComment());
+                stat.bindString(8, rhythm.getType());
+
+                stat.executeInsert();
+            }
+            db.setTransactionSuccessful();
+            db.endTransaction();
+        } finally {
+            db.close();
+        }
     }
 
 }

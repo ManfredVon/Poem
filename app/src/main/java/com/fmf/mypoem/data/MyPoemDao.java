@@ -159,4 +159,17 @@ public abstract class MyPoemDao<T extends Model> {
         }
     }
 
+    public int deleteAll() {
+        final String selection = null;
+        final String[] selectionArgs = null;
+
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        try {
+            return db.delete(getTableName(), selection, selectionArgs);
+        } finally {
+            db.close();
+        }
+    }
+
 }

@@ -3,6 +3,19 @@ package com.fmf.mypoem.data;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteStatement;
+
+import com.fmf.mypoem.R;
+import com.fmf.mypoem.model.Rhythm;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
+import java.util.List;
 
 /**
  * Created by fmf on 15/4/2.
@@ -49,12 +62,15 @@ public class MyPoemDbHelper extends SQLiteOpenHelper {
     private static final String SQL_DELETE_RHYTHM =
             "DROP TABLE IF EXISTS " + MyPoem.Rhythm.TABLE_NAME;
 
-    public MyPoemDbHelper (Context context) {
+    private Context context;
+
+    public MyPoemDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     public MyPoemDbHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
+        this.context = context;
     }
 
     @Override
@@ -62,6 +78,8 @@ public class MyPoemDbHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_POEM);
         db.execSQL(SQL_CREATE_RHYTHM);
 //        db.execSQL(SQL_CREATE_POEM); // another table
+
+        insertRhythmDataFromJsonFile(context, db);
     }
 
     @Override
@@ -71,5 +89,39 @@ public class MyPoemDbHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_DELETE_RHYTHM);
 
         onCreate(db);
+    }
+
+    private void insertRhythmDataFromJsonFile(Context context, SQLiteDatabase db) {
+        InputStream in = context.getResources().openRawResource(R.raw.rhythms);
+        List<Rhythm> rhythms = null;
+        try {
+            RhythmParser parser = new GsonRhythmParser();
+            rhythms = parser.parse(in);
+        } finally {
+            try {
+                in.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        final String sql = "INSERT INTO rhythm (name, alias, intro, count, metre, sample, comment, type) values(?,?,?,?,?,?,?,?)";
+
+        SQLiteStatement stat = db.compileStatement(sql);
+        db.beginTransaction();
+        for (Rhythm rhythm : rhythms) {
+            stat.bindString(1, rhythm.getName());
+            stat.bindString(2, rhythm.getAlias());
+            stat.bindString(3, rhythm.getIntro());
+            stat.bindLong(4, rhythm.getCount());
+            stat.bindString(5, rhythm.getMetre());
+            stat.bindString(6, rhythm.getSample());
+            stat.bindString(7, rhythm.getComment());
+            stat.bindString(8, rhythm.getType());
+
+            stat.executeInsert();
+        }
+        db.setTransactionSuccessful();
+        db.endTransaction();
     }
 }
