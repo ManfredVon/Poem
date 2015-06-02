@@ -50,6 +50,7 @@
     <string name="tools_text_rhythm_name">五律</string>
     <string name="tools_text_rhythm_count">40字</string>
     <string name="tools_text_rhythm_intro">平韵，平起平收，首句押韵</string>
+    <string name="tools_text_rhythm_alias">别名1、别名2</string>
 
     <string-array name="tab_title">
         <item>草稿</item>

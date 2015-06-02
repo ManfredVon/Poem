@@ -65,7 +65,7 @@ public class MyPoemDbHelper extends SQLiteOpenHelper {
     private Context context;
 
     public MyPoemDbHelper(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     public MyPoemDbHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {

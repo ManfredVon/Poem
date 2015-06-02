@@ -1,18 +1,11 @@
 package com.fmf.mypoem.fragment;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
-import android.os.Bundle;
-import android.support.v4.app.ListFragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.AsyncTaskLoader;
-import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
-import android.widget.Toast;
 
 import com.fmf.mypoem.R;
 import com.fmf.mypoem.activity.DetailActivity;
@@ -35,10 +28,10 @@ public class DraftsFragment extends BasePoemFragment {
     }
 
     @Override
-    protected Cursor onCreateCursor() {
+    protected Cursor onQuery(String text) {
 //        PoemLog.i("onCreateCursor:"+Thread.currentThread().getName());
         // call in background
-        return new PoemDao(getActivity()).queryDraft();
+        return new PoemDao(getActivity()).queryDraft(text);
     }
 
     @Override

@@ -6,6 +6,10 @@ import android.provider.BaseColumns;
  * Created by fmf on 15/4/2.
  */
 public final class MyPoem {
+    public static final String TYPE_SHI = "shi";
+    public static final String TYPE_CI = "ci";
+    public static final String TYPE_SHI_ZH = "诗";
+    public static final String TYPE_CI_ZH = "词";
 
     private MyPoem() {
     }
@@ -16,9 +20,8 @@ public final class MyPoem {
 
         public static final String STATUS_DRAFT = "draft";
         public static final String STATUS_FINISHED = "finished";
-        public static final String TYPE_SHI = "shi";
-        public static final String TYPE_CI = "ci";
-
+//        public static final String TYPE_SHI = "shi";
+//        public static final String TYPE_CI = "ci";
 
         public static final String TABLE_NAME = "poem";
 //        public static final String COLUMN_NAME_POEM_ID = "poemid";
@@ -47,8 +50,8 @@ public final class MyPoem {
         private Rhythm() {
         }
 
-        public static final String TYPE_SHI = "shi";
-        public static final String TYPE_CI = "ci";
+//        public static final String TYPE_SHI = "shi";
+//        public static final String TYPE_CI = "ci";
         public static final String ALIAS_SEPARATOR = "、";
 
         public static final String TABLE_NAME = "rhythm";

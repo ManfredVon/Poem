@@ -1,10 +1,13 @@
 package com.fmf.mypoem.activity;
 
 import android.content.Intent;
+import android.content.pm.ResolveInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v7.widget.ShareActionProvider;
@@ -16,22 +19,28 @@ import com.fmf.mypoem.data.MyPoemDao;
 import com.fmf.mypoem.data.PoemDao;
 import com.fmf.mypoem.model.Poem;
 
-public class DetailActivity extends ActionBarActivity {
+import java.util.List;
+
+public class DetailActivity extends BaseActivity {
     private TextView tvTitle;
     private TextView tvSubtitle;
     private TextView tvContent;
     private TextView tvAuthor;
     private TextView tvCreated;
+    private String shareText;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_detail);
+    protected void onInit(Bundle savedInstanceState) {
+        super.onInit(savedInstanceState);
 
         initViews();
 
         handleIntent(getIntent());
+    }
+
+    @Override
+    protected int getLayoutRes() {
+        return R.layout.activity_detail;
     }
 
     private void initViews() {
@@ -50,10 +59,10 @@ public class DetailActivity extends ActionBarActivity {
     }
 
     private void handleIntent(Intent intent) {
-        if (intent != null){
+        if (intent != null) {
             long id = intent.getLongExtra(MyPoem.Poem._ID, 0);
-            if (id > 0){
-                new AsyncTask<Long, Void, Poem>(){
+            if (id > 0) {
+                new AsyncTask<Long, Void, Poem>() {
 
                     @Override
                     protected Poem doInBackground(Long... params) {
@@ -82,6 +91,17 @@ public class DetailActivity extends ActionBarActivity {
         tvContent.setText(content);
         tvAuthor.setText(author);
         tvCreated.setText(created);
+
+        StringBuilder sb = new StringBuilder();
+        final String LF = "\n";
+        final String COMMA = "，";
+        sb.append(title).append(LF);
+        if (!TextUtils.isEmpty(subtitle)){
+            sb.append(subtitle).append(LF);
+        }
+        sb.append(content).append(LF);
+        sb.append(author).append(COMMA).append(created);
+        this.shareText = sb.toString();
     }
 
 
@@ -90,17 +110,32 @@ public class DetailActivity extends ActionBarActivity {
         getMenuInflater().inflate(R.menu.menu_detail, menu);
 
         // Set up ShareActionProvider's default share intent
-        MenuItem shareItem = menu.findItem(R.id.action_share);
+        int shareItemId = R.id.action_share;
+        MenuItem shareItem = menu.findItem(shareItemId);
         ShareActionProvider shareProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
-        shareProvider.setShareIntent(getShareIntent());
+        Intent shareIntent = getShareIntent();
+        if (shareIntent != null){
+            shareProvider.setShareIntent(shareIntent);
+        } else {
+            menu.removeItem(shareItemId);
+        }
 
         return true;
     }
 
+    @Nullable
     private Intent getShareIntent() {
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("text/*");
-        return intent;
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/*");
+
+        //检查手机上是否存在可以处理这个动作的应用
+        List<ResolveInfo> infoList = getPackageManager().queryIntentActivities(shareIntent, 0);
+        if (!infoList.isEmpty()){
+            shareIntent.putExtra(Intent.EXTRA_TEXT, this.shareText);
+            return shareIntent;
+        }
+
+        return null;
     }
     
     @Override

@@ -20,6 +20,12 @@ import java.util.List;
  */
 public abstract class MyPoemDao<T extends Model> {
     protected MyPoemDbHelper dbHelper;
+    public static final String EXPR_LIKE = " LIKE ?";
+    public static final String EXPR_EQUAL = " = ?";
+    public static final String EXPR_OR = " OR ";
+    public static final String EXPR_AND = " AND ";
+    public static final String EXPR_BRACKET_LEFT = " ( ";
+    public static final String EXPR_BRACKET_RIGHT = " ) ";
 
     public MyPoemDbHelper getDbHelper() {
         return dbHelper;
@@ -60,7 +66,7 @@ public abstract class MyPoemDao<T extends Model> {
     }
 
     public int update(T model) {
-        final String selection = BaseColumns._ID + " = ?";
+        final String selection = BaseColumns._ID + EXPR_EQUAL;
         final String[] selectionArgs = {String.valueOf(model.getId())};
         ContentValues values = getContentValues(model, false);
 
@@ -73,7 +79,7 @@ public abstract class MyPoemDao<T extends Model> {
     }
 
     public T get(long id) {
-        final String selection = BaseColumns._ID + " = ?";
+        final String selection = BaseColumns._ID + EXPR_EQUAL;
         final String[] selectionArgs = {String.valueOf(id)};
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -117,6 +123,13 @@ public abstract class MyPoemDao<T extends Model> {
         );
     }
 
+    public Cursor queryAll() {
+        final String selection = null;
+        final String[] selectionArgs = null;
+
+        return query(selection, selectionArgs);
+    }
+
     @NonNull
     public List<T> list(String selection, String[] selectionArgs) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -147,7 +160,7 @@ public abstract class MyPoemDao<T extends Model> {
     }
 
     public int delete(long id) {
-        final String selection = BaseColumns._ID + " = ?";
+        final String selection = BaseColumns._ID + EXPR_EQUAL;
         final String[] selectionArgs = {String.valueOf(id)};
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();

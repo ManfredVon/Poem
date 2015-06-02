@@ -1,23 +1,18 @@
 package com.fmf.mypoem.activity;
 
-import android.app.Activity;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.fmf.mypoem.R;
 import com.fmf.mypoem.data.MyPoem;
-import com.fmf.mypoem.data.MyPoemDao;
 import com.fmf.mypoem.data.PoemDao;
 import com.fmf.mypoem.fragment.DatePickerFragment;
 import com.fmf.mypoem.model.Poem;
@@ -26,7 +21,7 @@ import com.fmf.mypoem.util.DateUtil;
 import java.util.Calendar;
 import java.util.Date;
 
-public class ComposeActivity extends ActionBarActivity implements DatePickerFragment.OnDateSetListner {
+public class ComposeActivity extends BaseActivity implements DatePickerFragment.OnDateSetListner {
     private EditText etTitle;
     private EditText etSubtitle;
     private EditText etContent;
@@ -37,14 +32,20 @@ public class ComposeActivity extends ActionBarActivity implements DatePickerFrag
 //    private int day;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-//        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-        setContentView(R.layout.activity_compose);
-
-//        getActionBar().setDisplayHomeAsUpEnabled(true);
+    protected void onInit(Bundle savedInstanceState) {
+        super.onInit(savedInstanceState);
 
         initViews();
+    }
+
+    @Override
+    protected int getLayoutRes() {
+        return R.layout.activity_compose;
+    }
+
+    @Override
+    protected boolean hasActionBar() {
+        return false;
     }
 
     private void initViews() {
@@ -151,7 +152,7 @@ public class ComposeActivity extends ActionBarActivity implements DatePickerFrag
         poem.setUpdated(updated);
         poem.setStatus(status);
 
-        new PoemAsynTask().execute(poem);
+        new PoemAsyncTask().execute(poem);
     }
 
     private void toast(String text) {
@@ -182,10 +183,10 @@ public class ComposeActivity extends ActionBarActivity implements DatePickerFrag
         setCreatedDate(year, monthOfYear, dayOfMonth);
     }
 
-    public final class PoemAsynTask extends AsyncTask<Poem, Void, String> {
+    public final class PoemAsyncTask extends AsyncTask<Poem, Void, String> {
 //        private Context context;
 
-        public PoemAsynTask() {
+        public PoemAsyncTask() {
 
         }
 //        public PoemAsynTask(Context context) {

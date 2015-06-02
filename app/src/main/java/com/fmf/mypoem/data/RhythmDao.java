@@ -7,8 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.text.TextUtils;
 
-import com.fmf.mypoem.model.Poem;
 import com.fmf.mypoem.model.Rhythm;
+import com.fmf.mypoem.util.StringUtil;
 
 import java.util.List;
 
@@ -109,38 +109,56 @@ public class RhythmDao extends MyPoemDao<Rhythm> {
 
 
     private List<Rhythm> listByType(String type) {
-        final String selection = MyPoem.Rhythm.COLUMN_NAME_TYPE + " = ?";
+        final String selection = MyPoem.Rhythm.COLUMN_NAME_TYPE + EXPR_EQUAL;
         final String[] selectionArgs = {type};
 
         return list(selection, selectionArgs);
     }
 
     public List<Rhythm> listShi() {
-        return listByType(MyPoem.Rhythm.TYPE_SHI);
+        return listByType(MyPoem.TYPE_SHI);
     }
 
     public List<Rhythm> listCi() {
-        return listByType(MyPoem.Rhythm.TYPE_CI);
+        return listByType(MyPoem.TYPE_CI);
     }
 
     private Cursor queryByType(String type) {
-        final String selection = MyPoem.Rhythm.COLUMN_NAME_TYPE + " = ?";
+        final String selection = MyPoem.Rhythm.COLUMN_NAME_TYPE + EXPR_EQUAL;
         final String[] selectionArgs = {type};
 
         return query(selection, selectionArgs);
     }
 
     public Cursor queryShi() {
-        return queryByType(MyPoem.Rhythm.TYPE_SHI);
+        return queryByType(MyPoem.TYPE_SHI);
     }
 
     public Cursor queryCi() {
-        return queryByType(MyPoem.Rhythm.TYPE_CI);
+        return queryByType(MyPoem.TYPE_CI);
     }
 
-    public Cursor queryAll() {
-        final String selection = null;
-        final String[] selectionArgs = null;
+    public Cursor query(String text) {
+        if (TextUtils.isEmpty(text)){
+            return queryAll();
+        }
+
+        if (MyPoem.TYPE_SHI.equalsIgnoreCase(text) || MyPoem.TYPE_SHI_ZH.equals(text)){
+            return queryShi();
+        }
+
+        if (MyPoem.TYPE_CI.equalsIgnoreCase(text) || MyPoem.TYPE_CI_ZH.equals(text)){
+            return queryCi();
+        }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(MyPoem.Rhythm.COLUMN_NAME_NAME).append(EXPR_LIKE);
+        sb.append(EXPR_OR);
+        sb.append(MyPoem.Rhythm.COLUMN_NAME_ALIAS).append(EXPR_LIKE);
+
+        final String selection = sb.toString();
+        text  = StringUtil.wrap(text, "%");
+        final String[] selectionArgs = {text, text};
 
         return query(selection, selectionArgs);
     }
@@ -170,5 +188,6 @@ public class RhythmDao extends MyPoemDao<Rhythm> {
             db.close();
         }
     }
+
 
 }

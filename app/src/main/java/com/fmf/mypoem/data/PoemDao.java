@@ -9,6 +9,8 @@ import android.text.TextUtils;
 
 import com.fmf.mypoem.model.Model;
 import com.fmf.mypoem.model.Poem;
+import com.fmf.mypoem.util.PoemLog;
+import com.fmf.mypoem.util.StringUtil;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -16,7 +18,7 @@ import java.util.List;
 /**
  * Created by fmf on 15/4/7.
  */
-public class PoemDao extends MyPoemDao<Poem>{
+public class PoemDao extends MyPoemDao<Poem> {
     private static final String[] PROJECTION = {
             MyPoem.Poem._ID,
             MyPoem.Poem.COLUMN_NAME_TITLE,
@@ -92,7 +94,7 @@ public class PoemDao extends MyPoemDao<Poem>{
     }
 
     private List<Poem> listByStatus(String status) {
-        final String selection = MyPoem.Poem.COLUMN_NAME_STATUS + " = ?";
+        final String selection = MyPoem.Poem.COLUMN_NAME_STATUS + EXPR_EQUAL;
         final String[] selectionArgs = {status};
 
         return list(selection, selectionArgs);
@@ -103,26 +105,26 @@ public class PoemDao extends MyPoemDao<Poem>{
     }
 
     public List<Poem> listPoem() {
-       return listByStatus(MyPoem.Poem.STATUS_FINISHED);
+        return listByStatus(MyPoem.Poem.STATUS_FINISHED);
     }
 
     private List<Poem> listByType(String type) {
-        final String selection = MyPoem.Poem.COLUMN_NAME_TYPE + " = ?";
+        final String selection = MyPoem.Poem.COLUMN_NAME_TYPE + EXPR_EQUAL;
         final String[] selectionArgs = {type};
 
         return list(selection, selectionArgs);
     }
 
     public List<Poem> listShi() {
-        return listByType(MyPoem.Poem.TYPE_SHI);
+        return listByType(MyPoem.TYPE_SHI);
     }
 
     public List<Poem> listCi() {
-        return listByType(MyPoem.Poem.TYPE_CI);
+        return listByType(MyPoem.TYPE_CI);
     }
 
     private Cursor queryByStatus(String status) {
-        final String selection = MyPoem.Poem.COLUMN_NAME_STATUS + " = ?";
+        final String selection = MyPoem.Poem.COLUMN_NAME_STATUS + EXPR_EQUAL;
         final String[] selectionArgs = {status};
 
         return query(selection, selectionArgs);
@@ -137,18 +139,79 @@ public class PoemDao extends MyPoemDao<Poem>{
     }
 
     private Cursor queryByType(String type) {
-        final String selection = MyPoem.Poem.COLUMN_NAME_TYPE + " = ?";
+        final String selection = MyPoem.Poem.COLUMN_NAME_TYPE + EXPR_EQUAL;
         final String[] selectionArgs = {type};
 
         return query(selection, selectionArgs);
     }
 
     public Cursor queryShi() {
-        return queryByType(MyPoem.Poem.TYPE_SHI);
+        return queryByType(MyPoem.TYPE_SHI);
     }
 
     public Cursor queryCi() {
-        return queryByType(MyPoem.Poem.TYPE_CI);
+        return queryByType(MyPoem.TYPE_CI);
+    }
+
+    public Cursor query(String text) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(MyPoem.Poem.COLUMN_NAME_SUBTITLE).append(EXPR_LIKE);
+        sb.append(EXPR_OR);
+        sb.append(MyPoem.Poem.COLUMN_NAME_SUBTITLE).append(EXPR_LIKE);
+        sb.append(EXPR_OR);
+        sb.append(MyPoem.Poem.COLUMN_NAME_CONTENT).append(EXPR_LIKE);
+        sb.append(EXPR_OR);
+        sb.append(MyPoem.Poem.COLUMN_NAME_CREATE_DATE).append(EXPR_LIKE);
+
+        final String selection = sb.toString();
+        final String[] selectionArgs = {text, text, text, text};
+
+        return query(selection, selectionArgs);
+    }
+
+    public Cursor query(String status, String text) {
+        boolean noStatus = TextUtils.isEmpty(status);
+        boolean noText = TextUtils.isEmpty(text);
+
+        if (noStatus && noText) {
+            return queryAll();
+        }
+
+        if (!noStatus && noText) {
+            return queryByStatus(status);
+        }
+
+        if (noStatus && !noText) {
+            return query(text);
+        }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(MyPoem.Poem.COLUMN_NAME_STATUS).append(EXPR_EQUAL);
+        sb.append(EXPR_AND);
+        sb.append(EXPR_BRACKET_LEFT);
+        sb.append(MyPoem.Poem.COLUMN_NAME_TITLE).append(EXPR_LIKE);
+        sb.append(EXPR_OR);
+        sb.append(MyPoem.Poem.COLUMN_NAME_SUBTITLE).append(EXPR_LIKE);
+        sb.append(EXPR_OR);
+        sb.append(MyPoem.Poem.COLUMN_NAME_CONTENT).append(EXPR_LIKE);
+        sb.append(EXPR_OR);
+        sb.append(MyPoem.Poem.COLUMN_NAME_CREATE_DATE).append(EXPR_LIKE);
+        sb.append(EXPR_BRACKET_RIGHT);
+
+        final String selection = sb.toString();
+        PoemLog.i(selection);
+        text  = StringUtil.wrap(text, "%");
+        final String[] selectionArgs = {status, text, text, text, text};
+
+        return query(selection, selectionArgs);
+    }
+
+    public Cursor queryDraft(String text) {
+        return query(MyPoem.Poem.STATUS_DRAFT, text);
+    }
+
+    public Cursor queryPoem(String text) {
+        return query(MyPoem.Poem.STATUS_FINISHED, text);
     }
 
 }

@@ -13,15 +13,27 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         tools:text="@string/tools_text_rhythm_name"/>
 
+    <!--<TextView-->
+        <!--android:id="@+id/tv_count"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:layout_alignBottom="@id/tv_name"-->
+        <!--android:layout_toRightOf="@id/tv_name"-->
+        <!--android:textAppearance="?android:attr/textAppearanceSmall"-->
+        <!--tools:text="@string/tools_text_rhythm_count"/>-->
+
     <TextView
-        android:id="@+id/tv_count"
+        android:id="@+id/tv_alias"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_alignBottom="@id/tv_name"
         android:layout_toRightOf="@id/tv_name"
+        android:ellipsize="end"
+        android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        tools:text="@string/tools_text_rhythm_count"/>
+        tools:text="@string/tools_text_rhythm_alias"/>
 
     <TextView
         android:id="@+id/tv_intro"

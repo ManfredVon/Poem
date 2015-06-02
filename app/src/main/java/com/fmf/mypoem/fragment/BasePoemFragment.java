@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
@@ -11,6 +12,7 @@ import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.fmf.mypoem.activity.DetailActivity;
@@ -20,7 +22,10 @@ import com.fmf.mypoem.util.PoemLog;
 
 public abstract class BasePoemFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final int LOADER_ID = 0;
+    public static final String PAGE_TITLE = "PageTitle";
+    public static final String ARG_QUERY = "QueryText";
     private CursorAdapter adapter;
+    private LoaderManager loaderManager;
 
     public BasePoemFragment() {
 
@@ -45,10 +50,19 @@ public abstract class BasePoemFragment extends ListFragment implements LoaderMan
         // Prepare the loader.  Either re-connect with an existing one,
         // or start a new one.
         Bundle args = null;
-        getLoaderManager().initLoader(LOADER_ID, args, this);
+        loaderManager = getLoaderManager();
+        loaderManager.initLoader(LOADER_ID, args, this);
     }
 
-    protected abstract Cursor onCreateCursor();
+    public void query(String text) {
+        Bundle args = new Bundle();
+        args.putString(ARG_QUERY, text);
+        loaderManager.restartLoader(LOADER_ID, args, this);
+    }
+
+    protected abstract Cursor onQuery(@Nullable String text);
+
+//    protected abstract Cursor onCreateCursor();
 
     protected abstract CursorAdapter onCreateCursorAdapter();
 
@@ -58,10 +72,16 @@ public abstract class BasePoemFragment extends ListFragment implements LoaderMan
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        String text = null;
+        if (args != null) {
+            text = args.getString(BasePoemFragment.ARG_QUERY);
+        }
+
+        final String finalText = text == null ? null : text.trim();
         Loader<Cursor> loader = new AsyncTaskLoader<Cursor>(getActivity()) {
             @Override
             public Cursor loadInBackground() {
-                return onCreateCursor();
+                return onQuery(finalText);
             }
 
             @Override
@@ -99,4 +119,6 @@ public abstract class BasePoemFragment extends ListFragment implements LoaderMan
             }
         }
     }
+
+
 }

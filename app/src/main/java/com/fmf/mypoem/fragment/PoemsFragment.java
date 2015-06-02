@@ -2,6 +2,7 @@ package com.fmf.mypoem.fragment;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
@@ -28,8 +29,8 @@ public class PoemsFragment extends BasePoemFragment {
     }
 
     @Override
-    protected Cursor onCreateCursor() {
-        return new PoemDao(getActivity()).queryPoem();
+    protected Cursor onQuery(String text) {
+        return new PoemDao(getActivity()).queryPoem(text);
     }
 
     @Override

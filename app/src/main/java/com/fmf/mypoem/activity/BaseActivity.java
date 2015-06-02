@@ -38,19 +38,24 @@ public class BaseActivity extends ActionBarActivity {
     }
 
     protected void onInit(Bundle savedInstanceState) {
-        if (hasActionBar()) {
+        if (hasToolBar()) {
             initActionBar();
         }
     }
 
     protected void onBeforeSetContentLayout() {
-        if (!hasActionBar()) {
-            supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
+        if(hasToolBar()){
+//            requestWindowFeature(Window.FEATURE_NO_TITLE);
+//            requestWindowFeature(Window.)
         }
     }
 
     protected boolean hasActionBar() {
         return true;
+    }
+
+    protected boolean hasToolBar() {
+        return false;
     }
 
     protected int getLayoutRes() {

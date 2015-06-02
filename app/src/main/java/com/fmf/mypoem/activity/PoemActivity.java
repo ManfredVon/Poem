@@ -5,63 +5,54 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.astuetz.PagerSlidingTabStrip;
 import com.fmf.mypoem.R;
+import com.fmf.mypoem.adapter.TabPagerAdapter;
+import com.fmf.mypoem.fragment.BasePoemFragment;
+import com.fmf.mypoem.fragment.DraftsFragment;
+import com.fmf.mypoem.fragment.PoemsFragment;
+import com.fmf.mypoem.fragment.RhythmsFragment;
+import com.fmf.mypoem.model.Poem;
 import com.fmf.mypoem.util.PoemLog;
+import com.fmf.mypoem.util.StringUtil;
 
-public class PoemActivity extends ActionBarActivity {
-    
-    private Toolbar toolbar;
+public class PoemActivity extends BaseActivity {
+    private PagerAdapter adapter;
+    private ViewPager viewPager;
+    private PagerSlidingTabStrip tabStrip;
+    private CharSequence[] tabTitles;
+    private String curQueryComparison;
+    private int curPos;
+    private BasePoemFragment curFragment;
+    private BasePoemFragment[] tabFragments;
+    private static final Class<Fragment>[] tabFragmentClasses = new Class[]{DraftsFragment.class, PoemsFragment.class, RhythmsFragment.class
+    };
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-//        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-        setContentView(R.layout.activity_poem);
+    protected int getLayoutRes() {
+        return R.layout.activity_poem;
+    }
 
-//        getActionBar().setDisplayShowTitleEnabled(false);
-        PoemLog.i("PoemActivity--onCreate");
+    @Override
+    protected boolean hasToolBar() {
+        return true;
+    }
 
-        initToolbar();
+    @Override
+    protected void onInit(Bundle savedInstanceState) {
+        super.onInit(savedInstanceState);
+
+        initPagerAndTabs();
 
         handleIntent(getIntent());
-    }
-    
-    private void initToolbar() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        toolbar.setTitle("Title"); // before setSupportActionBar
-//        toolbar.setSubtitle("subtitle");
-        if (toolbar != null) {
-            setSupportActionBar(toolbar);
-        }
-
-//        这些通过ActionBar来设置也是一样的，注意要在setSupportActionBar(toolbar);之后，不然就报错了
-//        getSupportActionBar().setTitle("标题");
-//        getSupportActionBar().setSubtitle("副标题");
-//        getSupportActionBar().setLogo(R.drawable.ic_launcher);
-
-//        菜单的监听可以在toolbar里设置，也可以像ActionBar那样，通过Activity的onOptionsItemSelected回调方法来处理
-//        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-//            @Override
-//            public boolean onMenuItemClick(MenuItem item) {
-//                switch (item.getItemId()) {
-//                    case R.id.action_settings:
-//                        Toast.makeText(MainActivity.this, "action_settings", Toast.LENGTH_SHORT).show();
-//                        break;
-//                    case R.id.action_share:
-//                        Toast.makeText(MainActivity.this, "action_share", Toast.LENGTH_SHORT).show();
-//                        break;
-//                    default:
-//                        break;
-//                }
-//                return true;
-//            }
-//        });
     }
 
     @Override
@@ -76,32 +67,38 @@ public class PoemActivity extends ActionBarActivity {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             PoemLog.i("query: " + query);
+
+            query(query);
         }
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        PoemLog.i("PoemActivity--onStart");
+    private void query(String query) {
+        curFragment.query(query);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        PoemLog.i("PoemActivity--onResume");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        PoemLog.i("PoemActivity--onPause");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        PoemLog.i("PoemActivity--onDestroy");
-    }
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        PoemLog.i("PoemActivity--onStart");
+//    }
+//
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        PoemLog.i("PoemActivity--onResume");
+//    }
+//
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        PoemLog.i("PoemActivity--onPause");
+//    }
+//
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        PoemLog.i("PoemActivity--onDestroy");
+//    }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -115,12 +112,82 @@ public class PoemActivity extends ActionBarActivity {
 
         // 关联searchable.xml配置和SearchView
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        final MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        searchView.setIconifiedByDefault(false);
+        searchView.setIconifiedByDefault(false); // false:搜索图标不显示在编辑框内,而是显示在其前面
+        searchView.setSubmitButtonEnabled(true);
+
+        // 无论onClose返回true或false，点x时edittext都不会hidden
+//        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+//            @Override
+//            public boolean onClose() {
+//                // to avoid click x button and the edittext hidden
+//                return true;
+//            }
+//        });
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            public boolean onQueryTextSubmit(String query) {
+                if (isQuery(query)) {
+                    // send Intent.ACTION_SEARCH
+                    return false;
+                }
+                // this method handle it, do nothing
+                return true;
+            }
+
+            public boolean onQueryTextChange(String newText) {
+                if (newText != null && newText.length() > 0) {
+//                    currentSearchTip = newText;
+//                    showSearchTip(newText);
+//                    PoemLog.i("Query: " + newText);
+                }
+                return true;
+            }
+        });
+
+//        searchView.setSuggestionsAdapter();
+
+        MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem menuItem) {
+                PoemLog.i("onMenuItemActionExpand");
+                // true: expand; flase: no expand
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem menuItem) {
+                PoemLog.i("onMenuItemActionCollapse");
+
+                query(null); // list all
+
+                // true: collapse; flase: no collapse
+                return true;
+            }
+        });
 
 
         return true;
+    }
+
+    private boolean isQuery(String query) {
+        if (query == null) {
+            return false;
+        }
+        query = query.trim();
+        String comparison = getQueryComparison(query);
+        if (comparison.equals(curQueryComparison)) {
+            return false;
+        }
+
+        curQueryComparison = comparison;
+        return true;
+    }
+
+    private String getQueryComparison(String query) {
+        return StringUtil.prefix(curPos + "#", query);
     }
 
     @Override
@@ -157,4 +224,49 @@ public class PoemActivity extends ActionBarActivity {
         Intent intent = new Intent(this, ComposeActivity.class);
         startActivity(intent);
     }
+
+    private void initPagerAndTabs() {
+        tabTitles = getResources().getStringArray(R.array.tab_title);
+        int len = tabFragmentClasses.length;
+        tabFragments = new BasePoemFragment[len];
+        for (int i = 0; i < len; i++) {
+            Bundle args = new Bundle();
+            args.putCharSequence(BasePoemFragment.PAGE_TITLE, tabTitles[i]);
+            tabFragments[i] = (BasePoemFragment) Fragment.instantiate(this, tabFragmentClasses[i].getName(), args);
+        }
+        setCur(0);
+
+        adapter = new TabPagerAdapter(getSupportFragmentManager(), tabFragments);
+        viewPager = (ViewPager) findViewById(R.id.pager);
+        viewPager.setAdapter(adapter);
+//        viewPager.setOffscreenPageLimit(tabTags.length); // 默认预加载一页，即一开始就有两页被创建
+
+        tabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        tabStrip.setViewPager(viewPager);
+        tabStrip.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                PoemLog.i("onPageSelected");
+                setCur(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+    }
+
+    private void setCur(int pos) {
+        curPos = pos;
+        curFragment = tabFragments[pos];
+    }
+
+
 }

@@ -2,6 +2,7 @@ package com.fmf.mypoem.fragment;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
@@ -16,8 +17,8 @@ import com.fmf.mypoem.data.RhythmDao;
 import com.fmf.mypoem.util.PoemLog;
 
 public class RhythmsFragment extends BasePoemFragment {
-    private static final String[] FORM = {MyPoem.Rhythm.COLUMN_NAME_NAME, MyPoem.Rhythm.COLUMN_NAME_COUNT, MyPoem.Rhythm.COLUMN_NAME_INTRO};
-    private static final int[] TO = {R.id.tv_name, R.id.tv_count, R.id.tv_intro};
+    private static final String[] FORM = {MyPoem.Rhythm.COLUMN_NAME_NAME, MyPoem.Rhythm.COLUMN_NAME_ALIAS, MyPoem.Rhythm.COLUMN_NAME_INTRO};
+    private static final int[] TO = {R.id.tv_name, R.id.tv_alias, R.id.tv_intro};
 
     public RhythmsFragment() {
         super();
@@ -30,8 +31,8 @@ public class RhythmsFragment extends BasePoemFragment {
     }
 
     @Override
-    protected Cursor onCreateCursor() {
-        return new RhythmDao(getActivity()).queryAll();
+    protected Cursor onQuery(String text) {
+        return new RhythmDao(getActivity()).query(text);
     }
 
     @Override
