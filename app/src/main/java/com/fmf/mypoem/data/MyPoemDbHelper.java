@@ -6,15 +6,17 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 
 import com.fmf.mypoem.R;
+import com.fmf.mypoem.model.Poem;
 import com.fmf.mypoem.model.Rhythm;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.stream.JsonReader;
+import com.fmf.mypoem.poem.GsonPoemParser;
+import com.fmf.mypoem.poem.GsonRhythmParser;
+import com.fmf.mypoem.poem.PoemParser;
+import com.fmf.mypoem.poem.RhythmParser;
+
+import org.xml.sax.Parser;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.reflect.Type;
 import java.util.List;
 
 /**
@@ -24,43 +26,6 @@ public class MyPoemDbHelper extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
     public static final int DATABASE_VERSION = 3;
     public static final String DATABASE_NAME = "MyPoem.db";
-
-    private static final String TYPE_TEXT = " TEXT";
-    private static final String TYPE_INT = " INT";
-    private static final String TYPE_DATE = " DATE";
-    private static final String TYPE_DATETIME = " DATETIME";
-    private static final String COMMA_SEP = ", ";
-    private static final String SQL_CREATE_POEM = new StringBuffer()
-            .append("CREATE TABLE ").append(MyPoem.Poem.TABLE_NAME).append(" (")
-            .append(MyPoem.Poem._ID).append(" INTEGER PRIMARY KEY,")
-            .append(MyPoem.Poem.COLUMN_NAME_TITLE).append(TYPE_TEXT).append(COMMA_SEP)
-            .append(MyPoem.Poem.COLUMN_NAME_SUBTITLE).append(TYPE_TEXT).append(COMMA_SEP)
-            .append(MyPoem.Poem.COLUMN_NAME_AUTHOR).append(TYPE_TEXT).append(COMMA_SEP)
-            .append(MyPoem.Poem.COLUMN_NAME_CREATE_DATE).append(TYPE_DATE).append(COMMA_SEP)
-            .append(MyPoem.Poem.COLUMN_NAME_UPDATE_TIME).append(TYPE_DATETIME).append(COMMA_SEP)
-            .append(MyPoem.Poem.COLUMN_NAME_CONTENT).append(TYPE_TEXT).append(COMMA_SEP)
-            .append(MyPoem.Poem.COLUMN_NAME_STATUS).append(TYPE_TEXT).append(COMMA_SEP)
-            .append(MyPoem.Poem.COLUMN_NAME_TYPE).append(TYPE_TEXT)
-            .append(" )").toString();
-
-    private static final String SQL_DELETE_POEM =
-            "DROP TABLE IF EXISTS " + MyPoem.Poem.TABLE_NAME;
-
-    private static final String SQL_CREATE_RHYTHM = new StringBuffer()
-            .append("CREATE TABLE ").append(MyPoem.Rhythm.TABLE_NAME).append(" (")
-            .append(MyPoem.Poem._ID).append(" INTEGER PRIMARY KEY,")
-            .append(MyPoem.Rhythm.COLUMN_NAME_NAME).append(TYPE_TEXT).append(COMMA_SEP)
-            .append(MyPoem.Rhythm.COLUMN_NAME_ALIAS).append(TYPE_TEXT).append(COMMA_SEP)
-            .append(MyPoem.Rhythm.COLUMN_NAME_INTRO).append(TYPE_TEXT).append(COMMA_SEP)
-            .append(MyPoem.Rhythm.COLUMN_NAME_COUNT).append(TYPE_INT).append(COMMA_SEP)
-            .append(MyPoem.Rhythm.COLUMN_NAME_METRE).append(TYPE_DATE).append(COMMA_SEP)
-            .append(MyPoem.Rhythm.COLUMN_NAME_SAMPLE).append(TYPE_DATETIME).append(COMMA_SEP)
-            .append(MyPoem.Rhythm.COLUMN_NAME_COMMENT).append(TYPE_TEXT).append(COMMA_SEP)
-            .append(MyPoem.Rhythm.COLUMN_NAME_TYPE).append(TYPE_TEXT)
-            .append(" )").toString();
-
-    private static final String SQL_DELETE_RHYTHM =
-            "DROP TABLE IF EXISTS " + MyPoem.Rhythm.TABLE_NAME;
 
     private Context context;
 
@@ -75,8 +40,8 @@ public class MyPoemDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(SQL_CREATE_POEM);
-        db.execSQL(SQL_CREATE_RHYTHM);
+        db.execSQL(PoemSqlExpr.SQL_CREATE_POEM);
+        db.execSQL(PoemSqlExpr.SQL_CREATE_RHYTHM);
 //        db.execSQL(SQL_CREATE_POEM); // another table
 
         insertRhythmDataFromJsonFile(context, db);
@@ -85,8 +50,8 @@ public class MyPoemDbHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // 升级数据库，删掉原来的表，重新建表
-        db.execSQL(SQL_DELETE_POEM);
-        db.execSQL(SQL_DELETE_RHYTHM);
+        db.execSQL(PoemSqlExpr.SQL_DELETE_POEM);
+        db.execSQL(PoemSqlExpr.SQL_DELETE_RHYTHM);
 
         onCreate(db);
     }
@@ -105,11 +70,10 @@ public class MyPoemDbHelper extends SQLiteOpenHelper {
             }
         }
 
-        final String sql = "INSERT INTO rhythm (name, alias, intro, count, metre, sample, comment, type) values(?,?,?,?,?,?,?,?)";
-
-        SQLiteStatement stat = db.compileStatement(sql);
+        SQLiteStatement stat = db.compileStatement(PoemSqlExpr.SQL_INSERT_RHYTHM);
         db.beginTransaction();
         for (Rhythm rhythm : rhythms) {
+            // name, alias, intro, count, metre, sample, comment, type
             stat.bindString(1, rhythm.getName());
             stat.bindString(2, rhythm.getAlias());
             stat.bindString(3, rhythm.getIntro());
@@ -118,6 +82,40 @@ public class MyPoemDbHelper extends SQLiteOpenHelper {
             stat.bindString(6, rhythm.getSample());
             stat.bindString(7, rhythm.getComment());
             stat.bindString(8, rhythm.getType());
+
+            stat.executeInsert();
+        }
+        db.setTransactionSuccessful();
+        db.endTransaction();
+    }
+
+    // TODO: delete this method and R.raw.poems file when product
+    private void insertPoemDataFromJsonFile(Context context, SQLiteDatabase db) {
+        InputStream in = context.getResources().openRawResource(R.raw.poems);
+        List<Poem> poems = null;
+        try {
+            PoemParser parser = new GsonPoemParser();
+            poems = parser.parse(in);
+        } finally {
+            try {
+                in.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        SQLiteStatement stat = db.compileStatement(PoemSqlExpr.SQL_INSERT_POEM);
+        db.beginTransaction();
+        for (Poem poem : poems) {
+            // title, subtitle, author, created, updated, content, status, type
+            stat.bindString(1, poem.getTitle());
+            stat.bindString(2, poem.getSubtitle());
+            stat.bindString(3, poem.getAuthor());
+            stat.bindString(4, poem.getCreated());
+            stat.bindString(5, poem.getUpdated());
+            stat.bindString(6, poem.getContent());
+            stat.bindString(7, poem.getStatus());
+            stat.bindString(8, poem.getType());
 
             stat.executeInsert();
         }

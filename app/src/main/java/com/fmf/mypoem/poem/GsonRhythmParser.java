@@ -1,6 +1,7 @@
-package com.fmf.mypoem.data;
+package com.fmf.mypoem.poem;
 
 import com.fmf.mypoem.model.Rhythm;
+import com.fmf.mypoem.poem.RhythmParser;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
@@ -14,7 +15,7 @@ import java.util.List;
 /**
  * Created by fmf on 15/5/31.
  */
-public class GsonRhythmParser implements RhythmParser{
+public class GsonRhythmParser implements RhythmParser {
     @Override
     public List<Rhythm> parse(InputStream in) {
         JsonReader reader = new JsonReader(new InputStreamReader(in));

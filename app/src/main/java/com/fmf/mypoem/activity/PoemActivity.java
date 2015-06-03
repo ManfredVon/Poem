@@ -20,8 +20,7 @@ import com.fmf.mypoem.fragment.BasePoemFragment;
 import com.fmf.mypoem.fragment.DraftsFragment;
 import com.fmf.mypoem.fragment.PoemsFragment;
 import com.fmf.mypoem.fragment.RhythmsFragment;
-import com.fmf.mypoem.model.Poem;
-import com.fmf.mypoem.util.PoemLog;
+import com.fmf.mypoem.poem.PoemLog;
 import com.fmf.mypoem.util.StringUtil;
 
 public class PoemActivity extends BaseActivity {

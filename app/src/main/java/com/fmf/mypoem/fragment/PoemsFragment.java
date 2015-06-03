@@ -2,7 +2,6 @@ package com.fmf.mypoem.fragment;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
@@ -12,7 +11,7 @@ import com.fmf.mypoem.R;
 import com.fmf.mypoem.activity.DetailActivity;
 import com.fmf.mypoem.data.MyPoem;
 import com.fmf.mypoem.data.PoemDao;
-import com.fmf.mypoem.util.PoemLog;
+import com.fmf.mypoem.poem.PoemLog;
 
 public class PoemsFragment extends BasePoemFragment {
     private static final String[] FORM = {MyPoem.Poem.COLUMN_NAME_TITLE, MyPoem.Poem.COLUMN_NAME_SUBTITLE, MyPoem.Poem.COLUMN_NAME_CONTENT};

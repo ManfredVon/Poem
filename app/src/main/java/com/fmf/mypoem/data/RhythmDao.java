@@ -109,7 +109,7 @@ public class RhythmDao extends MyPoemDao<Rhythm> {
 
 
     private List<Rhythm> listByType(String type) {
-        final String selection = MyPoem.Rhythm.COLUMN_NAME_TYPE + EXPR_EQUAL;
+        final String selection = MyPoem.Rhythm.COLUMN_NAME_TYPE + EQUAL_QUESTION_MARK;
         final String[] selectionArgs = {type};
 
         return list(selection, selectionArgs);
@@ -124,7 +124,7 @@ public class RhythmDao extends MyPoemDao<Rhythm> {
     }
 
     private Cursor queryByType(String type) {
-        final String selection = MyPoem.Rhythm.COLUMN_NAME_TYPE + EXPR_EQUAL;
+        final String selection = MyPoem.Rhythm.COLUMN_NAME_TYPE + EQUAL_QUESTION_MARK;
         final String[] selectionArgs = {type};
 
         return query(selection, selectionArgs);
@@ -152,25 +152,24 @@ public class RhythmDao extends MyPoemDao<Rhythm> {
         }
 
         StringBuilder sb = new StringBuilder();
-        sb.append(MyPoem.Rhythm.COLUMN_NAME_NAME).append(EXPR_LIKE);
-        sb.append(EXPR_OR);
-        sb.append(MyPoem.Rhythm.COLUMN_NAME_ALIAS).append(EXPR_LIKE);
+        sb.append(MyPoem.Rhythm.COLUMN_NAME_NAME).append(LIKE_QUESTION_MARK);
+        sb.append(OR);
+        sb.append(MyPoem.Rhythm.COLUMN_NAME_ALIAS).append(LIKE_QUESTION_MARK);
 
         final String selection = sb.toString();
-        text  = StringUtil.wrap(text, "%");
+        text  = StringUtil.wrap(text, PERCENT);
         final String[] selectionArgs = {text, text};
 
         return query(selection, selectionArgs);
     }
 
     public void save(List<Rhythm> rhythms){
-        final String sql = "INSERT INTO rhythm (name, alias, intro, count, metre, sample, comment, type) values(?,?,?,?,?,?,?,?)";
-
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         try {
-            SQLiteStatement stat = db.compileStatement(sql);
+            SQLiteStatement stat = db.compileStatement(SQL_INSERT_RHYTHM);
             db.beginTransaction();
             for (Rhythm rhythm : rhythms) {
+                // name, alias, intro, count, metre, sample, comment, type
                 stat.bindString(1, rhythm.getName());
                 stat.bindString(2, rhythm.getAlias());
                 stat.bindString(3, rhythm.getIntro());

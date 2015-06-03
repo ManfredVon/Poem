@@ -1,17 +1,10 @@
 package com.fmf.mypoem.activity;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.ActionBarActivity;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
 
 import com.fmf.mypoem.R;
-import com.fmf.mypoem.util.PoemLog;
 
 public class MainActivity extends BaseActivity {
 

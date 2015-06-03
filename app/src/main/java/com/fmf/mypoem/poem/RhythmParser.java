@@ -1,4 +1,4 @@
-package com.fmf.mypoem.data;
+package com.fmf.mypoem.poem;
 
 import com.fmf.mypoem.model.Rhythm;
 

@@ -6,11 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 
 import com.fmf.mypoem.model.Model;
-import com.fmf.mypoem.model.Poem;
-import com.fmf.mypoem.util.PoemLog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,14 +15,8 @@ import java.util.List;
 /**
  * Created by fmf on 15/4/7.
  */
-public abstract class MyPoemDao<T extends Model> {
+public abstract class MyPoemDao<T extends Model> implements PoemSqlExpr {
     protected MyPoemDbHelper dbHelper;
-    public static final String EXPR_LIKE = " LIKE ?";
-    public static final String EXPR_EQUAL = " = ?";
-    public static final String EXPR_OR = " OR ";
-    public static final String EXPR_AND = " AND ";
-    public static final String EXPR_BRACKET_LEFT = " ( ";
-    public static final String EXPR_BRACKET_RIGHT = " ) ";
 
     public MyPoemDbHelper getDbHelper() {
         return dbHelper;
@@ -66,7 +57,7 @@ public abstract class MyPoemDao<T extends Model> {
     }
 
     public int update(T model) {
-        final String selection = BaseColumns._ID + EXPR_EQUAL;
+        final String selection = BaseColumns._ID + EQUAL_QUESTION_MARK;
         final String[] selectionArgs = {String.valueOf(model.getId())};
         ContentValues values = getContentValues(model, false);
 
@@ -79,7 +70,7 @@ public abstract class MyPoemDao<T extends Model> {
     }
 
     public T get(long id) {
-        final String selection = BaseColumns._ID + EXPR_EQUAL;
+        final String selection = BaseColumns._ID + EQUAL_QUESTION_MARK;
         final String[] selectionArgs = {String.valueOf(id)};
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -160,7 +151,7 @@ public abstract class MyPoemDao<T extends Model> {
     }
 
     public int delete(long id) {
-        final String selection = BaseColumns._ID + EXPR_EQUAL;
+        final String selection = BaseColumns._ID + EQUAL_QUESTION_MARK;
         final String[] selectionArgs = {String.valueOf(id)};
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();

@@ -4,15 +4,13 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.provider.BaseColumns;
+import android.database.sqlite.SQLiteStatement;
 import android.text.TextUtils;
 
-import com.fmf.mypoem.model.Model;
 import com.fmf.mypoem.model.Poem;
-import com.fmf.mypoem.util.PoemLog;
+import com.fmf.mypoem.poem.PoemLog;
 import com.fmf.mypoem.util.StringUtil;
 
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -94,7 +92,7 @@ public class PoemDao extends MyPoemDao<Poem> {
     }
 
     private List<Poem> listByStatus(String status) {
-        final String selection = MyPoem.Poem.COLUMN_NAME_STATUS + EXPR_EQUAL;
+        final String selection = MyPoem.Poem.COLUMN_NAME_STATUS + EQUAL_QUESTION_MARK;
         final String[] selectionArgs = {status};
 
         return list(selection, selectionArgs);
@@ -109,7 +107,7 @@ public class PoemDao extends MyPoemDao<Poem> {
     }
 
     private List<Poem> listByType(String type) {
-        final String selection = MyPoem.Poem.COLUMN_NAME_TYPE + EXPR_EQUAL;
+        final String selection = MyPoem.Poem.COLUMN_NAME_TYPE + EQUAL_QUESTION_MARK;
         final String[] selectionArgs = {type};
 
         return list(selection, selectionArgs);
@@ -124,7 +122,7 @@ public class PoemDao extends MyPoemDao<Poem> {
     }
 
     private Cursor queryByStatus(String status) {
-        final String selection = MyPoem.Poem.COLUMN_NAME_STATUS + EXPR_EQUAL;
+        final String selection = MyPoem.Poem.COLUMN_NAME_STATUS + EQUAL_QUESTION_MARK;
         final String[] selectionArgs = {status};
 
         return query(selection, selectionArgs);
@@ -139,7 +137,7 @@ public class PoemDao extends MyPoemDao<Poem> {
     }
 
     private Cursor queryByType(String type) {
-        final String selection = MyPoem.Poem.COLUMN_NAME_TYPE + EXPR_EQUAL;
+        final String selection = MyPoem.Poem.COLUMN_NAME_TYPE + EQUAL_QUESTION_MARK;
         final String[] selectionArgs = {type};
 
         return query(selection, selectionArgs);
@@ -155,15 +153,16 @@ public class PoemDao extends MyPoemDao<Poem> {
 
     public Cursor query(String text) {
         StringBuilder sb = new StringBuilder();
-        sb.append(MyPoem.Poem.COLUMN_NAME_SUBTITLE).append(EXPR_LIKE);
-        sb.append(EXPR_OR);
-        sb.append(MyPoem.Poem.COLUMN_NAME_SUBTITLE).append(EXPR_LIKE);
-        sb.append(EXPR_OR);
-        sb.append(MyPoem.Poem.COLUMN_NAME_CONTENT).append(EXPR_LIKE);
-        sb.append(EXPR_OR);
-        sb.append(MyPoem.Poem.COLUMN_NAME_CREATE_DATE).append(EXPR_LIKE);
+        sb.append(MyPoem.Poem.COLUMN_NAME_SUBTITLE).append(LIKE_QUESTION_MARK);
+        sb.append(OR);
+        sb.append(MyPoem.Poem.COLUMN_NAME_SUBTITLE).append(LIKE_QUESTION_MARK);
+        sb.append(OR);
+        sb.append(MyPoem.Poem.COLUMN_NAME_CONTENT).append(LIKE_QUESTION_MARK);
+        sb.append(OR);
+        sb.append(MyPoem.Poem.COLUMN_NAME_CREATE_DATE).append(LIKE_QUESTION_MARK);
 
         final String selection = sb.toString();
+        text  = StringUtil.wrap(text, PERCENT);
         final String[] selectionArgs = {text, text, text, text};
 
         return query(selection, selectionArgs);
@@ -186,21 +185,21 @@ public class PoemDao extends MyPoemDao<Poem> {
         }
 
         StringBuilder sb = new StringBuilder();
-        sb.append(MyPoem.Poem.COLUMN_NAME_STATUS).append(EXPR_EQUAL);
-        sb.append(EXPR_AND);
-        sb.append(EXPR_BRACKET_LEFT);
-        sb.append(MyPoem.Poem.COLUMN_NAME_TITLE).append(EXPR_LIKE);
-        sb.append(EXPR_OR);
-        sb.append(MyPoem.Poem.COLUMN_NAME_SUBTITLE).append(EXPR_LIKE);
-        sb.append(EXPR_OR);
-        sb.append(MyPoem.Poem.COLUMN_NAME_CONTENT).append(EXPR_LIKE);
-        sb.append(EXPR_OR);
-        sb.append(MyPoem.Poem.COLUMN_NAME_CREATE_DATE).append(EXPR_LIKE);
-        sb.append(EXPR_BRACKET_RIGHT);
+        sb.append(MyPoem.Poem.COLUMN_NAME_STATUS).append(EQUAL_QUESTION_MARK);
+        sb.append(AND);
+        sb.append(BRACKET_LEFT);
+        sb.append(MyPoem.Poem.COLUMN_NAME_TITLE).append(LIKE_QUESTION_MARK);
+        sb.append(OR);
+        sb.append(MyPoem.Poem.COLUMN_NAME_SUBTITLE).append(LIKE_QUESTION_MARK);
+        sb.append(OR);
+        sb.append(MyPoem.Poem.COLUMN_NAME_CONTENT).append(LIKE_QUESTION_MARK);
+        sb.append(OR);
+        sb.append(MyPoem.Poem.COLUMN_NAME_CREATE_DATE).append(LIKE_QUESTION_MARK);
+        sb.append(BRACKET_RIGHT);
 
         final String selection = sb.toString();
         PoemLog.i(selection);
-        text  = StringUtil.wrap(text, "%");
+        text  = StringUtil.wrap(text, PERCENT);
         final String[] selectionArgs = {status, text, text, text, text};
 
         return query(selection, selectionArgs);
@@ -212,6 +211,31 @@ public class PoemDao extends MyPoemDao<Poem> {
 
     public Cursor queryPoem(String text) {
         return query(MyPoem.Poem.STATUS_FINISHED, text);
+    }
+
+    public void save(List<Poem> poems){
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        try {
+            SQLiteStatement stat = db.compileStatement(SQL_INSERT_POEM);
+            db.beginTransaction();
+            for (Poem poem : poems) {
+                // title, subtitle, author, created, updated, content, status, type
+                stat.bindString(1, poem.getTitle());
+                stat.bindString(2, poem.getSubtitle());
+                stat.bindString(3, poem.getAuthor());
+                stat.bindString(4, poem.getCreated());
+                stat.bindString(5, poem.getUpdated());
+                stat.bindString(6, poem.getContent());
+                stat.bindString(7, poem.getStatus());
+                stat.bindString(8, poem.getType());
+
+                stat.executeInsert();
+            }
+            db.setTransactionSuccessful();
+            db.endTransaction();
+        } finally {
+            db.close();
+        }
     }
 
 }

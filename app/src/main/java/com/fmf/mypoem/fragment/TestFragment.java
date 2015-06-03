@@ -12,7 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.fmf.mypoem.R;
-import com.fmf.mypoem.util.PoemLog;
+import com.fmf.mypoem.poem.PoemLog;
 
 import java.util.ArrayList;
 import java.util.Arrays;

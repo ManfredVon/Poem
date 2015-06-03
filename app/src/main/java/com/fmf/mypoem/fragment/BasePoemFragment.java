@@ -1,7 +1,5 @@
 package com.fmf.mypoem.fragment;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,16 +7,9 @@ import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
-import android.view.View;
 import android.widget.CursorAdapter;
-import android.widget.ListView;
-import android.widget.SearchView;
-import android.widget.Toast;
 
-import com.fmf.mypoem.activity.DetailActivity;
-import com.fmf.mypoem.data.MyPoem;
-import com.fmf.mypoem.data.PoemDao;
-import com.fmf.mypoem.util.PoemLog;
+import com.fmf.mypoem.poem.PoemLog;
 
 public abstract class BasePoemFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final int LOADER_ID = 0;
