@@ -41,7 +41,8 @@ public class PoemsFragment extends BasePoemFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         Intent intent = new Intent(getActivity(), DetailActivity.class);
-        intent.putExtra(MyPoem.Poem._ID, id);
+        intent.putExtra(BaseDetailFragment.ARG_ID, id);
+        intent.putExtra(BaseDetailFragment.ARG_TABLE, MyPoem.Poem.TABLE_NAME);
         startActivity(intent);
     }
 }

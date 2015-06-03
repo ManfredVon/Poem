@@ -1,5 +1,6 @@
 package com.fmf.mypoem.fragment;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.view.View;
 import android.widget.CursorAdapter;
@@ -8,6 +9,7 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 import com.fmf.mypoem.R;
+import com.fmf.mypoem.activity.DetailActivity;
 import com.fmf.mypoem.data.MyPoem;
 import com.fmf.mypoem.data.RhythmDao;
 import com.fmf.mypoem.poem.PoemLog;
@@ -39,10 +41,9 @@ public class RhythmsFragment extends BasePoemFragment {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-//        Intent intent = new Intent(getActivity(), DetailActivity.class);
-//        intent.putExtra(MyPoem.Rhythm._ID, id);
-//        startActivity(intent);
-
-        Toast.makeText(getActivity(), id+"", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getActivity(), DetailActivity.class);
+        intent.putExtra(BaseDetailFragment.ARG_ID, id);
+        intent.putExtra(BaseDetailFragment.ARG_TABLE, MyPoem.Rhythm.TABLE_NAME);
+        startActivity(intent);
     }
 }

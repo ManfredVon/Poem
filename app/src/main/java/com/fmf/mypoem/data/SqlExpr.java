@@ -4,7 +4,7 @@ package com.fmf.mypoem.data;
  * Created by fmf on 15/6/3.
  */
 public interface SqlExpr {
-    String LIKE_QUESTION_MARK = " LIKE_QUESTION_MARK ?";
+    String LIKE_QUESTION_MARK = " LIKE ?";
     String EQUAL_QUESTION_MARK = " = ?";
     String OR = " OR ";
     String AND = " AND ";

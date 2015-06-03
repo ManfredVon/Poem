@@ -45,12 +45,19 @@
 
     <string name="tools_text_poem_title">锦瑟</string>
     <string name="tools_text_poem_subtitle">无副题</string>
+    <string name="tools_text_poem_author">李商隐</string>
     <string name="tools_text_poem_content">@string/lorem</string>
+    <string name="tools_text_poem_created">xxxx年xx月xx日</string>
 
-    <string name="tools_text_rhythm_name">五律</string>
+    <string name="tools_text_rhythm_name">水调歌头</string>
+    <string name="tools_text_rhythm_alias">元会曲、凯歌</string>
     <string name="tools_text_rhythm_count">40字</string>
-    <string name="tools_text_rhythm_intro">平韵，平起平收，首句押韵</string>
-    <string name="tools_text_rhythm_alias">别名1、别名2</string>
+    <string name="tools_text_rhythm_intro">双调九十五字，前段九句四平韵、两仄韵，后段十句四平韵、两仄韵</string>
+    <string name="tools_text_rhythm_metre">
+        ○●●○●,●●●○△\n●○○●○●,○●●○△\n●●○○○▲,●●○○●▲,○●●○△\n●●●○●,○●●○△\n●○●,○●●,●○△\n●○●●,○●○●●○△\n○●○○○▲,●●○○○▲,●●●○△\n●●○○●,○●●○△</string>
+    <string name="tools_text_rhythm_sample">《水调歌头》（苏轼）\n明月几时有，把酒问青天。\n不知天上宫阙，今夕是何年。\n我欲乘风归去，又恐琼楼玉宇，高处不胜寒\n起舞弄清影，何事在人间。\n转朱阁，低绮户，照无眠。\n不应有恨，何事长向别时圆。\n人有悲欢离合，月有阴晴圆缺，此事古难全\n但愿人长久，千里共婵娟。</string>
+    <string name="tools_text_rhythm_comment">此词前段第五、六句，后段第六、七句，间入两仄韵。按，刘仲芳词，“极目平沙千里，惟见雕弓白羽”、“堂有经纶贤相，边有纵横谋将”；叶梦得词，“分付平云千里，包卷骚人遗思”、“却叹从来贤士，如我与公多矣”；辛弃疾词，“好卷垂虹千尺，只放冰壶一色”、“寄语烟波旧侣，闻道蒪鲈正美”；段克己词，“神既来兮庭宇，飒飒西风吹雨”、“风外渊渊箫鼓，醉饱满城黎庶”，正与此同。但叶梦得词“里”、“思”、“士”、“矣”，段克己词“宇”、“雨”、“鼓”、“庶”，前后段同一韵，与此词前后各韵者，又微有别。此外，又有前段第五、六句押仄韵，后段不押者，或有后段第六、七句押仄韵，前段不押者，此则偶合，不复分体。</string>
+
 
     <string-array name="tab_title">
         <item>草稿</item>

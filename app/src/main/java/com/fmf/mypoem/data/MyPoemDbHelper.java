@@ -24,7 +24,7 @@ import java.util.List;
  */
 public class MyPoemDbHelper extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 3;
+    public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "MyPoem.db";
 
     private Context context;
@@ -45,13 +45,16 @@ public class MyPoemDbHelper extends SQLiteOpenHelper {
 //        db.execSQL(SQL_CREATE_POEM); // another table
 
         insertRhythmDataFromJsonFile(context, db);
+
+        // TODO: delete when product
+        insertPoemDataFromJsonFile(context, db);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // 升级数据库，删掉原来的表，重新建表
         db.execSQL(PoemSqlExpr.SQL_DELETE_POEM);
-        db.execSQL(PoemSqlExpr.SQL_DELETE_RHYTHM);
+//        db.execSQL(PoemSqlExpr.SQL_DELETE_RHYTHM);
 
         onCreate(db);
     }

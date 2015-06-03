@@ -109,6 +109,12 @@ public class PoemActivity extends BaseActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_poem, menu);
 
+        setUpSearchMenuItem(menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    private void setUpSearchMenuItem(Menu menu) {
         // 关联searchable.xml配置和SearchView
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         final MenuItem searchItem = menu.findItem(R.id.action_search);
@@ -166,9 +172,6 @@ public class PoemActivity extends BaseActivity {
                 return true;
             }
         });
-
-
-        return true;
     }
 
     private boolean isQuery(String query) {
@@ -196,22 +199,9 @@ public class PoemActivity extends BaseActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            Intent intent = new Intent(this, DetailActivity.class);
-//            intent.putExtra(MyPoem.Poem._ID, 1l);
-//            startActivity(intent);
-//
-//            return true;
-//        }
-
         switch (id) {
             case R.id.action_compose:
                 gotoCompose();
-                return true;
-            case R.id.action_settings:
-                Intent intent = new Intent(this, DemoActivity.class);
-                startActivity(intent);
                 return true;
 
             default:

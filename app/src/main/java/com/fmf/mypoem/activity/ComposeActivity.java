@@ -86,7 +86,9 @@ public class ComposeActivity extends BaseActivity implements DatePickerFragment.
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_compose, menu);
-        return true;
+
+        //always return super method for the settings action
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -96,9 +98,13 @@ public class ComposeActivity extends BaseActivity implements DatePickerFragment.
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+//            case R.id.action_:
+//
+//                break;
+
+            default:
+                break;
         }
 
         return super.onOptionsItemSelected(item);
