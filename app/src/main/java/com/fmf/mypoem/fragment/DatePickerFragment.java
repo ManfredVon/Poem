@@ -8,6 +8,8 @@ import android.app.DialogFragment;
 import android.os.Bundle;
 import android.widget.DatePicker;
 
+import com.fmf.mypoem.poem.PoemLog;
+
 import java.util.Calendar;
 
 
@@ -16,10 +18,11 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     public static final String MONTH = "month";
     public static final String DAY = "day";
 
-    private OnDateSetListner listner;
+    private OnDateSetListener listener;
 
     public DatePickerFragment() {
         // Required empty public constructor
+        PoemLog.i(this, "constructor");
     }
     
     @Override
@@ -38,14 +41,14 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-        listner.onDateSet(year, monthOfYear, dayOfMonth);
+        listener.onDateSet(year, monthOfYear, dayOfMonth);
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            listner = (OnDateSetListner) activity;
+            listener = (OnDateSetListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement DatePickerFragment.OnDateSetListner");
@@ -55,10 +58,10 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     @Override
     public void onDetach() {
         super.onDetach();
-        listner = null;
+        listener = null;
     }
 
-    public static interface OnDateSetListner {
-        public void onDateSet(int year, int monthOfYear, int dayOfMonth);
+    public interface OnDateSetListener {
+        void onDateSet(int year, int monthOfYear, int dayOfMonth);
     }
 }

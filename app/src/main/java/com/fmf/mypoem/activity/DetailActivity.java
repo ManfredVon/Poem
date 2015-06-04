@@ -29,7 +29,6 @@ import com.fmf.mypoem.poem.PoemLog;
 import java.util.List;
 
 public class DetailActivity extends BaseActivity {
-    private String shareText;
     private FragmentManager fm;
 
     @Override
@@ -57,7 +56,8 @@ public class DetailActivity extends BaseActivity {
         if (intent != null) {
             long id = intent.getLongExtra(BaseDetailFragment.ARG_ID, 0);
             final String table = intent.getStringExtra(BaseDetailFragment.ARG_TABLE);
-            PoemLog.i("DetailActivity: id=" + id + ", table=" + table);
+            PoemLog.i(this, "id=" + id + ", table=" + table);
+
             if (id > 0) {
                 FragmentTransaction ft = fm.beginTransaction();
                 BaseDetailFragment fragment = null;

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.PagerAdapter;
@@ -57,7 +58,7 @@ public class PoemActivity extends BaseActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        PoemLog.i("PoemActivity--onNewIntent");
+
         handleIntent(intent);
     }
 
@@ -65,44 +66,16 @@ public class PoemActivity extends BaseActivity {
         // 搜索
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
-            PoemLog.i("query: " + query);
+            PoemLog.i(this, "query=" + query);
 
             query(query);
         }
     }
 
     private void query(String query) {
-        curFragment.query(query);
-    }
-
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        PoemLog.i("PoemActivity--onStart");
-//    }
-//
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        PoemLog.i("PoemActivity--onResume");
-//    }
-//
-//    @Override
-//    protected void onPause() {
-//        super.onPause();
-//        PoemLog.i("PoemActivity--onPause");
-//    }
-//
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        PoemLog.i("PoemActivity--onDestroy");
-//    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        PoemLog.i("PoemActivity--onConfigurationChanged");
+        if (isQuery(query)) {
+            curFragment.query(query);
+        }
     }
 
     @Override
@@ -134,12 +107,11 @@ public class PoemActivity extends BaseActivity {
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             public boolean onQueryTextSubmit(String query) {
-                if (isQuery(query)) {
-                    // send Intent.ACTION_SEARCH
-                    return false;
-                }
-                // this method handle it, do nothing
-                return true;
+                // send Intent.ACTION_SEARCH
+                return false;
+
+                // this method handle it, do not send Intent.ACTION_SEARCH
+                //return true;
             }
 
             public boolean onQueryTextChange(String newText) {
@@ -157,14 +129,14 @@ public class PoemActivity extends BaseActivity {
         MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionExpand(MenuItem menuItem) {
-                PoemLog.i("onMenuItemActionExpand");
+                PoemLog.i(PoemActivity.this, "onMenuItemActionExpand");
                 // true: expand; flase: no expand
                 return true;
             }
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem menuItem) {
-                PoemLog.i("onMenuItemActionCollapse");
+                PoemLog.i(PoemActivity.this, "onMenuItemActionCollapse");
 
                 query(null); // list all
 
@@ -174,12 +146,15 @@ public class PoemActivity extends BaseActivity {
         });
     }
 
-    private boolean isQuery(String query) {
-        if (query == null) {
-            return false;
+    private boolean isQuery(@Nullable String query) {
+        if (query != null) {
+            query = query.trim();
         }
-        query = query.trim();
         String comparison = getQueryComparison(query);
+
+        PoemLog.i(this, "comparison="+comparison);
+        PoemLog.i(this, "curQueryComparison="+curQueryComparison);
+
         if (comparison.equals(curQueryComparison)) {
             return false;
         }
@@ -228,7 +203,7 @@ public class PoemActivity extends BaseActivity {
         adapter = new TabPagerAdapter(getSupportFragmentManager(), tabFragments);
         viewPager = (ViewPager) findViewById(R.id.pager);
         viewPager.setAdapter(adapter);
-//        viewPager.setOffscreenPageLimit(tabTags.length); // 默认预加载一页，即一开始就有两页被创建
+//        viewPager.setOffscreenPageLimit(len); // 默认预加载一页，即一开始就有两页被创建
 
         tabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         tabStrip.setViewPager(viewPager);
@@ -240,7 +215,7 @@ public class PoemActivity extends BaseActivity {
 
             @Override
             public void onPageSelected(int position) {
-                PoemLog.i("onPageSelected");
+                PoemLog.i(PoemActivity.this, "onPageSelected");
                 setCur(position);
             }
 
@@ -256,6 +231,5 @@ public class PoemActivity extends BaseActivity {
         curPos = pos;
         curFragment = tabFragments[pos];
     }
-
 
 }

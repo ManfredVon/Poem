@@ -18,11 +18,6 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    protected boolean hasActionBar() {
-        return false;
-    }
-
-    @Override
     protected int getLayoutRes() {
         return R.layout.activity_main;
     }

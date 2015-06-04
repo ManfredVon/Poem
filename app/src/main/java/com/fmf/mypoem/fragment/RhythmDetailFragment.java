@@ -7,9 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.fmf.mypoem.R;
-import com.fmf.mypoem.data.PoemDao;
 import com.fmf.mypoem.data.RhythmDao;
-import com.fmf.mypoem.model.Poem;
 import com.fmf.mypoem.model.Rhythm;
 
 public class RhythmDetailFragment extends BaseDetailFragment<Rhythm> {
@@ -38,7 +36,7 @@ public class RhythmDetailFragment extends BaseDetailFragment<Rhythm> {
     }
 
     @Override
-    protected void initViews(View root) {
+    protected void onInitViews(View root) {
         tvName = (TextView) root.findViewById(R.id.tv_name);
         tvAlias = (TextView) root.findViewById(R.id.tv_alias);
         tvIntro = (TextView) root.findViewById(R.id.tv_intro);
@@ -61,6 +59,26 @@ public class RhythmDetailFragment extends BaseDetailFragment<Rhythm> {
         tvMeter.setText(metre);
         tvSample.setText(sample);
         tvComment.setText(comment);
+    }
+
+    @Override
+    protected Rhythm onLoadDetail(long id) {
+        return new RhythmDao(getActivity()).get(id);
+    }
+
+    @Override
+    protected void onPostLoadDetail(Rhythm rhythm) {
+        bindViewData(rhythm);
+    }
+
+    @Override
+    protected String onCreateShareText(Rhythm rhythm) {
+        String name = rhythm.getName();
+        String alias = rhythm.getAlias();
+        String intro = rhythm.getIntro();
+        String metre = rhythm.getMetre();
+        String sample = rhythm.getSample();
+        String comment = rhythm.getComment();
 
         final String LF = "\n";
         StringBuilder sb = new StringBuilder();
@@ -77,17 +95,6 @@ public class RhythmDetailFragment extends BaseDetailFragment<Rhythm> {
             sb.append(LF).append(LF).append(comment);
         }
 
-        shareText = sb.toString();
+        return sb.toString();
     }
-
-    @Override
-    protected Rhythm onLoadDetail() {
-        return new RhythmDao(getActivity()).get(id);
-    }
-
-    @Override
-    protected void onPostLoadDetail(Rhythm rhythm) {
-        bindViewData(rhythm);
-    }
-
 }

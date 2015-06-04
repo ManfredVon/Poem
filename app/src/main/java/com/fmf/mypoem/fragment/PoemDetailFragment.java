@@ -2,18 +2,13 @@ package com.fmf.mypoem.fragment;
 
 
 import android.os.Bundle;
-import android.app.Fragment;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.fmf.mypoem.R;
 import com.fmf.mypoem.data.PoemDao;
-import com.fmf.mypoem.model.Model;
 import com.fmf.mypoem.model.Poem;
-import com.fmf.mypoem.poem.PoemLog;
 
 public class PoemDetailFragment extends BaseDetailFragment<Poem> {
     private TextView tvTitle;
@@ -41,7 +36,7 @@ public class PoemDetailFragment extends BaseDetailFragment<Poem> {
     }
 
     @Override
-    protected void initViews(View root) {
+    protected void onInitViews(View root) {
         tvTitle = (TextView) root.findViewById(R.id.tv_title);
         tvSubtitle = (TextView) root.findViewById(R.id.tv_subtitle);
         tvContent = (TextView) root.findViewById(R.id.tv_content);
@@ -61,6 +56,25 @@ public class PoemDetailFragment extends BaseDetailFragment<Poem> {
         tvContent.setText(content);
         tvAuthor.setText(author);
         tvCreated.setText(created);
+    }
+
+    @Override
+    protected Poem onLoadDetail(long id) {
+        return new PoemDao(getActivity()).get(id);
+    }
+
+    @Override
+    protected void onPostLoadDetail(Poem poem) {
+        bindViewData(poem);
+    }
+
+    @Override
+    protected String onCreateShareText(Poem poem) {
+        String title = poem.getTitle();
+        String subtitle = poem.getSubtitle();
+        String content = poem.getContent();
+        String author = poem.getAuthor();
+//        String created = poem.getCreated();
 
         StringBuilder sb = new StringBuilder();
         final String LF = "\n";
@@ -72,17 +86,6 @@ public class PoemDetailFragment extends BaseDetailFragment<Poem> {
         sb.append(DOT).append(author).append(LF);
         sb.append(content);
 
-        shareText = sb.toString();
+        return sb.toString();
     }
-
-    @Override
-    protected Poem onLoadDetail() {
-        return new PoemDao(getActivity()).get(id);
-    }
-
-    @Override
-    protected void onPostLoadDetail(Poem poem) {
-        bindViewData(poem);
-    }
-
 }

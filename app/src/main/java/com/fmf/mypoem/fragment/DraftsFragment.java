@@ -19,7 +19,6 @@ public class DraftsFragment extends BasePoemFragment {
 
     public DraftsFragment() {
         super();
-        PoemLog.i("DraftsFragment");
     }
 
     @Override

@@ -21,7 +21,7 @@ import com.fmf.mypoem.util.DateUtil;
 import java.util.Calendar;
 import java.util.Date;
 
-public class ComposeActivity extends BaseActivity implements DatePickerFragment.OnDateSetListner {
+public class ComposeActivity extends BaseActivity implements DatePickerFragment.OnDateSetListener {
     private EditText etTitle;
     private EditText etSubtitle;
     private EditText etContent;
@@ -41,11 +41,6 @@ public class ComposeActivity extends BaseActivity implements DatePickerFragment.
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_compose;
-    }
-
-    @Override
-    protected boolean hasActionBar() {
-        return false;
     }
 
     private void initViews() {
