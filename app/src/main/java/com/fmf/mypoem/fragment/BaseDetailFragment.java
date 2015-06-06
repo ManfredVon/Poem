@@ -26,7 +26,7 @@ public abstract class BaseDetailFragment<T extends Model> extends Fragment {
     public static final String ARG_ID = "id";
     public static final String ARG_TABLE = "table";
 
-    private Intent shareIntent;
+    private ShareActionProvider shareProvider;
 
     public BaseDetailFragment() {
         // Required empty public constructor
@@ -85,7 +85,7 @@ public abstract class BaseDetailFragment<T extends Model> extends Fragment {
 
                 @Override
                 protected void onPostExecute(T model) {
-                    setUpShareText(model);
+                    setUpShareIntent(model);
 
                     onPostLoadDetail(model);
                 }
@@ -93,13 +93,15 @@ public abstract class BaseDetailFragment<T extends Model> extends Fragment {
         }
     }
 
-    private void setUpShareText(T model) {
-        if (shareIntent != null) {
-            final String text = onCreateShareText(model);
-            PoemLog.i(text);
-            shareIntent.putExtra(Intent.EXTRA_TEXT, text);
-        }else{
-            PoemLog.i("shareIntent is null");
+    private void setUpShareIntent(T model) {
+        final String text = onCreateShareText(model);
+        PoemLog.i(this, text);
+        Intent shareIntent = createShareIntent(text);
+        if (shareProvider != null) {
+            shareProvider.setShareIntent(shareIntent);
+        } else {
+            // todo: need to figure out why
+            PoemLog.i(this, "shareProvider is null, but share still work !");
         }
     }
 
@@ -109,22 +111,15 @@ public abstract class BaseDetailFragment<T extends Model> extends Fragment {
 
         int shareItemId = R.id.action_share;
         MenuItem shareItem = menu.findItem(shareItemId);
-        ShareActionProvider shareProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
-
-        shareIntent = createShareIntent();
-        if (shareIntent != null) {
-            // Set up ShareActionProvider's default share intent
-            shareProvider.setShareIntent(shareIntent);
-        } else {
-            menu.removeItem(shareItemId);
-        }
+        shareProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
     }
 
     @Nullable
-    private Intent createShareIntent() {
+    private Intent createShareIntent(String text) {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.setType("text/*");
-//        shareIntent.putExtra(Intent.EXTRA_TEXT, onCreateShareText(model)); // the model didn't load yet
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, text); // the model didn't load yet
+//        Intent.createChooser(shareIntent, "分享");
 
         //检查手机上是否存在可以处理这个动作的应用
         List<ResolveInfo> infoList = getActivity().getPackageManager().queryIntentActivities(shareIntent, 0);

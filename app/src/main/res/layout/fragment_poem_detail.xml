@@ -15,6 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+        android:textIsSelectable="true"
         android:textAppearance="?android:attr/textAppearanceLarge"
         tools:text="@string/tools_text_poem_title"/>
 
@@ -24,10 +25,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_title"
         android:layout_centerHorizontal="true"
+        android:textIsSelectable="true"
         android:textAppearance="?android:attr/textAppearanceSmall"
         tools:text="@string/tools_text_poem_subtitle"
         />
-
+<!--todo: textIsSelectable 只能让单个textview可选，不能多个一起选-->
     <TextView
         android:id="@+id/tv_content"
         android:layout_width="wrap_content"
@@ -37,6 +39,7 @@
         android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
         android:gravity="center_horizontal"
+        android:textIsSelectable="true"
         android:lineSpacingMultiplier="1.5"
         android:textAppearance="?android:attr/textAppearanceMedium"
         tools:text="@string/tools_text_poem_content"/>
@@ -48,6 +51,7 @@
         android:layout_alignParentRight="true"
         android:layout_below="@id/tv_content"
         android:text="@string/tools_text_poem_author"
+        android:textIsSelectable="true"
         android:textAppearance="?android:attr/textAppearanceSmall"/>
 
     <TextView
@@ -56,6 +60,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_below="@id/tv_author"
+        android:textIsSelectable="true"
         android:textAppearance="?android:attr/textAppearanceSmall"
         tools:text="@string/tools_text_poem_created"/>
 </RelativeLayout>
