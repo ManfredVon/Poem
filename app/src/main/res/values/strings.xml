@@ -6,11 +6,13 @@
     <string name="app_name">我的诗词</string>
 
     <string name="action_settings">设置</string>
+    <string name="action_cancel">取消</string>
     <string name="action_compose">创作</string>
     <string name="action_search">搜索</string>
     <string name="action_share">分享</string>
-
-
+    <string name="action_delete">删除</string>
+    <string name="action_update">修改</string>
+    
     <string name="title_activity_poem">我的诗词</string>
     <string name="title_activity_compose">创作</string>
     <string name="title_activity_detail">诗词详情</string>
@@ -22,11 +24,16 @@
     <string name="hint_et_created">创作日期</string>
     <string name="hint_search">题目|内容</string>
 
-    <string name="text_btn_craft">保存草稿</string>
-    <string name="text_btn_compose">完成创作</string>
+    <string name="text_btn_draft">存为草稿</string>
+    <string name="text_btn_compose">保存创作</string>
 
-    <string name="tip_no_content">正文内容不能空</string>
     <string name="tip_default_title">无题</string>
+    <string name="tip_no_content">正文内容不能空</string>
+    <string name="tip_delete_success">删除成功</string>
+    <string name="tip_delete_fail">删除失败</string>
+    <string name="tip_fail">操作失败</string>
+    <string name="tip_draft_success">成功存为草稿</string>
+    <string name="tip_compose_success">成功保存创作</string>
 
     <string name="empty_text_fragment_drafts">没有草稿</string>
     <string name="empty_text_fragment_poems">没有诗词</string>

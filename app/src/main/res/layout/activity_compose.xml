@@ -85,7 +85,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:text="@string/text_btn_craft"
+                android:text="@string/text_btn_draft"
                 android:id="@+id/btn_craft"
                 android:layout_gravity="center_horizontal"
                 android:onClick="onClick"/>

@@ -12,6 +12,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.fmf.mypoem.R;
@@ -22,6 +23,8 @@ import com.fmf.mypoem.fragment.PoemsFragment;
 import com.fmf.mypoem.fragment.RhythmsFragment;
 import com.fmf.mypoem.poem.PoemLog;
 import com.fmf.mypoem.util.StringUtil;
+
+import java.lang.reflect.Field;
 
 public class PoemActivity extends BaseActivity {
     private PagerAdapter adapter;
@@ -94,6 +97,16 @@ public class PoemActivity extends BaseActivity {
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setIconifiedByDefault(false); // false:搜索图标不显示在编辑框内,而是显示在其前面
         searchView.setSubmitButtonEnabled(true);
+
+        //通过反射，修改默认的样式，可以从android的search_view.xml中找到需要的组件
+        try {
+            Field field = searchView.getClass().getDeclaredField("mSubmitButton");
+            field.setAccessible(true);
+            ImageView iv = (ImageView) field.get(searchView);
+            iv.setImageResource(R.drawable.ic_action_submit);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         // 无论onClose返回true或false，点x时edittext都不会hidden
 //        searchView.setOnCloseListener(new SearchView.OnCloseListener() {

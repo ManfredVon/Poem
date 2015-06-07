@@ -69,6 +69,11 @@ public class PoemDetailFragment extends BaseDetailFragment<Poem> {
     }
 
     @Override
+    protected int onDelete(long id) {
+        return new PoemDao(getActivity()).delete(id);
+    }
+
+    @Override
     protected String onCreateShareText(Poem poem) {
         String title = poem.getTitle();
         String subtitle = poem.getSubtitle();

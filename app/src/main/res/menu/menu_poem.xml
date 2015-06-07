@@ -3,7 +3,7 @@
 
     <item
         android:id="@+id/action_compose"
-        android:icon="@drawable/ic_action_edit"
+        android:icon="@drawable/ic_action_create"
         android:orderInCategory="50"
         android:title="@string/action_compose"
         app:showAsAction="ifRoom"/>

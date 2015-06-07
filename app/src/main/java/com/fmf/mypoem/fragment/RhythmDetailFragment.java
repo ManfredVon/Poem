@@ -72,6 +72,11 @@ public class RhythmDetailFragment extends BaseDetailFragment<Rhythm> {
     }
 
     @Override
+    protected int onDelete(long id) {
+        return new RhythmDao(getActivity()).delete(id);
+    }
+
+    @Override
     protected String onCreateShareText(Rhythm rhythm) {
         String name = rhythm.getName();
         String alias = rhythm.getAlias();

@@ -69,6 +69,14 @@ public abstract class MyPoemDao<T extends Model> implements PoemSqlExpr {
         }
     }
 
+    public long saveOrUpdate(T model){
+        if (model.getId() > 0){
+            return update(model);
+        }
+
+        return save(model);
+    }
+
     public T get(long id) {
         final String selection = BaseColumns._ID + EQUAL_QUESTION_MARK;
         final String[] selectionArgs = {String.valueOf(id)};

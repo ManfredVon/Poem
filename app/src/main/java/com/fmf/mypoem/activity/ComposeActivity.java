@@ -1,6 +1,7 @@
 package com.fmf.mypoem.activity;
 
 import android.app.DialogFragment;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -8,12 +9,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.fmf.mypoem.R;
 import com.fmf.mypoem.data.MyPoem;
 import com.fmf.mypoem.data.PoemDao;
+import com.fmf.mypoem.fragment.BaseDetailFragment;
 import com.fmf.mypoem.fragment.DatePickerFragment;
 import com.fmf.mypoem.model.Poem;
 import com.fmf.mypoem.util.DateUtil;
@@ -27,6 +31,8 @@ public class ComposeActivity extends BaseActivity implements DatePickerFragment.
     private EditText etContent;
     private EditText etAuthor;
     private EditText etCreated;
+
+    private Poem poem;
 //    private int year;
 //    private int month;
 //    private int day;
@@ -36,6 +42,49 @@ public class ComposeActivity extends BaseActivity implements DatePickerFragment.
         super.onInit(savedInstanceState);
 
         initViews();
+
+        handleIntent(getIntent());
+    }
+
+    private void handleIntent(Intent intent) {
+        final long id = intent.getLongExtra(BaseDetailFragment.ARG_ID, 0);
+        final boolean isUpdate = id > 0;
+        if (isUpdate) {
+            new AsyncTask<Void, Void, Poem>() {
+                @Override
+                protected Poem doInBackground(Void... params) {
+                    return new PoemDao(ComposeActivity.this).get(id);
+                }
+
+                @Override
+                protected void onPostExecute(Poem poem) {
+                    bindViewData(poem);
+                }
+            }.execute();
+        }
+    }
+
+    private void bindViewData(Poem poem) {
+        this.poem = poem;
+
+        String title = poem.getTitle();
+        String subtitle = poem.getSubtitle();
+        String content = poem.getContent();
+        String author = poem.getAuthor();
+        String created = poem.getCreated();
+
+        etTitle.setText(title);
+        etSubtitle.setText(subtitle);
+        etContent.setText(content);
+        etAuthor.setText(author);
+        etCreated.setText(created);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        handleIntent(intent);
     }
 
     @Override
@@ -50,7 +99,7 @@ public class ComposeActivity extends BaseActivity implements DatePickerFragment.
         etAuthor = (EditText) findViewById(R.id.et_author);
         etCreated = (EditText) findViewById(R.id.et_created);
 
-
+        // 只有获得焦点时，才能触发OnClickListner, 所以改用setOnTouchListener
         etCreated.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -67,7 +116,7 @@ public class ComposeActivity extends BaseActivity implements DatePickerFragment.
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
         setCreatedDate(year, month, day);
-
+        
         // 只有获得焦点时，才能触发OnClickListner
 //        etCreated.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -129,13 +178,13 @@ public class ComposeActivity extends BaseActivity implements DatePickerFragment.
 
     private void savePoem(String status) {
         String content = etContent.getText().toString().trim();
-        if (TextUtils.isEmpty(content)){
+        if (TextUtils.isEmpty(content)) {
             Toast.makeText(this, getString(R.string.tip_no_content), Toast.LENGTH_SHORT).show();
-            return ;
+            return;
         }
 
         String title = etTitle.getText().toString().trim();
-        if (TextUtils.isEmpty(title)){
+        if (TextUtils.isEmpty(title)) {
             title = getString(R.string.tip_default_title);
         }
 
@@ -144,7 +193,9 @@ public class ComposeActivity extends BaseActivity implements DatePickerFragment.
         String created = etCreated.getText().toString().trim();
         String updated = DateUtil.formatDatetimeToSqlite(new Date());
 
-        Poem poem = new Poem();
+        if (poem == null) {
+            poem = new Poem();
+        }
         poem.setTitle(title);
         poem.setSubtitle(subtitle);
         poem.setContent(content);
@@ -153,7 +204,30 @@ public class ComposeActivity extends BaseActivity implements DatePickerFragment.
         poem.setUpdated(updated);
         poem.setStatus(status);
 
-        new PoemAsyncTask().execute(poem);
+        new AsyncTask<Void, Void, Integer>() {
+            @Override
+            protected Integer doInBackground(Void... params) {
+                int tipId = R.string.tip_fail;
+
+                PoemDao dao = new PoemDao(ComposeActivity.this);
+                long result = dao.saveOrUpdate(poem);
+                if (result > 0) {
+                    if (MyPoem.Poem.STATUS_DRAFT.equals(poem.getStatus())) {
+                        tipId = R.string.tip_draft_success;
+                    } else if (MyPoem.Poem.STATUS_FINISHED.equals(poem.getStatus())) {
+                        tipId = R.string.tip_compose_success;
+                    }
+                }
+
+                return tipId;
+            }
+
+            @Override
+            protected void onPostExecute(Integer tipId) {
+                Toast.makeText(ComposeActivity.this, tipId, Toast.LENGTH_SHORT).show();
+                ComposeActivity.this.finish();
+            }
+        }.execute();
     }
 
     private void toast(String text) {
@@ -184,40 +258,4 @@ public class ComposeActivity extends BaseActivity implements DatePickerFragment.
         setCreatedDate(year, monthOfYear, dayOfMonth);
     }
 
-    public final class PoemAsyncTask extends AsyncTask<Poem, Void, String> {
-//        private Context context;
-
-        public PoemAsyncTask() {
-
-        }
-//        public PoemAsynTask(Context context) {
-//            this.context = context;
-//        }
-
-        @Override
-        protected String doInBackground(Poem... poems) {
-            String result = "操作失败";
-            Poem poem = poems[0];
-            if (poem == null) {
-                return result;
-            }
-
-            PoemDao dao = new PoemDao(ComposeActivity.this);
-            dao.save(poem);
-
-            if (MyPoem.Poem.STATUS_DRAFT.equals(poem.getStatus())) {
-                result = "成功保存草稿";
-            } else if (MyPoem.Poem.STATUS_FINISHED.equals(poem.getStatus())) {
-                result = "成功保存创作";
-            }
-
-            return result;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            Toast.makeText(ComposeActivity.this, result, Toast.LENGTH_SHORT).show();
-            ComposeActivity.this.finish();
-        }
-    }
 }

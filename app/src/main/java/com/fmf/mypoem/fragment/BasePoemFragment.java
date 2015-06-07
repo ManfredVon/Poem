@@ -1,5 +1,7 @@
 package com.fmf.mypoem.fragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,18 +9,23 @@ import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.CursorAdapter;
+import android.widget.Toast;
 
+import com.fmf.mypoem.R;
 import com.fmf.mypoem.poem.PoemLog;
 
 public abstract class BasePoemFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final int LOADER_ID = 0;
     public static final String PAGE_TITLE = "PageTitle";
     public static final String ARG_QUERY = "QueryText";
-    private CursorAdapter adapter;
+    protected CursorAdapter adapter;
     private LoaderManager loaderManager;
 
     public BasePoemFragment() {
@@ -74,6 +81,8 @@ public abstract class BasePoemFragment extends ListFragment implements LoaderMan
 
         // We have a menu item to show in action bar.
 //        setHasOptionsMenu(true);
+
+        registerForContextMenu(getListView());
 
         adapter = onCreateCursorAdapter();
         setListAdapter(adapter);
@@ -133,7 +142,7 @@ public abstract class BasePoemFragment extends ListFragment implements LoaderMan
     public void onDestroy() {
         super.onDestroy();
         PoemLog.i(this, "onDestroy");
-        
+
         closeCursor();
     }
 
@@ -145,5 +154,4 @@ public abstract class BasePoemFragment extends ListFragment implements LoaderMan
             }
         }
     }
-
 }
