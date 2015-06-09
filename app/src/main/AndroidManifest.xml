@@ -34,6 +34,7 @@
         <activity
             android:name=".activity.ComposeActivity"
             android:label="@string/title_activity_compose"
+            android:windowSoftInputMode="stateHidden"
             android:parentActivityName=".activity.PoemActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

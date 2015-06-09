@@ -16,6 +16,8 @@
     <string name="title_activity_poem">我的诗词</string>
     <string name="title_activity_compose">创作</string>
     <string name="title_activity_detail">诗词详情</string>
+    <string name="title_activity_detail_draft">草稿详情</string>
+    <string name="title_activity_detail_rhythm">格律详情</string>
 
     <string name="hint_et_title">主题</string>
     <string name="hint_et_subtitle">副题</string>

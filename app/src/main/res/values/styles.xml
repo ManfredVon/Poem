@@ -17,7 +17,7 @@
     <style name="BaseTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- customize the color palette -->
         <item name="colorPrimary">@color/primary</item>
-        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorPrimaryDark">@color/primary_dark2</item>
         <item name="colorAccent">@color/accent</item>
 
         <!--action Mode背景-->
@@ -41,5 +41,19 @@
         <!--<item name="suggestionRowLayout"></item>-->
     </style>
 
+    <style name="PoemTextAppearance" parent="@android:style/TextAppearance">
+    </style>
+    <style name="PoemTextAppearance.Large" parent="PoemTextAppearance">
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
+    </style>
+    <style name="PoemTextAppearance.Medium" parent="PoemTextAppearance">
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
+    </style>
+    <style name="PoemTextAppearance.Small" parent="PoemTextAppearance">
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
+    </style>
 
 </resources>

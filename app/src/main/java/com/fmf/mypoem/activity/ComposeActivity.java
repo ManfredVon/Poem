@@ -9,9 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.fmf.mypoem.R;
@@ -20,6 +18,7 @@ import com.fmf.mypoem.data.PoemDao;
 import com.fmf.mypoem.fragment.BaseDetailFragment;
 import com.fmf.mypoem.fragment.DatePickerFragment;
 import com.fmf.mypoem.model.Poem;
+import com.fmf.mypoem.poem.PoemConstant;
 import com.fmf.mypoem.util.DateUtil;
 
 import java.util.Calendar;
@@ -47,7 +46,7 @@ public class ComposeActivity extends BaseActivity implements DatePickerFragment.
     }
 
     private void handleIntent(Intent intent) {
-        final long id = intent.getLongExtra(BaseDetailFragment.ARG_ID, 0);
+        final long id = intent.getLongExtra(PoemConstant.ARG_ID, 0);
         final boolean isUpdate = id > 0;
         if (isUpdate) {
             new AsyncTask<Void, Void, Poem>() {
@@ -116,20 +115,12 @@ public class ComposeActivity extends BaseActivity implements DatePickerFragment.
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
         setCreatedDate(year, month, day);
-        
-        // 只有获得焦点时，才能触发OnClickListner
-//        etCreated.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                showDatePickerDialog();
-//            }
-//        });
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_compose, menu);
+        getMenuInflater().inflate(R.menu.activity_compose, menu);
 
         //always return super method for the settings action
         return super.onCreateOptionsMenu(menu);
@@ -226,6 +217,7 @@ public class ComposeActivity extends BaseActivity implements DatePickerFragment.
             protected void onPostExecute(Integer tipId) {
                 Toast.makeText(ComposeActivity.this, tipId, Toast.LENGTH_SHORT).show();
                 ComposeActivity.this.finish();
+                // todo: ComposeActivity关闭，如果是更新，返回detail，更新detail；否则返回list，导航到指定tab
             }
         }.execute();
     }

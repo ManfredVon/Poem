@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="primary">#009688</color>
-    <color name="primary_dark">#008D7F</color><!-- #00796B -->
+    <color name="primary_translucence">#80009688</color>
+    <color name="primary_dark">#008D7F</color>
+    <color name="primary_dark2">#00796B</color>
     <color name="accent">#4CAF50</color>
+    <color name="accent_translucence">#804CAF50</color>
 
     <color name="text_primary">#212121</color>
     <color name="text_secondary">#727272</color> <!-- control_normal -->
     <color name="divider">#B6B6B6</color>
 
     <color name="white_translucence">#80FFFFFF</color>
+    <color name="lv_selector">#805ADABB</color>
 
 
 </resources>

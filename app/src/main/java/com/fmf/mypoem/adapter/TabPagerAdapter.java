@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.fmf.mypoem.fragment.BasePoemFragment;
+import com.fmf.mypoem.poem.PoemConstant;
 
 /**
  * Created by fmf on 15/6/2.
@@ -32,7 +33,7 @@ public class TabPagerAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int pos) {
         Bundle args = fragments[pos].getArguments();
-        String pageTitle = args.getString(BasePoemFragment.PAGE_TITLE);
+        String pageTitle = args.getString(PoemConstant.PAGE_TITLE);
         return pageTitle;
     }
 

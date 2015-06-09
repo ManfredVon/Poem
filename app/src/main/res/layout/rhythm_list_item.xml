@@ -10,7 +10,7 @@
         android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        style="@style/PoemTextAppearance.Large"
         tools:text="@string/tools_text_rhythm_name"/>
 
     <!--<TextView-->
@@ -32,7 +32,7 @@
         android:layout_toRightOf="@id/tv_name"
         android:ellipsize="end"
         android:singleLine="true"
-        android:textAppearance="?android:attr/textAppearanceSmall"
+        style="@style/PoemTextAppearance.Small"
         tools:text="@string/tools_text_rhythm_alias"/>
 
     <TextView
@@ -42,7 +42,7 @@
         android:layout_below="@id/tv_name"
         android:ellipsize="end"
         android:singleLine="true"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        style="@style/PoemTextAppearance.Medium"
         tools:text="@string/tools_text_rhythm_intro"/>
 
 </RelativeLayout>

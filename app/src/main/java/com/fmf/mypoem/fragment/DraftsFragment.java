@@ -17,6 +17,7 @@ import com.fmf.mypoem.R;
 import com.fmf.mypoem.activity.DetailActivity;
 import com.fmf.mypoem.data.MyPoem;
 import com.fmf.mypoem.data.PoemDao;
+import com.fmf.mypoem.poem.PoemConstant;
 import com.fmf.mypoem.poem.PoemLog;
 
 public class DraftsFragment extends BasePoemFragment {
@@ -48,8 +49,8 @@ public class DraftsFragment extends BasePoemFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         Intent intent = new Intent(getActivity(), DetailActivity.class);
-        intent.putExtra(BaseDetailFragment.ARG_ID, id);
-        intent.putExtra(BaseDetailFragment.ARG_TABLE, MyPoem.Poem.TABLE_NAME);
+        intent.putExtra(PoemConstant.ARG_ID, id);
+        intent.putExtra(PoemConstant.ARG_TAB, PoemConstant.TAB_DRAFT);
         startActivity(intent);
     }
 
@@ -58,7 +59,7 @@ public class DraftsFragment extends BasePoemFragment {
         super.onCreateContextMenu(menu, v, menuInfo);
         PoemLog.i(this, "onCreateContextMenu");
 
-        getActivity().getMenuInflater().inflate(R.menu.menu_context_draft, menu);
+        getActivity().getMenuInflater().inflate(R.menu.fragment_context_draft, menu);
     }
 
     @Override

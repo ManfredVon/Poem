@@ -19,12 +19,10 @@ import android.widget.CursorAdapter;
 import android.widget.Toast;
 
 import com.fmf.mypoem.R;
+import com.fmf.mypoem.poem.PoemConstant;
 import com.fmf.mypoem.poem.PoemLog;
 
 public abstract class BasePoemFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
-    private static final int LOADER_ID = 0;
-    public static final String PAGE_TITLE = "PageTitle";
-    public static final String ARG_QUERY = "QueryText";
     protected CursorAdapter adapter;
     private LoaderManager loaderManager;
 
@@ -44,7 +42,6 @@ public abstract class BasePoemFragment extends ListFragment implements LoaderMan
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         PoemLog.i(this, "onCreate");
-
     }
 
     @Override
@@ -65,39 +62,33 @@ public abstract class BasePoemFragment extends ListFragment implements LoaderMan
         PoemLog.i(this, "onActivityCreated");
 
         init();
-
     }
 
     @Override
     public void onStart() {
         super.onStart();
         PoemLog.i(this, "onStart");
-
-//        init();
     }
 
     private void init() {
         setEmptyText(onCreateEmptyText());
 
-        // We have a menu item to show in action bar.
-//        setHasOptionsMenu(true);
-
         registerForContextMenu(getListView());
 
         adapter = onCreateCursorAdapter();
         setListAdapter(adapter);
+        getListView().setSelector(R.drawable.lv_bg);
 
-        // Prepare the loader.  Either re-connect with an existing one,
-        // or start a new one.
+        // Prepare the loader.  Either re-connect with an existing one, or start a new one.
         Bundle args = null;
         loaderManager = getLoaderManager();
-        loaderManager.initLoader(LOADER_ID, args, this);
+        loaderManager.initLoader(PoemConstant.LOADER_ID, args, this);
     }
 
     public void query(String text) {
         Bundle args = new Bundle();
-        args.putString(ARG_QUERY, text);
-        loaderManager.restartLoader(LOADER_ID, args, this);
+        args.putString(PoemConstant.ARG_QUERY, text);
+        loaderManager.restartLoader(PoemConstant.LOADER_ID, args, this);
     }
 
     @Override
@@ -106,7 +97,7 @@ public abstract class BasePoemFragment extends ListFragment implements LoaderMan
         
         String text = null;
         if (args != null) {
-            text = args.getString(BasePoemFragment.ARG_QUERY);
+            text = args.getString(PoemConstant.ARG_QUERY);
         }
 
         final String finalText = text == null ? null : text.trim();

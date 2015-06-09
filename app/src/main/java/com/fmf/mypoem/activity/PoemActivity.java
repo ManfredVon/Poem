@@ -3,6 +3,7 @@ package com.fmf.mypoem.activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,7 +13,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.fmf.mypoem.R;
@@ -21,6 +24,7 @@ import com.fmf.mypoem.fragment.BasePoemFragment;
 import com.fmf.mypoem.fragment.DraftsFragment;
 import com.fmf.mypoem.fragment.PoemsFragment;
 import com.fmf.mypoem.fragment.RhythmsFragment;
+import com.fmf.mypoem.poem.PoemConstant;
 import com.fmf.mypoem.poem.PoemLog;
 import com.fmf.mypoem.util.StringUtil;
 
@@ -82,7 +86,7 @@ public class PoemActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_poem, menu);
+        getMenuInflater().inflate(R.menu.activity_poem, menu);
 
         setUpSearchMenuItem(menu);
 
@@ -207,7 +211,7 @@ public class PoemActivity extends BaseActivity {
         tabFragments = new BasePoemFragment[len];
         for (int i = 0; i < len; i++) {
             Bundle args = new Bundle();
-            args.putCharSequence(BasePoemFragment.PAGE_TITLE, tabTitles[i]);
+            args.putCharSequence(PoemConstant.PAGE_TITLE, tabTitles[i]);
             tabFragments[i] = (BasePoemFragment) Fragment.instantiate(this, tabFragmentClasses[i].getName(), args);
         }
         setCur(0);

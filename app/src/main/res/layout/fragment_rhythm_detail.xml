@@ -15,8 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:textIsSelectable="true"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        style="@style/PoemTextAppearance.Large"
         tools:text="@string/tools_text_rhythm_name"/>
 
     <TextView
@@ -26,8 +25,7 @@
         android:layout_below="@id/tv_name"
         android:layout_centerHorizontal="true"
         android:gravity="center_horizontal"
-        android:textIsSelectable="true"
-        android:textAppearance="?android:attr/textAppearanceSmall"
+        style="@style/PoemTextAppearance.Small"
         tools:text="@string/tools_text_rhythm_alias"/>
 
     <TextView
@@ -37,8 +35,7 @@
         android:layout_below="@id/tv_alias"
         android:layout_centerHorizontal="true"
         android:gravity="center_horizontal"
-        android:textIsSelectable="true"
-        android:textAppearance="?android:attr/textAppearanceSmall"
+        style="@style/PoemTextAppearance.Small"
         tools:text="@string/tools_text_rhythm_intro"/>
 
     <TextView
@@ -50,9 +47,9 @@
         android:layout_marginTop="10dp"
         android:layout_centerHorizontal="true"
         android:gravity="center_horizontal"
-        android:textIsSelectable="true"
         android:lineSpacingMultiplier="1.5"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textIsSelectable="true"
+        style="@style/PoemTextAppearance.Medium"
         tools:text="@string/tools_text_rhythm_metre"/>
 
     <TextView
@@ -64,8 +61,9 @@
         android:layout_centerHorizontal="true"
         android:gravity="center_horizontal"
         android:textIsSelectable="true"
-        android:text="@string/tools_text_rhythm_sample"
-        android:textAppearance="?android:attr/textAppearanceSmall"/>
+        style="@style/PoemTextAppearance.Small"
+        tools:text="@string/tools_text_rhythm_sample"
+        />
 
     <TextView
         android:id="@+id/tv_comment"
@@ -73,7 +71,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@id/tv_sample"
-        android:textIsSelectable="true"
-        android:textAppearance="?android:attr/textAppearanceSmall"
+        style="@style/PoemTextAppearance.Small"
         tools:text="@string/tools_text_rhythm_comment"/>
 </RelativeLayout>

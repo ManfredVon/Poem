@@ -3,30 +3,18 @@ package com.fmf.mypoem.activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.content.pm.ResolveInfo;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.BaseColumns;
-import android.support.annotation.Nullable;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.ActionBarActivity;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.support.v7.widget.ShareActionProvider;
-import android.widget.TextView;
 
 import com.fmf.mypoem.R;
 import com.fmf.mypoem.data.MyPoem;
-import com.fmf.mypoem.data.MyPoemDao;
-import com.fmf.mypoem.data.PoemDao;
 import com.fmf.mypoem.fragment.BaseDetailFragment;
+import com.fmf.mypoem.fragment.DraftDetailFragment;
 import com.fmf.mypoem.fragment.PoemDetailFragment;
 import com.fmf.mypoem.fragment.RhythmDetailFragment;
-import com.fmf.mypoem.model.Poem;
+import com.fmf.mypoem.poem.PoemConstant;
 import com.fmf.mypoem.poem.PoemLog;
-
-import java.util.List;
 
 public class DetailActivity extends BaseActivity {
     private FragmentManager fm;
@@ -54,47 +42,28 @@ public class DetailActivity extends BaseActivity {
 
     private void handleIntent(Intent intent) {
         if (intent != null) {
-            long id = intent.getLongExtra(BaseDetailFragment.ARG_ID, 0);
-            final String table = intent.getStringExtra(BaseDetailFragment.ARG_TABLE);
-            PoemLog.i(this, "id=" + id + ", table=" + table);
+            long id = intent.getLongExtra(PoemConstant.ARG_ID, 0);
+            final String tab = intent.getStringExtra(PoemConstant.ARG_TAB);
+            PoemLog.i(this, "id=" + id + ", tab=" + tab);
 
             if (id > 0) {
                 FragmentTransaction ft = fm.beginTransaction();
                 BaseDetailFragment fragment = null;
-                if (MyPoem.Poem.TABLE_NAME.equals(table)) {
+                if (PoemConstant.TAB_POEM.equals(tab)) {
+                    setTitle(R.string.title_activity_detail);
                     fragment = PoemDetailFragment.newInstance(id);
-                } else if (MyPoem.Rhythm.TABLE_NAME.equals(table)) {
+                } else if (PoemConstant.TAB_DRAFT.equals(tab)) {
+                    setTitle(R.string.title_activity_detail_draft);
+                    fragment = DraftDetailFragment.newInstance(id);
+                } else if (PoemConstant.TAB_RHYTHM.equals(tab)) {
+                    setTitle(R.string.title_activity_detail_rhythm);
                     fragment = RhythmDetailFragment.newInstance(id);
                 }
                 int containerId = R.id.fl_container;
-                ft.add(containerId, fragment);
+                ft.replace(containerId, fragment);
                 ft.commit();
             }
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        switch (item.getItemId()) {
-//            case R.id.action_:
-//
-//                break;
-
-            default:
-                break;
-        }
-        
-        return super.onOptionsItemSelected(item);
     }
 
 }

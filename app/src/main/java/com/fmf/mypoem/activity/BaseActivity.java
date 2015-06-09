@@ -6,12 +6,8 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Toast;
 
 import com.fmf.mypoem.R;
@@ -116,7 +112,7 @@ public class BaseActivity extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_base, menu);
+        getMenuInflater().inflate(R.menu.activity_base, menu);
 
         return super.onCreateOptionsMenu(menu);
     }

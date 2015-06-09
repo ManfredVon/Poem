@@ -14,9 +14,7 @@ import java.util.Calendar;
 
 
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
-    public static final String YEAR = "year";
-    public static final String MONTH = "month";
-    public static final String DAY = "day";
+
 
     private OnDateSetListener listener;
 

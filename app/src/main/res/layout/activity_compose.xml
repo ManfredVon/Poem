@@ -18,11 +18,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/et_title"
-            android:textAppearance="?android:attr/textAppearanceLarge"
             android:gravity="center_horizontal"
             android:nextFocusDown="@+id/et_subtitle"
             android:hint="@string/hint_et_title"
-            tools:text="锦瑟">
+            tools:text="锦瑟"
+            style="@style/PoemTextAppearance.Large"
+            >
 
             <requestFocus/>
         </EditText>
@@ -31,12 +32,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@id/et_subtitle"
-            android:textAppearance="?android:attr/textAppearanceSmall"
             android:gravity="center_horizontal"
             android:nextFocusDown="@+id/et_content"
             android:nextFocusUp="@id/et_title"
             android:hint="@string/hint_et_subtitle"
-            tools:text=""/>
+            style="@style/PoemTextAppearance.Small"
+            />
 
         <EditText
             android:layout_width="match_parent"
@@ -45,23 +46,23 @@
             android:minLines="4"
             android:lineSpacingMultiplier="1.5"
             android:id="@id/et_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:gravity="center_horizontal|bottom"
             android:nextFocusDown="@+id/et_author"
             android:nextFocusUp="@id/et_subtitle"
             android:hint="@string/hint_et_content"
+            style="@style/PoemTextAppearance.Medium"
             />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@id/et_author"
-            android:textAppearance="?android:attr/textAppearanceSmall"
             android:gravity="right"
             android:nextFocusDown="@+id/et_created"
             android:nextFocusUp="@id/et_content"
             android:hint="@string/hint_et_author"
             tools:text="李商隐"
+            style="@style/PoemTextAppearance.Small"
             />
 
         <EditText
@@ -69,10 +70,10 @@
             android:layout_height="wrap_content"
             android:inputType="date"
             android:id="@id/et_created"
-            android:textAppearance="?android:attr/textAppearanceSmall"
             android:gravity="right"
             android:nextFocusUp="@id/et_author"
             android:hint="@string/hint_et_created"
+            style="@style/PoemTextAppearance.Small"
             tools:text="xxxx年xx月xx日"/>
 
         <LinearLayout
