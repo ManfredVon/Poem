@@ -13,8 +13,6 @@ import com.fmf.mypoem.poem.GsonRhythmParser;
 import com.fmf.mypoem.poem.PoemParser;
 import com.fmf.mypoem.poem.RhythmParser;
 
-import org.xml.sax.Parser;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -53,8 +51,8 @@ public class MyPoemDbHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // 升级数据库，删掉原来的表，重新建表
-        db.execSQL(PoemSqlExpr.SQL_DELETE_POEM);
-//        db.execSQL(PoemSqlExpr.SQL_DELETE_RHYTHM);
+        db.execSQL(PoemSqlExpr.SQL_DROP_POEM);
+//        db.execSQL(PoemSqlExpr.SQL_DROP_RHYTHM);
 
         onCreate(db);
     }
@@ -119,6 +117,7 @@ public class MyPoemDbHelper extends SQLiteOpenHelper {
             stat.bindString(6, poem.getContent());
             stat.bindString(7, poem.getStatus());
             stat.bindString(8, poem.getType());
+            stat.bindLong(9, poem.getRhythmId());
 
             stat.executeInsert();
         }

@@ -21,7 +21,7 @@ import com.fmf.mypoem.poem.PoemConstant;
 import com.fmf.mypoem.poem.PoemLog;
 
 public class DraftsFragment extends BasePoemFragment {
-    private static final String[] FORM = {MyPoem.Poem.COLUMN_NAME_TITLE, MyPoem.Poem.COLUMN_NAME_SUBTITLE, MyPoem.Poem.COLUMN_NAME_CONTENT};
+    private static final String[] FORM = {MyPoem.Poem.TITLE, MyPoem.Poem.SUBTITLE, MyPoem.Poem.CONTENT};
     private static final int[] TO = {R.id.tv_title, R.id.tv_subtitle, R.id.tv_content};
 
     public DraftsFragment() {
@@ -49,8 +49,8 @@ public class DraftsFragment extends BasePoemFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         Intent intent = new Intent(getActivity(), DetailActivity.class);
-        intent.putExtra(PoemConstant.ARG_ID, id);
-        intent.putExtra(PoemConstant.ARG_TAB, PoemConstant.TAB_DRAFT);
+        intent.putExtra(PoemConstant.POEM_ID, id);
+        intent.putExtra(PoemConstant.TAB, PoemConstant.TAB_DRAFT);
         startActivity(intent);
     }
 
@@ -68,7 +68,7 @@ public class DraftsFragment extends BasePoemFragment {
         final long id = info.id;
         final Cursor cursor = (Cursor) adapter.getItem(info.position);
         if (cursor != null) {
-            final String title = cursor.getString(cursor.getColumnIndex(MyPoem.Poem.COLUMN_NAME_TITLE));
+            final String title = cursor.getString(cursor.getColumnIndex(MyPoem.Poem.TITLE));
             PoemLog.i(this, "id=" + id + ", title=" + title);
         }
 

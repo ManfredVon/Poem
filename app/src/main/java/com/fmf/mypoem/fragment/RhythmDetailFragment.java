@@ -5,10 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.ShareActionProvider;
-import android.text.SpannableString;
-import android.text.Spanned;
 import android.text.TextUtils;
-import android.text.style.QuoteSpan;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,10 +14,10 @@ import android.widget.TextView;
 
 import com.fmf.mypoem.R;
 import com.fmf.mypoem.activity.ComposeActivity;
+import com.fmf.mypoem.data.MyPoem;
 import com.fmf.mypoem.data.RhythmDao;
 import com.fmf.mypoem.model.Rhythm;
-import com.fmf.mypoem.view.CommentQuoteSpan;
-import com.fmf.mypoem.poem.MetreFormater;
+import com.fmf.mypoem.poem.PoemFormater;
 import com.fmf.mypoem.poem.PoemConstant;
 import com.fmf.mypoem.poem.PoemLog;
 
@@ -33,10 +30,12 @@ public class RhythmDetailFragment extends BaseDetailFragment<Rhythm> {
     private TextView tvComment;
     private ShareActionProvider shareProvider;
 
+    private Rhythm rhythm;
+
     public static RhythmDetailFragment newInstance(long id) {
         RhythmDetailFragment fragment = new RhythmDetailFragment();
         Bundle args = new Bundle();
-        args.putLong(PoemConstant.ARG_ID, id);
+        args.putLong(PoemConstant.POEM_ID, id);
         fragment.setArguments(args);
         return fragment;
     }
@@ -61,6 +60,12 @@ public class RhythmDetailFragment extends BaseDetailFragment<Rhythm> {
     }
 
     private void bindViewData(Rhythm rhythm) {
+        if (rhythm == null){
+            return ;
+        }
+
+        this.rhythm = rhythm;
+
         String name = rhythm.getName();
         String alias = rhythm.getAlias();
         String intro = rhythm.getIntro();
@@ -71,18 +76,12 @@ public class RhythmDetailFragment extends BaseDetailFragment<Rhythm> {
         tvName.setText(name);
         tvAlias.setText(alias);
         tvIntro.setText(intro);
-        tvMeter.setText(MetreFormater.format(metre));
+        tvMeter.setText(PoemFormater.formatMetre(metre));
         tvSample.setText(sample);
-        tvComment.setText(comment);
-
-        if (!TextUtils.isEmpty(comment)) {
-            SpannableString commentSpan = new SpannableString(comment);
-            final int color = getActivity().getResources().getColor(R.color.primary);
-            final QuoteSpan quoteSpan = new CommentQuoteSpan(color);
-            commentSpan.setSpan(quoteSpan, 0, comment.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-
-            tvComment.setText(commentSpan);
-        }
+//        tvComment.setText(comment);
+        final int color = getActivity().getResources().getColor(R.color.primary_translucence);
+        CharSequence commentSpan = PoemFormater.formatComment(comment, color);
+        tvComment.setText(commentSpan);
     }
 
     @Override
@@ -127,6 +126,7 @@ public class RhythmDetailFragment extends BaseDetailFragment<Rhythm> {
 
         return sb.toString();
     }
+
     private void setupShareIntent(Rhythm rhythm) {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
@@ -154,8 +154,8 @@ public class RhythmDetailFragment extends BaseDetailFragment<Rhythm> {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_update:
-//                gotoCompose();
+            case R.id.action_compose:
+                gotoCompose();
                 return true;
         }
 
@@ -164,7 +164,10 @@ public class RhythmDetailFragment extends BaseDetailFragment<Rhythm> {
 
     private void gotoCompose() {
         Intent intent = new Intent(getActivity(), ComposeActivity.class);
-        intent.putExtra(PoemConstant.ARG_ID, id);
+//        intent.putExtra(PoemConstant.RHYTHM_ID, id);
+        intent.putExtra(PoemConstant.RHYTHM, rhythm);
         startActivity(intent);
+
+        getActivity().finish();
     }
 }

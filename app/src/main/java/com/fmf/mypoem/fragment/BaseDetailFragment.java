@@ -46,7 +46,7 @@ public abstract class BaseDetailFragment<T extends Model> extends Fragment {
         setHasOptionsMenu(true);
 
         if (getArguments() != null) {
-            id = getArguments().getLong(PoemConstant.ARG_ID);
+            id = getArguments().getLong(PoemConstant.POEM_ID);
         }
     }
 

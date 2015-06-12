@@ -5,9 +5,7 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.QuoteSpan;
-import android.text.style.StyleSpan;
 
-import com.fmf.mypoem.R;
 import com.fmf.mypoem.model.Poem;
 import com.fmf.mypoem.model.Rhythm;
 import com.fmf.mypoem.view.CommentQuoteSpan;
@@ -29,12 +27,12 @@ public class PoemFormater {
     }
 
     @Nullable
-    public CharSequence formatMetre(String metre){
-        return MetreFormater.format(metre);
+    public static CharSequence formatMetre(String metre){
+        return MetreFormater.formatSpan(metre);
     }
 
     @Nullable
-    public CharSequence formatComment(String comment, int color){
+    public static CharSequence formatComment(String comment, int color){
         if (TextUtils.isEmpty(comment)){
             return null;
         }

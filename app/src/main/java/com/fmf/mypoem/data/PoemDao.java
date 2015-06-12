@@ -19,17 +19,18 @@ import java.util.List;
 public class PoemDao extends MyPoemDao<Poem> {
     private static final String[] PROJECTION = {
             MyPoem.Poem._ID,
-            MyPoem.Poem.COLUMN_NAME_TITLE,
-            MyPoem.Poem.COLUMN_NAME_SUBTITLE,
-            MyPoem.Poem.COLUMN_NAME_AUTHOR,
-            MyPoem.Poem.COLUMN_NAME_CREATE_DATE,
-            MyPoem.Poem.COLUMN_NAME_UPDATE_TIME,
-            MyPoem.Poem.COLUMN_NAME_CONTENT,
-            MyPoem.Poem.COLUMN_NAME_STATUS,
-            MyPoem.Poem.COLUMN_NAME_TYPE
+            MyPoem.Poem.TITLE,
+            MyPoem.Poem.SUBTITLE,
+            MyPoem.Poem.AUTHOR,
+            MyPoem.Poem.CREATED,
+            MyPoem.Poem.UPDATED,
+            MyPoem.Poem.CONTENT,
+            MyPoem.Poem.STATUS,
+            MyPoem.Poem.TYPE,
+            MyPoem.Poem.RHYTHM_ID
     };
 
-    private static final String SORT_ORDER = MyPoem.Poem.COLUMN_NAME_UPDATE_TIME + " DESC";
+    private static final String SORT_ORDER = MyPoem.Poem.UPDATED + " DESC";
 
     public PoemDao(Context context) {
         super(context);
@@ -58,41 +59,34 @@ public class PoemDao extends MyPoemDao<Poem> {
     private Poem getPoem(Cursor cursor) {
         Poem poem = new Poem();
         poem.setId(cursor.getLong(cursor.getColumnIndex(MyPoem.Poem._ID)));
-        poem.setTitle(cursor.getString(cursor.getColumnIndex(MyPoem.Poem.COLUMN_NAME_TITLE)));
-        poem.setSubtitle(cursor.getString(cursor.getColumnIndex(MyPoem.Poem.COLUMN_NAME_SUBTITLE)));
-        poem.setAuthor(cursor.getString(cursor.getColumnIndex(MyPoem.Poem.COLUMN_NAME_AUTHOR)));
-        poem.setCreated(cursor.getString(cursor.getColumnIndex(MyPoem.Poem.COLUMN_NAME_CREATE_DATE)));
-        poem.setUpdated(cursor.getString(cursor.getColumnIndex(MyPoem.Poem.COLUMN_NAME_UPDATE_TIME)));
-        poem.setContent(cursor.getString(cursor.getColumnIndex(MyPoem.Poem.COLUMN_NAME_CONTENT)));
-        poem.setStatus(cursor.getString(cursor.getColumnIndex(MyPoem.Poem.COLUMN_NAME_STATUS)));
-        poem.setType(cursor.getString(cursor.getColumnIndex(MyPoem.Poem.COLUMN_NAME_TYPE)));
+        poem.setTitle(cursor.getString(cursor.getColumnIndex(MyPoem.Poem.TITLE)));
+        poem.setSubtitle(cursor.getString(cursor.getColumnIndex(MyPoem.Poem.SUBTITLE)));
+        poem.setAuthor(cursor.getString(cursor.getColumnIndex(MyPoem.Poem.AUTHOR)));
+        poem.setCreated(cursor.getString(cursor.getColumnIndex(MyPoem.Poem.CREATED)));
+        poem.setUpdated(cursor.getString(cursor.getColumnIndex(MyPoem.Poem.UPDATED)));
+        poem.setContent(cursor.getString(cursor.getColumnIndex(MyPoem.Poem.CONTENT)));
+        poem.setStatus(cursor.getString(cursor.getColumnIndex(MyPoem.Poem.STATUS)));
+        poem.setType(cursor.getString(cursor.getColumnIndex(MyPoem.Poem.TYPE)));
+        poem.setRhythmId(cursor.getLong(cursor.getColumnIndex(MyPoem.Poem.RHYTHM_ID)));
         return poem;
     }
 
-    protected ContentValues getContentValues(Poem poem, boolean allowNull) {
-        //如果poem中包含空字段，则该列会被更新为NULL，所以不添加null字段
+    protected ContentValues getContentValues(Poem poem) {
         ContentValues values = new ContentValues();
-        if (allowNull || !TextUtils.isEmpty(poem.getTitle()))
-            values.put(MyPoem.Poem.COLUMN_NAME_TITLE, poem.getTitle());
-        if (allowNull || !TextUtils.isEmpty(poem.getSubtitle()))
-            values.put(MyPoem.Poem.COLUMN_NAME_SUBTITLE, poem.getSubtitle());
-        if (allowNull || !TextUtils.isEmpty(poem.getAuthor()))
-            values.put(MyPoem.Poem.COLUMN_NAME_AUTHOR, poem.getAuthor());
-        if (allowNull || !TextUtils.isEmpty(poem.getCreated()))
-            values.put(MyPoem.Poem.COLUMN_NAME_CREATE_DATE, poem.getCreated());
-        if (allowNull || !TextUtils.isEmpty(poem.getUpdated()))
-            values.put(MyPoem.Poem.COLUMN_NAME_UPDATE_TIME, poem.getUpdated());
-        if (allowNull || !TextUtils.isEmpty(poem.getContent()))
-            values.put(MyPoem.Poem.COLUMN_NAME_CONTENT, poem.getContent());
-        if (allowNull || !TextUtils.isEmpty(poem.getStatus()))
-            values.put(MyPoem.Poem.COLUMN_NAME_STATUS, poem.getStatus());
-        if (allowNull || !TextUtils.isEmpty(poem.getType()))
-            values.put(MyPoem.Poem.COLUMN_NAME_TYPE, poem.getType());
+        values.put(MyPoem.Poem.TITLE, poem.getTitle());
+        values.put(MyPoem.Poem.SUBTITLE, poem.getSubtitle());
+        values.put(MyPoem.Poem.AUTHOR, poem.getAuthor());
+        values.put(MyPoem.Poem.CREATED, poem.getCreated());
+        values.put(MyPoem.Poem.UPDATED, poem.getUpdated());
+        values.put(MyPoem.Poem.CONTENT, poem.getContent());
+        values.put(MyPoem.Poem.STATUS, poem.getStatus());
+        values.put(MyPoem.Poem.TYPE, poem.getType());
+        values.put(MyPoem.Poem.TYPE, poem.getRhythmId());
         return values;
     }
 
     private List<Poem> listByStatus(String status) {
-        final String selection = MyPoem.Poem.COLUMN_NAME_STATUS + EQUAL_QUESTION_MARK;
+        final String selection = MyPoem.Poem.STATUS + EQUAL_QUESTION_MARK;
         final String[] selectionArgs = {status};
 
         return list(selection, selectionArgs);
@@ -107,7 +101,7 @@ public class PoemDao extends MyPoemDao<Poem> {
     }
 
     private List<Poem> listByType(String type) {
-        final String selection = MyPoem.Poem.COLUMN_NAME_TYPE + EQUAL_QUESTION_MARK;
+        final String selection = MyPoem.Poem.TYPE + EQUAL_QUESTION_MARK;
         final String[] selectionArgs = {type};
 
         return list(selection, selectionArgs);
@@ -122,7 +116,7 @@ public class PoemDao extends MyPoemDao<Poem> {
     }
 
     private Cursor queryByStatus(String status) {
-        final String selection = MyPoem.Poem.COLUMN_NAME_STATUS + EQUAL_QUESTION_MARK;
+        final String selection = MyPoem.Poem.STATUS + EQUAL_QUESTION_MARK;
         final String[] selectionArgs = {status};
 
         return query(selection, selectionArgs);
@@ -137,7 +131,7 @@ public class PoemDao extends MyPoemDao<Poem> {
     }
 
     private Cursor queryByType(String type) {
-        final String selection = MyPoem.Poem.COLUMN_NAME_TYPE + EQUAL_QUESTION_MARK;
+        final String selection = MyPoem.Poem.TYPE + EQUAL_QUESTION_MARK;
         final String[] selectionArgs = {type};
 
         return query(selection, selectionArgs);
@@ -153,16 +147,16 @@ public class PoemDao extends MyPoemDao<Poem> {
 
     public Cursor query(String text) {
         StringBuilder sb = new StringBuilder();
-        sb.append(MyPoem.Poem.COLUMN_NAME_SUBTITLE).append(LIKE_QUESTION_MARK);
+        sb.append(MyPoem.Poem.SUBTITLE).append(LIKE_QUESTION_MARK);
         sb.append(OR);
-        sb.append(MyPoem.Poem.COLUMN_NAME_SUBTITLE).append(LIKE_QUESTION_MARK);
+        sb.append(MyPoem.Poem.SUBTITLE).append(LIKE_QUESTION_MARK);
         sb.append(OR);
-        sb.append(MyPoem.Poem.COLUMN_NAME_CONTENT).append(LIKE_QUESTION_MARK);
+        sb.append(MyPoem.Poem.CONTENT).append(LIKE_QUESTION_MARK);
         sb.append(OR);
-        sb.append(MyPoem.Poem.COLUMN_NAME_CREATE_DATE).append(LIKE_QUESTION_MARK);
+        sb.append(MyPoem.Poem.CREATED).append(LIKE_QUESTION_MARK);
 
         final String selection = sb.toString();
-        text  = StringUtil.wrap(text, PERCENT);
+        text = StringUtil.wrap(text, PERCENT);
         final String[] selectionArgs = {text, text, text, text};
 
         return query(selection, selectionArgs);
@@ -185,21 +179,21 @@ public class PoemDao extends MyPoemDao<Poem> {
         }
 
         StringBuilder sb = new StringBuilder();
-        sb.append(MyPoem.Poem.COLUMN_NAME_STATUS).append(EQUAL_QUESTION_MARK);
+        sb.append(MyPoem.Poem.STATUS).append(EQUAL_QUESTION_MARK);
         sb.append(AND);
         sb.append(BRACKET_LEFT);
-        sb.append(MyPoem.Poem.COLUMN_NAME_TITLE).append(LIKE_QUESTION_MARK);
+        sb.append(MyPoem.Poem.TITLE).append(LIKE_QUESTION_MARK);
         sb.append(OR);
-        sb.append(MyPoem.Poem.COLUMN_NAME_SUBTITLE).append(LIKE_QUESTION_MARK);
+        sb.append(MyPoem.Poem.SUBTITLE).append(LIKE_QUESTION_MARK);
         sb.append(OR);
-        sb.append(MyPoem.Poem.COLUMN_NAME_CONTENT).append(LIKE_QUESTION_MARK);
+        sb.append(MyPoem.Poem.CONTENT).append(LIKE_QUESTION_MARK);
         sb.append(OR);
-        sb.append(MyPoem.Poem.COLUMN_NAME_CREATE_DATE).append(LIKE_QUESTION_MARK);
+        sb.append(MyPoem.Poem.CREATED).append(LIKE_QUESTION_MARK);
         sb.append(BRACKET_RIGHT);
 
         final String selection = sb.toString();
         PoemLog.i(selection);
-        text  = StringUtil.wrap(text, PERCENT);
+        text = StringUtil.wrap(text, PERCENT);
         final String[] selectionArgs = {status, text, text, text, text};
 
         return query(selection, selectionArgs);
@@ -213,7 +207,7 @@ public class PoemDao extends MyPoemDao<Poem> {
         return query(MyPoem.Poem.STATUS_FINISHED, text);
     }
 
-    public void save(List<Poem> poems){
+    public void save(List<Poem> poems) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         try {
             SQLiteStatement stat = db.compileStatement(SQL_INSERT_POEM);
@@ -228,6 +222,7 @@ public class PoemDao extends MyPoemDao<Poem> {
                 stat.bindString(6, poem.getContent());
                 stat.bindString(7, poem.getStatus());
                 stat.bindString(8, poem.getType());
+                stat.bindLong(9, poem.getRhythmId());
 
                 stat.executeInsert();
             }

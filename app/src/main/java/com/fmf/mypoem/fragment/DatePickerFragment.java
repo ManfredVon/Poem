@@ -1,6 +1,5 @@
 package com.fmf.mypoem.fragment;
 
-
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -12,9 +11,8 @@ import com.fmf.mypoem.poem.PoemLog;
 
 import java.util.Calendar;
 
-
-public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
-
+public class DatePickerFragment extends DialogFragment
+        implements DatePickerDialog.OnDateSetListener {
 
     private OnDateSetListener listener;
 
@@ -22,7 +20,13 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         // Required empty public constructor
         PoemLog.i(this, "constructor");
     }
-    
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        PoemLog.i(this, "onCreate");
+    }
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final Calendar calendar = Calendar.getInstance();

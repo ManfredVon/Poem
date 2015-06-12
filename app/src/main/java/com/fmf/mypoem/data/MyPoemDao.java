@@ -6,8 +6,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.fmf.mypoem.model.Model;
+import com.fmf.mypoem.model.Rhythm;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +36,7 @@ public abstract class MyPoemDao<T extends Model> implements PoemSqlExpr {
 
     protected abstract T getModel(Cursor cursor);
 
-    protected abstract ContentValues getContentValues(T model, boolean allowNull);
+    protected abstract ContentValues getContentValues(T model);
 
     protected String[] getProjection(){
         return null; //return all columns
@@ -46,7 +48,7 @@ public abstract class MyPoemDao<T extends Model> implements PoemSqlExpr {
     }
 
     public long save(T model) {
-        ContentValues values = getContentValues(model, false);
+        ContentValues values = getContentValues(model);
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         try {
@@ -59,7 +61,7 @@ public abstract class MyPoemDao<T extends Model> implements PoemSqlExpr {
     public int update(T model) {
         final String selection = BaseColumns._ID + EQUAL_QUESTION_MARK;
         final String[] selectionArgs = {String.valueOf(model.getId())};
-        ContentValues values = getContentValues(model, false);
+        ContentValues values = getContentValues(model);
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         try {
@@ -77,6 +79,7 @@ public abstract class MyPoemDao<T extends Model> implements PoemSqlExpr {
         return save(model);
     }
 
+    @Nullable
     public T get(long id) {
         final String selection = BaseColumns._ID + EQUAL_QUESTION_MARK;
         final String[] selectionArgs = {String.valueOf(id)};
@@ -156,6 +159,10 @@ public abstract class MyPoemDao<T extends Model> implements PoemSqlExpr {
             cursor.close();
             db.close();
         }
+    }
+
+    public List<T> listAll(){
+        return list(null, null);
     }
 
     public int delete(long id) {

@@ -1,7 +1,5 @@
 package com.fmf.mypoem.fragment;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,14 +7,10 @@ import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.CursorAdapter;
-import android.widget.Toast;
 
 import com.fmf.mypoem.R;
 import com.fmf.mypoem.poem.PoemConstant;
@@ -87,7 +81,7 @@ public abstract class BasePoemFragment extends ListFragment implements LoaderMan
 
     public void query(String text) {
         Bundle args = new Bundle();
-        args.putString(PoemConstant.ARG_QUERY, text);
+        args.putString(PoemConstant.QUERY, text);
         loaderManager.restartLoader(PoemConstant.LOADER_ID, args, this);
     }
 
@@ -97,7 +91,7 @@ public abstract class BasePoemFragment extends ListFragment implements LoaderMan
         
         String text = null;
         if (args != null) {
-            text = args.getString(PoemConstant.ARG_QUERY);
+            text = args.getString(PoemConstant.QUERY);
         }
 
         final String finalText = text == null ? null : text.trim();

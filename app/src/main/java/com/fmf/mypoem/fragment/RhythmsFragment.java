@@ -14,7 +14,7 @@ import com.fmf.mypoem.data.RhythmDao;
 import com.fmf.mypoem.poem.PoemConstant;
 
 public class RhythmsFragment extends BasePoemFragment {
-    private static final String[] FORM = {MyPoem.Rhythm.COLUMN_NAME_NAME, MyPoem.Rhythm.COLUMN_NAME_ALIAS, MyPoem.Rhythm.COLUMN_NAME_INTRO};
+    private static final String[] FORM = {MyPoem.Rhythm.NAME, MyPoem.Rhythm.ALIAS, MyPoem.Rhythm.INTRO};
     private static final int[] TO = {R.id.tv_name, R.id.tv_alias, R.id.tv_intro};
 
     public RhythmsFragment() {
@@ -40,8 +40,8 @@ public class RhythmsFragment extends BasePoemFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         Intent intent = new Intent(getActivity(), DetailActivity.class);
-        intent.putExtra(PoemConstant.ARG_ID, id);
-        intent.putExtra(PoemConstant.ARG_TAB, PoemConstant.TAB_RHYTHM);
+        intent.putExtra(PoemConstant.POEM_ID, id);
+        intent.putExtra(PoemConstant.TAB, PoemConstant.TAB_RHYTHM);
         startActivity(intent);
     }
 }

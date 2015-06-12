@@ -4,11 +4,8 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import com.fmf.mypoem.R;
-import com.fmf.mypoem.data.MyPoem;
 import com.fmf.mypoem.fragment.BaseDetailFragment;
 import com.fmf.mypoem.fragment.DraftDetailFragment;
 import com.fmf.mypoem.fragment.PoemDetailFragment;
@@ -42,8 +39,8 @@ public class DetailActivity extends BaseActivity {
 
     private void handleIntent(Intent intent) {
         if (intent != null) {
-            long id = intent.getLongExtra(PoemConstant.ARG_ID, 0);
-            final String tab = intent.getStringExtra(PoemConstant.ARG_TAB);
+            long id = intent.getLongExtra(PoemConstant.POEM_ID, 0);
+            final String tab = intent.getStringExtra(PoemConstant.TAB);
             PoemLog.i(this, "id=" + id + ", tab=" + tab);
 
             if (id > 0) {

@@ -4,34 +4,49 @@ import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.fmf.mypoem.R;
 import com.fmf.mypoem.data.MyPoem;
 import com.fmf.mypoem.data.PoemDao;
-import com.fmf.mypoem.fragment.BaseDetailFragment;
+import com.fmf.mypoem.data.RhythmDao;
 import com.fmf.mypoem.fragment.DatePickerFragment;
+import com.fmf.mypoem.fragment.RhythmsDialogFragment;
 import com.fmf.mypoem.model.Poem;
+import com.fmf.mypoem.model.Rhythm;
+import com.fmf.mypoem.poem.MetreFormater;
 import com.fmf.mypoem.poem.PoemConstant;
 import com.fmf.mypoem.util.DateUtil;
+import com.fmf.mypoem.view.FloatLabelLayout;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
-public class ComposeActivity extends BaseActivity implements DatePickerFragment.OnDateSetListener {
+public class ComposeActivity extends BaseActivity
+        implements DatePickerFragment.OnDateSetListener,
+        RhythmsDialogFragment.OnRhythmSetListener {
+
     private EditText etTitle;
     private EditText etSubtitle;
     private EditText etContent;
     private EditText etAuthor;
     private EditText etCreated;
+    private Button btnPickRhythm;
+    private FloatLabelLayout hintLabel;
 
+    private long rhythmId;
     private Poem poem;
+    private ArrayList<Rhythm> rhythms = new ArrayList<>();
 //    private int year;
 //    private int month;
 //    private int day;
@@ -42,28 +57,81 @@ public class ComposeActivity extends BaseActivity implements DatePickerFragment.
 
         initViews();
 
+        new AsyncTask<Void, Void, List<Rhythm>>() {
+            @Override
+            protected List<Rhythm> doInBackground(Void... params) {
+                return new RhythmDao(ComposeActivity.this).listAll();
+            }
+
+            @Override
+            protected void onPostExecute(List<Rhythm> data) {
+                rhythms.addAll(data);
+                btnPickRhythm.setVisibility(View.VISIBLE);
+            }
+        }.execute();
+
         handleIntent(getIntent());
     }
 
     private void handleIntent(Intent intent) {
-        final long id = intent.getLongExtra(PoemConstant.ARG_ID, 0);
-        final boolean isUpdate = id > 0;
+        final long poemId = intent.getLongExtra(PoemConstant.POEM_ID, 0);
+        final boolean isUpdate = poemId > 0;
         if (isUpdate) {
             new AsyncTask<Void, Void, Poem>() {
                 @Override
                 protected Poem doInBackground(Void... params) {
-                    return new PoemDao(ComposeActivity.this).get(id);
+                    return new PoemDao(ComposeActivity.this).get(poemId);
                 }
 
                 @Override
                 protected void onPostExecute(Poem poem) {
                     bindViewData(poem);
+
+                    final long rhythmId = poem.getRhythmId();
+                    if (rhythmId > 0) {
+                        new AsyncTask<Void, Void, Rhythm>() {
+                            @Override
+                            protected Rhythm doInBackground(Void... params) {
+                                return new RhythmDao(ComposeActivity.this).get(rhythmId);
+                            }
+
+                            @Override
+                            protected void onPostExecute(Rhythm rhythm) {
+                                bindRhythm(rhythm);
+                            }
+                        }.execute();
+                    }
                 }
             }.execute();
+        }
+
+        final Rhythm rhythm = intent.getParcelableExtra(PoemConstant.RHYTHM);
+        bindRhythm(rhythm);
+    }
+
+    private void bindRhythm(Rhythm rhythm) {
+        if (rhythm != null) {
+            rhythmId = rhythm.getId();
+
+            etTitle.setHint(rhythm.getName());
+            etSubtitle.setHint(rhythm.getIntro());
+
+            final String metre = rhythm.getMetre();
+            hintLabel.setTextAndHint(MetreFormater.format(metre));
+
+            if (MyPoem.TYPE_CI.equals(rhythm.getType())) {
+                etTitle.setText(rhythm.getName());
+            } else {
+                etTitle.setText("");
+            }
         }
     }
 
     private void bindViewData(Poem poem) {
+        if (poem == null) {
+            return;
+        }
+
         this.poem = poem;
 
         String title = poem.getTitle();
@@ -92,6 +160,9 @@ public class ComposeActivity extends BaseActivity implements DatePickerFragment.
     }
 
     private void initViews() {
+        hintLabel = (FloatLabelLayout) findViewById(R.id.hint_lable);
+        btnPickRhythm = (Button) findViewById(R.id.btn_pick_rhythm);
+
         etTitle = (EditText) findViewById(R.id.et_title);
         etSubtitle = (EditText) findViewById(R.id.et_subtitle);
         etContent = (EditText) findViewById(R.id.et_content);
@@ -147,14 +218,20 @@ public class ComposeActivity extends BaseActivity implements DatePickerFragment.
 
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.btn_pick_rhythm:
+                showRhythmsDialog();
+                break;
+
             case R.id.btn_compose:
                 compose();
                 break;
 
             case R.id.btn_craft:
                 draft();
+                break;
 
             default:
+                break;
         }
     }
 
@@ -194,6 +271,7 @@ public class ComposeActivity extends BaseActivity implements DatePickerFragment.
         poem.setCreated(created);
         poem.setUpdated(updated);
         poem.setStatus(status);
+        poem.setRhythmId(rhythmId);
 
         new AsyncTask<Void, Void, Integer>() {
             @Override
@@ -228,14 +306,30 @@ public class ComposeActivity extends BaseActivity implements DatePickerFragment.
 
     private void showDatePickerDialog() {
         DialogFragment datePickerFragment = new DatePickerFragment();
-//        Bundle args = new Bundle();
-//        if (year != 0 && month != 0 && year != 0) {
-//            args.putInt(DatePickerFragment.YEAR, year);
-//            args.putInt(DatePickerFragment.MONTH, month);
-//            args.putInt(DatePickerFragment.DAY, day);
+        datePickerFragment.show(getFragmentManager(), PoemConstant.FRAGMENT_DATE_PICKER);
+
+//        DialogFragment dialogFragment = (DialogFragment) getFragmentManager().findFragmentByTag(PoemConstant.FRAGMENT_DATE_PICKER);
+//        if (dialogFragment == null) {
+//            dialogFragment = new DatePickerFragment();
 //        }
-//        datePickerFragment.setArguments(args);
-        datePickerFragment.show(getFragmentManager(), "datePicker");
+//        FragmentTransaction ft = getFragmentManager().beginTransaction();
+//        // 过渡效果
+//        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+//        dialogFragment.show(ft, PoemConstant.FRAGMENT_DATE_PICKER);
+    }
+
+    private void showRhythmsDialog() {
+        DialogFragment dialogFragment = RhythmsDialogFragment.newInstance(rhythms);
+        dialogFragment.show(getFragmentManager(), PoemConstant.FRAGMENT_RHYTHMS_DIALOG);
+
+//        DialogFragment dialogFragment = (DialogFragment) getFragmentManager().findFragmentByTag(PoemConstant.FRAGMENT_RHYTHMS_DIALOG);
+//        if (dialogFragment == null) {
+//            dialogFragment = new RhythmsDialogFragment();
+//        }
+//        FragmentTransaction ft = getFragmentManager().beginTransaction();
+//        // 过渡效果
+//        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+//        dialogFragment.show(ft, PoemConstant.FRAGMENT_RHYTHMS_DIALOG);
     }
 
     public void setCreatedDate(int year, int monthOfYear, int dayOfMonth) {
@@ -250,4 +344,8 @@ public class ComposeActivity extends BaseActivity implements DatePickerFragment.
         setCreatedDate(year, monthOfYear, dayOfMonth);
     }
 
+    @Override
+    public void onRhythmSet(Rhythm rhythm) {
+        bindRhythm(rhythm);
+    }
 }

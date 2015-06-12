@@ -31,7 +31,7 @@ public class PoemDetailFragment extends BaseDetailFragment<Poem> {
     public static PoemDetailFragment newInstance(long id) {
         PoemDetailFragment fragment = new PoemDetailFragment();
         Bundle args = new Bundle();
-        args.putLong(PoemConstant.ARG_ID, id);
+        args.putLong(PoemConstant.POEM_ID, id);
         fragment.setArguments(args);
         return fragment;
     }
@@ -143,7 +143,7 @@ public class PoemDetailFragment extends BaseDetailFragment<Poem> {
 
     private void gotoCompose() {
         Intent intent = new Intent(getActivity(), ComposeActivity.class);
-        intent.putExtra(PoemConstant.ARG_ID, id);
+        intent.putExtra(PoemConstant.POEM_ID, id);
         startActivity(intent);
     }
 }

@@ -41,19 +41,21 @@
         <!--<item name="suggestionRowLayout"></item>-->
     </style>
 
-    <style name="PoemTextAppearance" parent="@android:style/TextAppearance">
+    <style name="PoemTextAppearance" parent="android:TextAppearance">
     </style>
     <style name="PoemTextAppearance.Large" parent="PoemTextAppearance">
-        <item name="android:textColor">@color/text_primary</item>
         <item name="android:textSize">@dimen/text_size_large</item>
     </style>
     <style name="PoemTextAppearance.Medium" parent="PoemTextAppearance">
-        <item name="android:textColor">@color/text_secondary</item>
         <item name="android:textSize">@dimen/text_size_medium</item>
     </style>
     <style name="PoemTextAppearance.Small" parent="PoemTextAppearance">
-        <item name="android:textColor">@color/text_secondary</item>
         <item name="android:textSize">@dimen/text_size_small</item>
+    </style>
+
+    <style name="TextAppearance.MyPoem.FloatLabel" parent="android:TextAppearance.Small">
+        <!--<item name="android:textColor">@color/accent</item>-->
+        <!--<item name="android:textStyle">bold</item>-->
     </style>
 
 </resources>
