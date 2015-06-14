@@ -6,8 +6,15 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import com.fmf.mypoem.R;
 import com.fmf.mypoem.adapter.RhythmListAdapter;
@@ -24,7 +31,7 @@ import java.util.List;
 public class RhythmsDialogFragment extends DialogFragment {
 
     private OnRhythmSetListener listener;
-    private List<Rhythm> list;
+    private RhythmListAdapter adapter;
 
     public RhythmsDialogFragment() {
         // Required empty public constructor
@@ -44,19 +51,22 @@ public class RhythmsDialogFragment extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        List<Rhythm> list = null;
         if (getArguments() != null) {
-            this.list = getArguments().getParcelableArrayList(PoemConstant.RHYTHM_LIST);
+           list = getArguments().getParcelableArrayList(PoemConstant.RHYTHM_LIST);
         }
+        adapter = new RhythmListAdapter(getActivity(), list);
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final RhythmListAdapter adapter = new RhythmListAdapter(getActivity(), list);
+        LayoutInflater inflater = LayoutInflater.from(getActivity());
+        View root  = inflater.inflate(R.layout.fragment_rhythms_dialog, null);
 
-        final SearchView searchView = new SearchView(getActivity());
+        SearchView searchView = (SearchView) root.findViewById(R.id.sv_rhythm);
         searchView.setIconified(false);
+//        searchView.setIconifiedByDefault(false);
         searchView.setSubmitButtonEnabled(true);
-        searchView.setQueryHint(getActivity().getString(R.string.hint_search_rhythm));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -73,19 +83,66 @@ public class RhythmsDialogFragment extends DialogFragment {
             }
         });
 
+        TextView emptyView = (TextView) root.findViewById(R.id.tv_empty);
+
+        ListView listView = (ListView) root.findViewById(R.id.lv_rhythm);
+        listView.setEmptyView(emptyView);
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                listener.onRhythmSet(adapter.getData().get(position));
+                getDialog().dismiss();
+            }
+        });
+
         return new AlertDialog.Builder(getActivity())
-                .setTitle(R.string.tip_select_rhythm)
-                .setCustomTitle(searchView)
-                .setAdapter(adapter,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                final Rhythm rhythm = list.get(which);
-                                listener.onRhythmSet(rhythm);
-                            }
-                        })
+//                .setTitle(R.string.tip_select_rhythm)
+//                .setCustomTitle(searchView) // 键盘显示在AlertDailog下面
+                .setView(root)
                 .setNegativeButton("取消", null).create();
     }
+
+
+    /*@Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        View root  = inflater.inflate(R.layout.fragment_rhythms_dialog, container, false);
+
+        SearchView searchView = (SearchView) root.findViewById(R.id.sv_rhythm);
+        searchView.setIconified(false);
+        searchView.setSubmitButtonEnabled(true);
+//        searchView.setQueryHint(getActivity().getString(R.string.hint_search_rhythm));
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                PoemLog.i(RhythmsDialogFragment.this, query);
+
+                adapter.getFilter().filter(query);
+
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return true;
+            }
+        });
+
+        ListView listView = (ListView) root.findViewById(R.id.lv_rhythms);
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                listener.onRhythmSet(list.get(position));
+                getDialog().dismiss();
+            }
+        });
+
+
+        return root;
+    }*/
 
     @Override
     public void onAttach(Activity activity) {

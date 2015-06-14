@@ -59,6 +59,10 @@ public abstract class BaseListAdapter<T> extends BaseAdapter {
         return v;
     }
 
+    public List<T> getData() {
+        return mData;
+    }
+
     public void add(List<T> newData){
         mData.addAll(newData);
         notifyDataSetChanged();
