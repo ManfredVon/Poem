@@ -54,7 +54,7 @@ public class RhythmDao extends MyPoemDao<Rhythm> {
         return getRhythm(cursor);
     }
 
-    private Rhythm getRhythm(Cursor cursor) {
+    public static Rhythm getRhythm(Cursor cursor) {
         Rhythm rhythm = new Rhythm();
         rhythm.setId(cursor.getLong(cursor.getColumnIndex(MyPoem.Poem._ID)));
         rhythm.setName(cursor.getString(cursor.getColumnIndex(MyPoem.Rhythm.NAME)));

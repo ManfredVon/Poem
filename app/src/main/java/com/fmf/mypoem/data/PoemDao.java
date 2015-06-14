@@ -56,7 +56,7 @@ public class PoemDao extends MyPoemDao<Poem> {
         return getPoem(cursor);
     }
 
-    private Poem getPoem(Cursor cursor) {
+    public static Poem getPoem(Cursor cursor) {
         Poem poem = new Poem();
         poem.setId(cursor.getLong(cursor.getColumnIndex(MyPoem.Poem._ID)));
         poem.setTitle(cursor.getString(cursor.getColumnIndex(MyPoem.Poem.TITLE)));

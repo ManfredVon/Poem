@@ -20,6 +20,7 @@ import com.fmf.mypoem.model.Rhythm;
 import com.fmf.mypoem.poem.PoemFormater;
 import com.fmf.mypoem.poem.PoemConstant;
 import com.fmf.mypoem.poem.PoemLog;
+import com.fmf.mypoem.poem.PoemUtil;
 
 public class RhythmDetailFragment extends BaseDetailFragment<Rhythm> {
     private TextView tvName;
@@ -101,36 +102,10 @@ public class RhythmDetailFragment extends BaseDetailFragment<Rhythm> {
         return new RhythmDao(getActivity()).delete(id);
     }
 
-    protected String createShareText(Rhythm rhythm) {
-        String name = rhythm.getName();
-        String alias = rhythm.getAlias();
-        String intro = rhythm.getIntro();
-        String metre = rhythm.getMetre();
-        String sample = rhythm.getSample();
-        String comment = rhythm.getComment();
-
-        final String LF = "\n";
-        StringBuilder sb = new StringBuilder();
-        sb.append(name);
-        if (!TextUtils.isEmpty(alias)) {
-            sb.append("【").append(alias).append("】").append(LF);
-        }
-        if (!TextUtils.isEmpty(intro)) {
-            sb.append(alias).append(LF);
-        }
-        sb.append(metre).append(LF).append(LF);
-        sb.append(sample);
-        if (!TextUtils.isEmpty(comment)) {
-            sb.append(LF).append(LF).append(comment);
-        }
-
-        return sb.toString();
-    }
-
     private void setupShareIntent(Rhythm rhythm) {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
-        final String text = createShareText(rhythm);
+        final String text = PoemUtil.createShareText(rhythm);
         shareIntent.putExtra(Intent.EXTRA_TEXT, text);
         if (shareProvider != null) {
             shareProvider.setShareIntent(shareIntent);

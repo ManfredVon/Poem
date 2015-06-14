@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.ShareActionProvider;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,6 +17,7 @@ import com.fmf.mypoem.data.PoemDao;
 import com.fmf.mypoem.model.Poem;
 import com.fmf.mypoem.poem.PoemConstant;
 import com.fmf.mypoem.poem.PoemLog;
+import com.fmf.mypoem.poem.PoemUtil;
 
 public class PoemDetailFragment extends BaseDetailFragment<Poem> {
     private TextView tvTitle;
@@ -86,30 +86,10 @@ public class PoemDetailFragment extends BaseDetailFragment<Poem> {
         return new PoemDao(getActivity()).delete(id);
     }
 
-    private String createShareText(Poem poem) {
-        String title = poem.getTitle();
-        String subtitle = poem.getSubtitle();
-        String content = poem.getContent();
-        String author = poem.getAuthor();
-//        String created = poem.getCreated();
-
-        StringBuilder sb = new StringBuilder();
-        final String LF = "\n";
-        final String DOT = "•";
-        sb.append(title);
-        if (!TextUtils.isEmpty(subtitle)) {
-            sb.append(DOT).append(subtitle);
-        }
-        sb.append(DOT).append(author).append(LF);
-        sb.append(content);
-
-        return sb.toString();
-    }
-
     private void setupShareIntent(Poem poem) {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
-        final String text = createShareText(poem);
+        final String text = PoemUtil.createShareText(poem);
         shareIntent.putExtra(Intent.EXTRA_TEXT, text);
         if (shareProvider != null) {
             shareProvider.setShareIntent(shareIntent);
