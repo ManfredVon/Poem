@@ -5,5 +5,5 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/poem_bg"
-    tools:context="com.fmf.mypoem.activity.DetailActivity">
+    tools:context="com.fmf.poem.activity.DetailActivity">
 </ScrollView>

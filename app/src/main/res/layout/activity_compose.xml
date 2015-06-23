@@ -4,7 +4,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/poem_bg"
-            tools:context="com.fmf.mypoem.activity.ComposeActivity">
+            tools:context="com.fmf.poem.activity.ComposeActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -47,7 +47,7 @@
             android:nextFocusUp="@id/et_title"
             />
 
-        <com.fmf.mypoem.view.FloatLabelLayout
+        <com.fmf.poem.view.FloatLabelLayout
             android:id="@+id/hint_lable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -63,7 +63,7 @@
                 android:inputType="textMultiLine"
                 android:nextFocusUp="@id/et_subtitle"
                 />
-        </com.fmf.mypoem.view.FloatLabelLayout>
+        </com.fmf.poem.view.FloatLabelLayout>
 
         <EditText
             android:id="@+id/et_author"

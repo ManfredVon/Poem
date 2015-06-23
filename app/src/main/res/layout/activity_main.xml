@@ -4,7 +4,7 @@
               android:layout_height="match_parent"
               android:background="@drawable/splash"
               android:orientation="vertical"
-              tools:context="com.fmf.mypoem.activity.MainActivity">
+              tools:context="com.fmf.poem.activity.MainActivity">
 
 
 </LinearLayout>
